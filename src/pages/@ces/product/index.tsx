@@ -11,7 +11,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -30,7 +30,7 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TableNoData,
-  TableSelectedActions
+  TableSelectedActions,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useProduct } from 'src/hooks/@ces/useProduct'
@@ -42,18 +42,15 @@ import ProductTableRow from 'src/sections/@ces/product/ProductTableRow'
 import ProductTableToolbar from 'src/sections/@ces/product/ProductTableToolbar'
 import { confirmDialog } from 'src/utils/confirmDialog'
 
-
 // ----------------------------------------------------------------------
-
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
   { id: 'description', label: 'Description', align: 'left' },
   { id: 'price', label: 'Price', align: 'left' },
   { id: 'quantity', label: 'Quantity', align: 'left' },
-  { id: 'category.name', label: 'Carogory', align: 'left' },
+  { id: 'category.name', label: 'Category', align: 'left' },
   { id: '' },
-
 ]
 ProductPage.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
@@ -96,9 +93,9 @@ export default function ProductPage() {
     setPage(0)
   }
 
-  const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterRole(event.target.value)
-  }
+  // const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFilterRole(event.target.value)
+  // }
 
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this product ?', async () => {
@@ -113,12 +110,12 @@ export default function ProductPage() {
     })
   }
   if (isLoading) {
-    console.log(isLoading);
+    console.log(isLoading)
 
     return <LoadingScreen />
   }
   const handleDeleteRows = (selected: string[]) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id))
+    // const deleteRows = tableData.filter((row) => !selected.includes(row.id))
     setSelected([])
     console.log('delete all account action')
   }
@@ -134,8 +131,6 @@ export default function ProductPage() {
     filterRole,
     filterStatus,
   })
-
-
 
   const denseHeight = dense ? 52 : 72
 
@@ -248,7 +243,7 @@ export default function ProductPage() {
           </Card>
         </Container>
       </Page>
-    </RoleBasedGuard >
+    </RoleBasedGuard>
   )
 }
 

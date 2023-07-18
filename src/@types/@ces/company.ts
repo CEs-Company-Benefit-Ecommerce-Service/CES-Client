@@ -4,7 +4,7 @@ export type CompanyData = {
   address: string
   status: number
   imageUrl: string
-  contactPerson: string
+  contactPersonId: string
   limits: number
   used: number
   expiredDate: string

@@ -2,7 +2,6 @@
 // @mui
 import { Container } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
 import { Role } from 'src/@types/@ces'
 import LoadingScreen from 'src/components/LoadingScreen'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
@@ -28,11 +27,11 @@ DebtDetail.getLayout = function getLayout(page: React.ReactElement) {
 
 export default function DebtDetail() {
   const { themeStretch } = useSettings()
-  const { enqueueSnackbar } = useSnackbar()
+  // const { enqueueSnackbar } = useSnackbar()
 
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { debtId } = query
-  const { data, mutate, isLoading } = useDebtDetail({ id: `${debtId}` })
+  const { data, isLoading } = useDebtDetail({ id: `${debtId}` })
 
   if (isLoading) {
     return <LoadingScreen />

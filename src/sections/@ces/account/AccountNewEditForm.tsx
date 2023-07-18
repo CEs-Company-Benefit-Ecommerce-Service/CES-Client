@@ -26,6 +26,7 @@ import {
   ACCOUNT_STATUS_OPTIONS_FORM,
   AccountData,
   AccountPayload,
+  AccountStatus,
   ROLE_OPTIONS_FORM_EA,
   ROLE_OPTIONS_FORM_SA,
   Role,
@@ -95,7 +96,11 @@ export default function AccountNewEditForm({ isEdit = false, currentUser, onSubm
     () => ({
       name: currentUser?.name || '',
       email: currentUser?.email || '',
-      address: currentUser?.address || '',
+      address: currentUser?.address
+        ? currentUser?.address
+        : user?.role == Role['Enterprise Admin']
+        ? user.address
+        : '',
       phone: currentUser?.phone || '',
       imageUrl:
         currentUser?.imageUrl === 'string'
@@ -103,8 +108,12 @@ export default function AccountNewEditForm({ isEdit = false, currentUser, onSubm
           : currentUser?.imageUrl
           ? currentUser?.imageUrl
           : null,
-      status: currentUser?.status,
-      role: currentUser?.role,
+      status: currentUser?.status || AccountStatus['Active'],
+      role: currentUser?.role
+        ? currentUser?.role
+        : user?.role == Role['Enterprise Admin']
+        ? Role.Employee
+        : undefined,
       password: '',
       companyId: null,
       company: null,
@@ -116,7 +125,7 @@ export default function AccountNewEditForm({ isEdit = false, currentUser, onSubm
       //   name: '',
       // },
     }),
-    [currentUser]
+    [currentUser, user]
   )
 
   const methods = useForm<AccountPayload>({
@@ -290,7 +299,10 @@ export default function AccountNewEditForm({ isEdit = false, currentUser, onSubm
                 />
               )}
               <RHFTextField name="phone" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
+              {!(user?.role == Role['Enterprise Admin']) && (
+                <RHFTextField name="address" label="Address" />
+              )}
+              {/* <RHFTextField name="address" label="Address" /> */}
               <RHFSelect name="status" label="Status" placeholder="Status">
                 <option value={undefined} />
                 {statusList.map((option) => (
@@ -299,15 +311,16 @@ export default function AccountNewEditForm({ isEdit = false, currentUser, onSubm
                   </option>
                 ))}
               </RHFSelect>
-
-              <RHFSelect name="role" label="Role" placeholder="Role" disabled={isEdit}>
-                <option value={undefined} />
-                {roleList?.map((option) => (
-                  <option key={option.code} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
+              {!(user?.role == Role['Enterprise Admin']) && (
+                <RHFSelect name="role" label="Role" placeholder="Role" disabled={isEdit}>
+                  <option value={undefined} />
+                  {roleList?.map((option) => (
+                    <option key={option.code} value={option.code}>
+                      {option.label}
+                    </option>
+                  ))}
+                </RHFSelect>
+              )}
               <Box />
               {watchShowCompany == Role['Enterprise Admin'] && !isEdit && (
                 <>

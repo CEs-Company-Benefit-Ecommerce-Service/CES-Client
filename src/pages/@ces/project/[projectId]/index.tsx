@@ -1,6 +1,6 @@
 import { capitalCase } from 'change-case'
 // @mui
-import { Box, Container, Tab, Tabs } from '@mui/material'
+import { Box, Button, Container, Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { ProjectPayload, Role } from 'src/@types/@ces'
@@ -74,6 +74,17 @@ export default function ProjectDetails() {
               { name: 'Project', href: PATH_CES.project.root },
               { name: 'Project Details' },
             ]}
+            action={
+              <Button
+                onClick={() => {
+                  projectApi.transferMoney(`${projectId}`)
+                }}
+                variant="contained"
+                // startIcon={<Iconify icon={'eva:plus-fill'} />}
+              >
+                Transfer Benefit
+              </Button>
+            }
           />
 
           <Tabs

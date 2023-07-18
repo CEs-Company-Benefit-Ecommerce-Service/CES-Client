@@ -3,8 +3,7 @@ import { capitalCase } from 'change-case'
 import { Box, Container, Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { AccountPayload } from 'src/@types/@ces'
-import { _userInvoices } from 'src/_mock'
+import { AccountPayload, Role } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
@@ -15,6 +14,7 @@ import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
 import { PATH_CES } from 'src/routes/paths'
 import AccountNewEditForm from 'src/sections/@ces/account/AccountNewEditForm'
+import useAuth from 'src/hooks/useAuth'
 import AccountWallet from 'src/sections/@ces/account/wallet/AccountWallet'
 
 // ----------------------------------------------------------------------
@@ -32,6 +32,7 @@ export default function UserAccount() {
 
   const { enqueueSnackbar } = useSnackbar()
 
+  const { user } = useAuth()
   const { query, push } = useRouter()
   const { accountId } = query
 
@@ -49,22 +50,39 @@ export default function UserAccount() {
     }
   }
 
-  const ACCOUNT_TABS = [
-    {
-      value: 'general',
-      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
-      component: (
-        <AccountNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditAccountSubmit} />
-      ),
-    },
-    {
-      value: 'wallet',
-      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
-      component: (
-        <AccountWallet currentUser={data?.data} invoices={_userInvoices} mutate={mutate} />
-      ),
-    },
-  ]
+  const ACCOUNT_TABS =
+    user?.role == Role['Enterprise Admin']
+      ? [
+          {
+            value: 'general',
+            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            component: (
+              <AccountNewEditForm
+                isEdit
+                currentUser={data?.data}
+                onSubmit={handleEditAccountSubmit}
+              />
+            ),
+          },
+          {
+            value: 'wallet',
+            icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+            component: <AccountWallet accountId={`${accountId}`} mutate={mutate} />,
+          },
+        ]
+      : [
+          {
+            value: 'general',
+            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            component: (
+              <AccountNewEditForm
+                isEdit
+                currentUser={data?.data}
+                onSubmit={handleEditAccountSubmit}
+              />
+            ),
+          },
+        ]
 
   return (
     <Page title="User: Account Settings">

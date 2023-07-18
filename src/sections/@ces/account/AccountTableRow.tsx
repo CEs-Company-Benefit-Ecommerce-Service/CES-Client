@@ -77,9 +77,9 @@ export default function AccountTableRow({
 
       <TableCell align="left">{email}</TableCell>
 
-      <TableCell align="left">{companyId}</TableCell>
+      {companyId && <TableCell align="left">{companyId}</TableCell>}
 
-      <TableCell align="left">{phone}</TableCell>
+      <TableCell align="left">{phone === 'string' ? '' : phone}</TableCell>
 
       <TableCell align="left">
         <Label

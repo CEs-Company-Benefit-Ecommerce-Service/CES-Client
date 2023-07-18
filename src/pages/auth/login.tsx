@@ -1,20 +1,20 @@
-import { Alert, Box, Card, Container, Link, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Container, Link, Stack, Tooltip, Typography } from '@mui/material'
 // @mui
-import { styled } from '@mui/material/styles';
-import { capitalCase } from 'change-case';
+import { styled } from '@mui/material/styles'
+import { capitalCase } from 'change-case'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // components
-import Page from '../../components/Page';
+import Page from '../../components/Page'
 // guards
-import GuestGuard from '../../guards/GuestGuard';
+import GuestGuard from '../../guards/GuestGuard'
 // hooks
-import useAuth from '../../hooks/useAuth';
-import useResponsive from '../../hooks/useResponsive';
+import useAuth from '../../hooks/useAuth'
+import useResponsive from '../../hooks/useResponsive'
 // routes
-import { PATH_AUTH } from '../../routes/paths';
+import { PATH_AUTH } from '../../routes/paths'
 // sections
-import { LoginForm } from '../../sections/auth/login';
+import { LoginForm } from '../../sections/auth/login'
 
 // ----------------------------------------------------------------------
 
@@ -22,32 +22,32 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
   },
-}));
+}))
 
-const HeaderStyle = styled('header')(({ theme }) => ({
-  top: 0,
-  zIndex: 9,
-  lineHeight: 0,
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  position: 'absolute',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.up('md')]: {
-    alignItems: 'flex-start',
-    padding: theme.spacing(7, 5, 0, 7),
-  },
-}));
+// const HeaderStyle = styled('header')(({ theme }) => ({
+//   top: 0,
+//   zIndex: 9,
+//   lineHeight: 0,
+//   width: '100%',
+//   display: 'flex',
+//   alignItems: 'center',
+//   position: 'absolute',
+//   padding: theme.spacing(3),
+//   justifyContent: 'space-between',
+//   [theme.breakpoints.up('md')]: {
+//     alignItems: 'flex-start',
+//     padding: theme.spacing(7, 5, 0, 7),
+//   },
+// }));
 
-const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '100%',
-  maxWidth: 664,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2),
-}));
+// const SectionStyle = styled(Card)(({ theme }) => ({
+//   width: '100%',
+//   maxWidth: 664,
+//   display: 'flex',
+//   flexDirection: 'column',
+//   justifyContent: 'center',
+//   margin: theme.spacing(2, 0, 2, 2),
+// }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
@@ -57,16 +57,16 @@ const ContentStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   flexDirection: 'column',
   padding: theme.spacing(12, 0),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method } = useAuth();
+  const { method } = useAuth()
 
-  const smUp = useResponsive('up', 'sm');
+  const smUp = useResponsive('up', 'sm')
 
-  const mdUp = useResponsive('up', 'md');
+  // const mdUp = useResponsive('up', 'md');
 
   return (
     <GuestGuard>
@@ -141,5 +141,5 @@ export default function Login() {
         </RootStyle>
       </Page>
     </GuestGuard>
-  );
+  )
 }

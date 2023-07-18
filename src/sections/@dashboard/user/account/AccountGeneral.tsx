@@ -6,25 +6,18 @@ import { useSnackbar } from 'notistack'
 import { useCallback } from 'react'
 // form
 import { useForm } from 'react-hook-form'
-import { AccountPayload, ACCOUNT_STATUS_OPTIONS_FORM, ROLE_OPTIONS_FORM_SA } from 'src/@types/@ces'
+import { AccountPayload } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import Label from 'src/components/Label'
 import uploadImageAccount from 'src/utils/uploadImageAccount'
 import * as Yup from 'yup'
 // components
-import {
-  FormProvider,
-  RHFSelect,
-  RHFSwitch,
-  RHFTextField,
-  RHFUploadAvatar,
-} from '../../../../components/hook-form'
+import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form'
 // hooks
 import useAuth from '../../../../hooks/useAuth'
 // utils
 import { fData } from '../../../../utils/formatNumber'
 // _mock
-import { countries } from '../../../../_mock'
 
 // ----------------------------------------------------------------------
 
@@ -78,8 +71,7 @@ export default function AccountGeneral() {
     },
     [setValue]
   )
-  const statusList = ACCOUNT_STATUS_OPTIONS_FORM
-  const rolelist = ROLE_OPTIONS_FORM_SA
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -126,26 +118,10 @@ export default function AccountGeneral() {
               }}
             >
               <RHFTextField name="name" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
+              <RHFTextField name="email" label="Email Address" disabled />
 
               <RHFTextField name="phone" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
-              <RHFSelect name="status" label="Status" placeholder="Status" disabled>
-                <option value={undefined} />
-                {statusList.map((option) => (
-                  <option key={option.code} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFSelect name="role" label="role" placeholder="Role" disabled>
-                <option value={undefined} />
-                {rolelist.map((option) => (
-                  <option key={option.code} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

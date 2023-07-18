@@ -35,4 +35,8 @@ export const projectApi = {
   removeMember(payload: AddProjectMemberPayload) {
     return axiosClient.delete(`/group/members/remove`, { data: payload })
   },
+
+  transferMoney(id: string) {
+    return axiosClient.post(`/group/${id}/employees`)
+  },
 }

@@ -1,6 +1,5 @@
 import { Params } from 'src/@types/@ces'
 import { paymentApi } from 'src/api-client/payment'
-import { productApi } from 'src/api-client/product'
 import useSWR, { SWRConfiguration } from 'swr'
 
 type UsePaymentProps = {

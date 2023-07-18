@@ -1,6 +1,7 @@
 // @mui
 import {
-  Box, Card,
+  Box,
+  Card,
   Container,
   Divider,
   FormControlLabel,
@@ -12,9 +13,8 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
-import { Item } from 'framer-motion/types/components/Reorder/Item'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Role } from 'src/@types/@ces'
@@ -28,7 +28,7 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TableNoData,
-  TableSelectedActions
+  TableSelectedActions,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useOrder } from 'src/hooks/@ces/useOrder'
@@ -41,20 +41,9 @@ import OrderTableToolbar from 'src/sections/@ces/order/OrderTableToolbar'
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [
-  'all',
-  'new',
-  'confirm',
-  'waiting for ship',
-  'complete',
-  'cancel'
-]
+const STATUS_OPTIONS = ['all', 'new', 'confirm', 'waiting for ship', 'complete', 'cancel']
 
-
-const ROLE_OPTIONS = [
-  'supplier',
-  'shipper'
-]
+const ROLE_OPTIONS = ['supplier', 'shipper']
 
 const TABLE_HEAD = [
   { id: 'id', label: 'Id', align: 'left' },
@@ -63,7 +52,6 @@ const TABLE_HEAD = [
   { id: 'note', label: 'Note', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
-
 ]
 
 OrderPage.getLayout = function getLayout(page: React.ReactElement) {
@@ -91,7 +79,7 @@ export default function OrderPage() {
   } = useTable()
 
   const { push } = useRouter()
-  const { data, mutate, isLoading } = useOrder({});
+  const { data, isLoading } = useOrder({})
   const tableData: Order[] = data?.data ?? []
 
   const [filterName, setFilterName] = useState('')
@@ -104,10 +92,10 @@ export default function OrderPage() {
     setFilterName(filterName)
     setPage(0)
   }
-  console.log(filterStatus);
+  console.log(filterStatus)
 
   const handleFilterStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
+    console.log(event.target.value)
     setFilterStatus(event.target.value)
   }
 
@@ -132,8 +120,8 @@ export default function OrderPage() {
     (!dataFiltered.length && !!filterStatus) ||
     (!dataFiltered.length && !!filterStt)
   const handleViewRow = (id: string) => {
-    push(PATH_CES.order.detail(id));
-  };
+    push(PATH_CES.order.detail(id))
+  }
 
   return (
     <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
@@ -141,11 +129,7 @@ export default function OrderPage() {
         <Container>
           <HeaderBreadcrumbs
             heading="Order List"
-            links={[
-              { name: 'Dashboard', href: '' },
-              { name: 'Order', href: '' },
-              { name: 'List' },
-            ]}
+            links={[{ name: 'Dashboard', href: '' }, { name: 'Order', href: '' }, { name: 'List' }]}
           />
           <Card>
             <Tabs
@@ -287,11 +271,9 @@ function applySortFilter({
 
   if (filterName) {
     tableData = tableData.filter(
-      (item: Record<string, any>) =>
-        item?.id.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (item: Record<string, any>) => item?.id.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     )
   }
-
 
   if (filterStt !== 'supplier') {
     tableData = tableData.filter((item: Record<string, any>) => {
@@ -300,9 +282,10 @@ function applySortFilter({
   }
 
   if (filterStatus !== 'all') {
-    tableData = tableData.filter((item: Record<string, any>) => mapStatus(item.status) === filterStatus)
+    tableData = tableData.filter(
+      (item: Record<string, any>) => mapStatus(item.status) === filterStatus
+    )
     // console.log(tableData);
-
   }
 
   return tableData

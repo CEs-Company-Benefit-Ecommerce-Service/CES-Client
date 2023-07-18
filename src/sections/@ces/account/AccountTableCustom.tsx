@@ -44,8 +44,8 @@ import AccountTableToolbar from './AccountTableToolbar'
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'Name', label: 'Name', align: 'left' },
-  { id: 'Email', label: 'Email', align: 'left' },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'email', label: 'Email', align: 'left' },
   { id: '' },
 ]
 
@@ -373,7 +373,7 @@ function applySortFilter({
     tableData = tableData.filter((item: Record<string, any>) => item.status == filterStatus)
   }
 
-  const filterIds = projectDetails?.groupAccounts?.map((obj: any) => obj.accountId)
+  const filterIds = projectDetails?.employeeGroupMappings?.map((obj: any) => obj.employee.accountId)
 
   if (filterRole !== 'all') {
     const filterFunc =

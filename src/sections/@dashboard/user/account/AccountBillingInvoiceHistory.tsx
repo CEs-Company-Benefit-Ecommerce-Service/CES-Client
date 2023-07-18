@@ -1,22 +1,22 @@
 // @mui
-import { Stack, Link, Button, Typography } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 // utils
-import { fDate } from '../../../../utils/formatTime'
 import { fCurrency } from '../../../../utils/formatNumber'
+import { fDate } from '../../../../utils/formatTime'
 // @types
 import { UserInvoice } from '../../../../@types/user'
 // components
-import Iconify from '../../../../components/Iconify'
 import { usePayment } from 'src/hooks/@ces/usePayment'
+import Iconify from '../../../../components/Iconify'
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  invoices: UserInvoice[]
+  invoices?: UserInvoice[]
 }
 
 export default function AccountBillingInvoiceHistory({ invoices }: Props) {
-  const { data, mutate, isLoading } = usePayment({})
+  const { data } = usePayment({})
   return (
     <Stack spacing={3} alignItems="flex-end">
       <Typography variant="subtitle1" sx={{ width: 1 }}>

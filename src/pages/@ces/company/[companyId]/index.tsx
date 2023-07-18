@@ -13,6 +13,7 @@ import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
 import { PATH_CES } from 'src/routes/paths'
+import AccountWallet from 'src/sections/@ces/account/wallet/AccountWallet'
 import CompanyNewEditForm from 'src/sections/@ces/company/CompanyNewEditForm'
 
 // ----------------------------------------------------------------------
@@ -53,6 +54,17 @@ export default function CompanyDetails() {
       icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
       component: (
         <CompanyNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditCompanySubmit} />
+      ),
+    },
+    {
+      value: 'wallet',
+      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+      component: (
+        <AccountWallet
+          accountId={data?.data?.contactPersonId}
+          // currentUser={accountDetails?.data}
+          mutate={mutate}
+        />
       ),
     },
   ]

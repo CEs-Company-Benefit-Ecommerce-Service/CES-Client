@@ -14,18 +14,14 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import {
-  ACCOUNT_STATUS_OPTIONS_SA,
-  CompanyData, Role, ROLE_OPTIONS_EA,
-  ROLE_OPTIONS_SA
-} from 'src/@types/@ces'
+import { ACCOUNT_STATUS_OPTIONS_SA, CompanyData } from 'src/@types/@ces'
 import { debtApi } from 'src/api-client/debt'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
@@ -35,10 +31,9 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TableNoData,
-  TableSelectedActions
+  TableSelectedActions,
 } from 'src/components/table'
 import { useCompanyList } from 'src/hooks/@ces'
-import useAuth from 'src/hooks/useAuth'
 import useSettings from 'src/hooks/useSettings'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
@@ -92,9 +87,9 @@ export default function CompanyPage() {
 
   const { push } = useRouter()
 
-  const { user } = useAuth()
+  // const { user } = useAuth()
 
-  const roleOptions = user?.role === Role['System Admin'] ? ROLE_OPTIONS_SA : ROLE_OPTIONS_EA
+  // const roleOptions = user?.role === Role['System Admin'] ? ROLE_OPTIONS_SA : ROLE_OPTIONS_EA
   const statusOptions = ACCOUNT_STATUS_OPTIONS_SA
 
   const { enqueueSnackbar } = useSnackbar()
@@ -120,10 +115,10 @@ export default function CompanyPage() {
     setPage(0)
   }
 
-  const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterRole(event.target.value)
-    setPage(0)
-  }
+  // const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setFilterRole(event.target.value)
+  //   setPage(0)
+  // }
 
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this account ?', async () => {
@@ -194,7 +189,7 @@ export default function CompanyPage() {
           heading="Company List"
           links={[{ name: 'Dashboard', href: '' }, { name: 'Company', href: '' }, { name: 'List' }]}
           action={
-            <NextLink href={PATH_CES.company.new} passHref>
+            <NextLink href={{ pathname: PATH_CES.account.new,}} passHref>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
                 New Company
               </Button>

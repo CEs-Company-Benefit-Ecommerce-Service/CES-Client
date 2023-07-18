@@ -19,7 +19,6 @@ import {
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { BenefitData, Role } from 'src/@types/@ces'
 import { PROJECT_STATUS_OPTIONS } from 'src/@types/@ces/project'
@@ -46,9 +45,9 @@ import BenefitTableToolbar from 'src/sections/@ces/benefit/BenefitTableToolbar'
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'Name', label: 'Name', align: 'left' },
-  { id: 'UnitPrice', label: 'Unit Price', align: 'left' },
-  { id: 'Status', label: 'Status', align: 'left' },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'unitPrice', label: 'Unit Price', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ]
 

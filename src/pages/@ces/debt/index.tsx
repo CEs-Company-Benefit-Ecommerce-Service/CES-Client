@@ -78,7 +78,7 @@ export default function OrderPage() {
   } = useTable()
 
   const { push } = useRouter()
-  const { data, mutate, isLoading } = useDebt({})
+  const { data, isLoading } = useDebt({})
   const tableData: Debt[] = data?.data ?? []
 
   const [filterName, setFilterName] = useState('')

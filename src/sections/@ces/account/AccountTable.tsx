@@ -45,11 +45,11 @@ import AccountTableToolbar from './AccountTableToolbar'
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'Name', label: 'Name', align: 'left' },
-  { id: 'Email', label: 'Email', align: 'left' },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'email', label: 'Email', align: 'left' },
   { id: 'companyId', label: 'CompanyId', align: 'left' },
-  { id: 'Phone', label: 'Phone', align: 'left' },
-  { id: 'Status', label: 'Status', align: 'left' },
+  { id: 'phone', label: 'Phone', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ]
 
@@ -219,7 +219,11 @@ export default function AccountTable({}: Props) {
             <TableHeadCustom
               order={order}
               orderBy={orderBy}
-              headLabel={TABLE_HEAD}
+              headLabel={
+                user?.role == Role['System Admin']
+                  ? TABLE_HEAD.filter((x) => x.id !== 'companyId')
+                  : TABLE_HEAD
+              }
               rowCount={accountList.length}
               numSelected={selected.length}
               onSort={onSort}

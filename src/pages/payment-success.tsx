@@ -5,10 +5,9 @@ import {
   Stack,
   styled,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 import React from 'react'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
@@ -27,7 +26,7 @@ PaymentSuccess.getLayout = function getLayout(page: React.ReactElement) {
 
 function PaymentSuccess() {
   const theme = useTheme()
-  const { push } = useRouter()
+  // const { push } = useRouter()
   return (
     <Page title="Payment Success">
       <RootStyle>
