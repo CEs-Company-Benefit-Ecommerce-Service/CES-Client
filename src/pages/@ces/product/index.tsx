@@ -6,6 +6,7 @@ import {
   Container,
   FormControlLabel,
   IconButton,
+  LinearProgress,
   Switch,
   Table,
   TableBody,
@@ -17,8 +18,8 @@ import { paramCase } from 'change-case'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
-import { Role } from 'src/@types/@ces'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Params, Role } from 'src/@types/@ces'
 import { Product } from 'src/@types/@ces/product'
 import { productApi } from 'src/api-client/product'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
@@ -41,6 +42,7 @@ import { PATH_CES } from 'src/routes/paths'
 import ProductTableRow from 'src/sections/@ces/product/ProductTableRow'
 import ProductTableToolbar from 'src/sections/@ces/product/ProductTableToolbar'
 import { confirmDialog } from 'src/utils/confirmDialog'
+import LoadingTable from 'src/utils/loadingTable'
 
 // ----------------------------------------------------------------------
 
@@ -79,19 +81,20 @@ export default function ProductPage() {
   } = useTable()
 
   const { push } = useRouter()
-  const { data, mutate, isLoading } = useProduct({})
-
-  const tableData: Product[] = data?.data ?? []
-
   const [filterName, setFilterName] = useState('')
   const [filterRole, setFilterRole] = useState('all')
-
+  const [params, setParams] = useState<Partial<Params>>()
+  const { data, mutate, isLoading, isValidating } = useProduct({ params })
+  const tableData: Product[] = data?.data ?? []
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
   const { enqueueSnackbar } = useSnackbar()
   const handleFilterName = (filterName: string) => {
     setFilterName(filterName)
-    setPage(0)
+    // setPage(0)
   }
+  useMemo(() => setParams({ Page: page + 1, Size: rowsPerPage }), [page, rowsPerPage])
+
+  console.log(rowsPerPage)
 
   // const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setFilterRole(event.target.value)
@@ -109,11 +112,9 @@ export default function ProductPage() {
       }
     })
   }
-  if (isLoading) {
-    console.log(isLoading)
-
-    return <LoadingScreen />
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />
+  // }
   const handleDeleteRows = (selected: string[]) => {
     // const deleteRows = tableData.filter((row) => !selected.includes(row.id))
     setSelected([])
@@ -159,7 +160,7 @@ export default function ProductPage() {
           />
           <Card>
             <ProductTableToolbar filterName={filterName} onFilterName={handleFilterName} />
-
+            <LoadingTable isValidating={isValidating} />
             <Scrollbar>
               <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
                 {selected.length > 0 && (
@@ -200,11 +201,12 @@ export default function ProductPage() {
                   />
                   <TableBody>
                     {dataFiltered
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      // .slice(page * 0, dataFiltered.length)
                       .map((row) => (
                         <ProductTableRow
                           key={`${row.id}`}
                           row={row}
+                          isValidating={isValidating}
                           selected={selected.includes(`${row.id}`)}
                           onSelectRow={() => onSelectRow(`${row.id}`)}
                           onDeleteRow={() => handleDeleteRow(`${row.id}`)}
@@ -225,9 +227,9 @@ export default function ProductPage() {
 
             <Box sx={{ position: 'relative' }}>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[5, 10]}
                 component="div"
-                count={dataFiltered.length}
+                count={data?.metaData?.total}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={onChangePage}

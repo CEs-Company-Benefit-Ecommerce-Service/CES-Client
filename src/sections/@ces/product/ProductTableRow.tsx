@@ -15,6 +15,7 @@ import { TableMoreMenu } from 'src/components/table';
 type Props = {
     row: Product;
     selected: boolean;
+    isValidating?: boolean;
     onEditRow: VoidFunction;
     onSelectRow: VoidFunction;
     onDeleteRow: VoidFunction;
@@ -25,6 +26,7 @@ export default function ProductTableRow({
     selected,
     onEditRow,
     onSelectRow,
+    isValidating,
     onDeleteRow,
 }: Props) {
     const theme = useTheme();
@@ -40,7 +42,9 @@ export default function ProductTableRow({
     const handleCloseMenu = () => {
         setOpenMenuActions(null);
     };
-
+    if (isValidating) {
+        return null
+    }
     return (
         <TableRow hover selected={selected}>
             <TableCell padding="checkbox">

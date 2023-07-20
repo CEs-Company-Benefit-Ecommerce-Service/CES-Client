@@ -6,8 +6,13 @@ export type BaseResponse<T> = {
 }
 
 export type Params = {
-  Page: string
-  Size: string
+  Page: number
+  Size: number
   Sort: string
   Order: string
+}
+
+export type Paging = {
+  Page: number
+  Size: number
 }

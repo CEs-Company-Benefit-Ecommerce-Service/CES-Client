@@ -8,13 +8,11 @@ type UseOrderProps = {
   options?: SWRConfiguration
   id?: string
 }
-export function useOrder({ params = { Page: '1' }, options }: UseOrderProps) {
-  const { data, error, mutate, isLoading } = useSWR(
+export function useOrder({ params = { Page: 1 }, options }: UseOrderProps) {
+  const { data, error, mutate, isLoading, isValidating } = useSWR(
     ['/order', params],
     () => orderApi.getAll(params!),
     {
-      // revalidateOnFocus: false,
-      // dedupingInterval: 10 * 1000, // 10s
       keepPreviousData: true,
       fallbackData: {
         code: 0,
@@ -29,13 +27,14 @@ export function useOrder({ params = { Page: '1' }, options }: UseOrderProps) {
   return {
     data,
     error,
+    isValidating,
     mutate,
     isLoading,
   }
 }
 
 export function useOrderDetail({ id, options }: UseOrderProps) {
-  const { data, error, mutate, isLoading } = useSWR(
+  const { data, error, mutate, isLoading, isValidating } = useSWR(
     ['order-detail', id],
     () => orderApi.getById(id!),
     {
@@ -52,8 +51,9 @@ export function useOrderDetail({ id, options }: UseOrderProps) {
 
   return {
     data,
+    isValidating,
     error,
     mutate,
-    isLoading
+    isLoading,
   }
 }
