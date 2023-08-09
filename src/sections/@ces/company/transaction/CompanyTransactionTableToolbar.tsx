@@ -1,7 +1,7 @@
 import { IconButton, InputAdornment, MenuItem, Stack, TextField, Tooltip } from '@mui/material'
 import Iconify from 'src/components/Iconify'
 type Props = {
-  optionsStatus: string[]
+  optionsStatus?: string[]
   filterName: string
   filterStatus?: string
   onFilterName: (value: string) => void

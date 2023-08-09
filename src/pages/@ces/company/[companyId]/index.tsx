@@ -18,6 +18,7 @@ import CompanyEmployeeTable from 'src/sections/@ces/company/CompanyEmployeeTable
 import CompanyNewEditForm from 'src/sections/@ces/company/CompanyNewEditForm'
 import CompanyOrderTable from 'src/sections/@ces/company/order/CompanyOrderTable'
 import CompanyTransactionTable from 'src/sections/@ces/company/transaction/CompanyTransactionTable'
+import CompanyGeneral from 'src/sections/@ces/company/general/CompanyGeneral'
 
 // ----------------------------------------------------------------------
 
@@ -32,35 +33,17 @@ export default function CompanyDetails() {
 
   const { currentTab, onChangeTab } = useTabs('general')
 
-  const { enqueueSnackbar } = useSnackbar()
-
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { companyId } = query
-
-  const { data, mutate } = useCompanyDetails({ id: `${companyId}` })
-
-  const handleEditCompanySubmit = async (payload: CompanyPayload) => {
-    try {
-      await companyApi.update(`${companyId}`, payload)
-      mutate()
-      enqueueSnackbar('Update success!')
-      push(PATH_CES.company.root)
-    } catch (error) {
-      enqueueSnackbar('Update failed!', { variant: 'error' })
-      console.error(error)
-    }
-  }
 
   const ACCOUNT_TABS = [
     {
       value: 'general',
       icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
-      component: (
-        <CompanyNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditCompanySubmit} />
-      ),
+      component: <CompanyGeneral companyId={`${companyId}`} />,
     },
     {
-      value: 'account',
+      value: 'employee account',
       // icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
       component: <CompanyEmployeeTable companyId={`${companyId}`} />,
     },
@@ -71,21 +54,21 @@ export default function CompanyDetails() {
     },
     {
       value: 'transaction',
-      // icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
       component: <CompanyTransactionTable companyId={`${companyId}`} />,
     },
-    {
-      value: 'wallet',
-      // icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
-      component: (
-        <AccountWallet
-          companyId={`${companyId}`}
-          accountId={data?.data?.contactPersonId}
-          // currentUser={accountDetails?.data}
-          mutate={mutate}
-        />
-      ),
-    },
+    // {
+    //   value: 'wallet',
+    //   // icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+    //   component: (
+    //     <AccountWallet
+    //       companyId={`${companyId}`}
+    //       accountId={data?.data?.contactPersonId}
+    //       // currentUser={accountDetails?.data}
+    //       mutate={mutate}
+    //     />
+    //   ),
+    // },
   ]
 
   return (
@@ -120,7 +103,7 @@ export default function CompanyDetails() {
 
         <Box sx={{ mb: 5 }} />
 
-        {!data ? (
+        {false ? (
           <>Loading...</>
         ) : (
           ACCOUNT_TABS.map((tab) => {
