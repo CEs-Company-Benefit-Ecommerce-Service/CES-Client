@@ -4,8 +4,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Paper,
   Stack,
+  Tabs,
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
@@ -24,11 +30,13 @@ type Props = {
   payLoad: PaymentPayload
   data?: AccountData
   color: string
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function UsedAnalytic({ title, used, color, data, payLoad }: Props) {
+export default function UsedAnalytic({ title, used, color, data, payLoad, setOpen }: Props) {
   const [zaloPay, setZaloPay] = useState(false)
   const [vnPay, setVnPay] = useState(true)
+  const [banking, setBanking] = useState(false)
 
   const [loading, setLoading] = useState(false)
 
@@ -48,6 +56,8 @@ export default function UsedAnalytic({ title, used, color, data, payLoad }: Prop
       setLoading(false)
     }
   }
+  //
+
   return (
     <Accordion>
       <AccordionSummary
@@ -79,7 +89,9 @@ export default function UsedAnalytic({ title, used, color, data, payLoad }: Prop
             <>
               <Paper
                 onClick={() => {
-                  setVnPay(true), setZaloPay(false)
+                  setVnPay(true)
+                  setZaloPay(false)
+                  setBanking(false)
                 }}
                 sx={{
                   p: 3,
@@ -95,7 +107,9 @@ export default function UsedAnalytic({ title, used, color, data, payLoad }: Prop
               </Paper>
               <Paper
                 onClick={() => {
-                  setZaloPay(true), setVnPay(false)
+                  setZaloPay(true)
+                  setVnPay(false)
+                  setBanking(false)
                 }}
                 sx={{
                   p: 3,
@@ -109,6 +123,27 @@ export default function UsedAnalytic({ title, used, color, data, payLoad }: Prop
                 }}
               >
                 <Image alt="icon" src={'/zalopay.svg'} sx={{ mb: 1, maxWidth: 72 }} />
+                {/* <Typography variant="subtitle1">{fCurrency(used)}đ</Typography> */}
+              </Paper>
+              <Paper
+                onClick={() => {
+                  setZaloPay(false)
+                  setVnPay(false)
+                  setBanking(true)
+                  setOpen(true)
+                }}
+                sx={{
+                  p: 3,
+                  width: 1,
+                  borderRadius: '8px',
+                  position: 'relative',
+                  border: (theme) =>
+                    `solid 4px  ${
+                      banking ? theme.palette.primary.main : theme.palette.grey[50032]
+                    }`,
+                }}
+              >
+                <Image alt="icon" src={'/onlineBanking.png'} sx={{ mb: 1, maxWidth: 36 }} />
                 {/* <Typography variant="subtitle1">{fCurrency(used)}đ</Typography> */}
               </Paper>
             </>

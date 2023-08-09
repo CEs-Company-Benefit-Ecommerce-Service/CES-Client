@@ -20,3 +20,8 @@ export type TransactionHistory = {
   invoiceId: string
   status: number
 }
+
+export type TransactionPayload = {
+  total: number
+  imageUrl: string
+}

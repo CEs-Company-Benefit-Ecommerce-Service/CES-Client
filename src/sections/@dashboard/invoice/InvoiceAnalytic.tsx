@@ -1,22 +1,31 @@
 // @mui
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 // components
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/Iconify'
 // utils
-import { fCurrency, fShortenNumber } from '../../../utils/formatNumber';
+import { fCurrency, fShortenNumber } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  icon: string;
-  title: string;
-  total: number;
-  percent: number;
-  price: number;
-  color?: string;
-};
+  icon: string
+  title: string
+  total: number
+  percent: number
+  price: number
+  color?: string
+  description?: string
+}
 
-export default function InvoiceAnalytic({ title, total, icon, color, percent, price }: Props) {
+export default function InvoiceAnalytic({
+  title,
+  total,
+  icon,
+  color,
+  percent,
+  price,
+  description,
+}: Props) {
   return (
     <Stack
       direction="row"
@@ -50,7 +59,7 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         <Typography variant="subtitle2">
           {fShortenNumber(total)}{' '}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            invoice
+            {description}
           </Box>
         </Typography>
 
@@ -59,5 +68,5 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         </Typography>
       </Stack>
     </Stack>
-  );
+  )
 }

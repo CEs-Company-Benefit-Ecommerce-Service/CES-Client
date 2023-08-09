@@ -53,13 +53,13 @@ const navConfig = [
         title: 'supplier',
         path: PATH_CES.suaccount.root,
         icon: ICONS.user,
-        roles: [Role['System Admin'], Role['Enterprise Admin']],
+        roles: [Role['System Admin']],
       },
       {
         title: 'shipper',
         path: PATH_CES.shaccount.root,
         icon: ICONS.user,
-        roles: [Role['System Admin'], Role['Enterprise Admin']],
+        roles: [Role['System Admin']],
       },
       {
         title: 'company',

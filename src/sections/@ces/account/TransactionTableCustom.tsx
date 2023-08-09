@@ -1,12 +1,9 @@
 // @mui
 import {
   Box,
-  Card,
-  Container,
-  Divider,
+  Card, Divider,
   FormControlLabel,
-  IconButton,
-  Switch,
+  IconButton, Switch,
   Tab,
   Table,
   TableBody,
@@ -14,18 +11,17 @@ import {
   TablePagination,
   Tabs,
   Tooltip,
+  useTheme
 } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
-import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
-import Page from 'src/components/Page'
 import Scrollbar from 'src/components/Scrollbar'
 import {
   TableEmptyRows,
   TableHeadCustom,
   TableNoData,
-  TableSelectedActions,
+  TableSelectedActions
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -49,11 +45,11 @@ const TABLE_HEAD = [
   { id: '' },
 ]
 
-TransactionPage.getLayout = function getLayout(page: React.ReactElement) {
+TransactionTableCustom.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }
 
-export default function TransactionPage() {
+export default function TransactionTableCustom() {
   const {
     dense,
     page,
@@ -74,6 +70,7 @@ export default function TransactionPage() {
   } = useTable()
 
   // const { push } = useRouter()
+  const theme = useTheme()
   const { user } = useAuth()
   const compId = user?.companyId?.toString()
   const [params, setParams] = useState<Partial<Params>>()
@@ -168,124 +165,117 @@ export default function TransactionPage() {
 
   return (
     <RoleBasedGuard hasContent>
-      <Page title="Transaction: List">
-        <Container>
-          <HeaderBreadcrumbs
-            heading="Transaction List"
-            links={[{ name: 'Dashboard', href: '' }, { name: 'Debt', href: '' }, { name: 'List' }]}
+
+      <Card>
+        <Tabs
+          allowScrollButtonsMobile
+          variant="scrollable"
+          scrollButtons="auto"
+          value={filterStatus}
+          onChange={onChangeFilterStatus}
+          sx={{ px: 2, bgcolor: 'background.neutral' }}
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab disableRipple key={tab} label={tab} value={tab} />
+          ))}
+        </Tabs>
+
+        <TransactionTableToolbar
+          filterName={filterName}
+          filterStatus={filterStt}
+          onFilterName={handleFilterName}
+          onFilterStatus={handleFilterStatus}
+          optionsStatus={ROLE_OPTIONS}
+          filterOptions={filterOptions}
+          filterAttribute={filterAttribute}
+          optionsSort={TABLE_HEAD}
+          optionsOrderBy={FILTER_OPTIONS}
+          onFilterAttribute={handleFilterAttribute}
+          onFilterOptions={handleFilterOptions}
+          handleClearFilter={handleClearFilter}
+        />
+        <LoadingTable isValidating={isLoading} />
+        <Scrollbar>
+          <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
+            {selected.length > 0 && (
+              <TableSelectedActions
+                dense={dense}
+                numSelected={selected.length}
+                rowCount={tableData.length}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.id)
+                  )
+                }
+                actions={
+                  <Tooltip title="Delete">
+                    <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
+                      <Iconify icon={'eva:trash-2-outline'} />
+                    </IconButton>
+                  </Tooltip>
+                }
+              />
+            )}
+
+            <Table size={dense ? 'small' : 'medium'}>
+              <TableHeadCustom
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={tableData.length}
+                numSelected={selected.length}
+                onSort={onSort}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.id)
+                  )
+                }
+              />
+              <Divider />
+              <TableBody>
+                {dataFiltered.map((row) => (
+                  <TransactionTableRow
+                    key={row.id}
+                    row={row}
+                    isValidating={isLoading}
+                    selected={selected.includes(row.id)}
+                    onSelectRow={() => onSelectRow(row.id)}
+                    onViewRow={() => handleViewRow(row.id)}
+                    onDeleteRow={() => handleViewRow(row.id)}
+                  />
+                ))}
+
+                <TableEmptyRows
+                  height={denseHeight}
+                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                />
+
+                <TableNoData isNotFound={isNotFound} />
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        <Box sx={{ position: 'relative' }}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10]}
+            component="div"
+            count={DATA?.metaData?.total}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
           />
-          <Card>
-            <Tabs
-              allowScrollButtonsMobile
-              variant="scrollable"
-              scrollButtons="auto"
-              value={filterStatus}
-              onChange={onChangeFilterStatus}
-              sx={{ px: 2, bgcolor: 'background.neutral' }}
-            >
-              {STATUS_OPTIONS.map((tab) => (
-                <Tab disableRipple key={tab} label={tab} value={tab} />
-              ))}
-            </Tabs>
 
-            <TransactionTableToolbar
-              filterName={filterName}
-              filterStatus={filterStt}
-              onFilterName={handleFilterName}
-              onFilterStatus={handleFilterStatus}
-              optionsStatus={ROLE_OPTIONS}
-              filterOptions={filterOptions}
-              filterAttribute={filterAttribute}
-              optionsSort={TABLE_HEAD}
-              optionsOrderBy={FILTER_OPTIONS}
-              onFilterAttribute={handleFilterAttribute}
-              onFilterOptions={handleFilterOptions}
-              handleClearFilter={handleClearFilter}
-            />
-            <LoadingTable isValidating={isLoading} />
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-                {selected.length > 0 && (
-                  <TableSelectedActions
-                    dense={dense}
-                    numSelected={selected.length}
-                    rowCount={tableData.length}
-                    onSelectAllRows={(checked) =>
-                      onSelectAllRows(
-                        checked,
-                        tableData.map((row) => row.id)
-                      )
-                    }
-                    actions={
-                      <Tooltip title="Delete">
-                        <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                          <Iconify icon={'eva:trash-2-outline'} />
-                        </IconButton>
-                      </Tooltip>
-                    }
-                  />
-                )}
-
-                <Table size={dense ? 'small' : 'medium'}>
-                  <TableHeadCustom
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={tableData.length}
-                    numSelected={selected.length}
-                    onSort={onSort}
-                    onSelectAllRows={(checked) =>
-                      onSelectAllRows(
-                        checked,
-                        tableData.map((row) => row.id)
-                      )
-                    }
-                  />
-                  <Divider />
-                  <TableBody>
-                    {dataFiltered.map((row) => (
-                      <TransactionTableRow
-                        key={row.id}
-                        row={row}
-                        isValidating={isLoading}
-                        selected={selected.includes(row.id)}
-                        onSelectRow={() => onSelectRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
-                        onDeleteRow={() => handleViewRow(row.id)}
-                      />
-                    ))}
-
-                    <TableEmptyRows
-                      height={denseHeight}
-                      emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                    />
-
-                    <TableNoData isNotFound={isNotFound} />
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <Box sx={{ position: 'relative' }}>
-              <TablePagination
-                rowsPerPageOptions={[5, 10]}
-                component="div"
-                count={DATA?.metaData?.total}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={onChangePage}
-                onRowsPerPageChange={onChangeRowsPerPage}
-              />
-
-              <FormControlLabel
-                control={<Switch checked={dense} onChange={onChangeDense} />}
-                label="Dense"
-                sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-              />
-            </Box>
-          </Card>
-        </Container>
-      </Page>
+          <FormControlLabel
+            control={<Switch checked={dense} onChange={onChangeDense} />}
+            label="Dense"
+            sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+          />
+        </Box>
+      </Card>
     </RoleBasedGuard>
   )
 }

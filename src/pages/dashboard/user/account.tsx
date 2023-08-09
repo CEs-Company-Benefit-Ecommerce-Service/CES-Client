@@ -7,6 +7,10 @@ import { ChangePasswordPayload } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import { useMe } from 'src/hooks/@ces'
 import AccountChangePasswordForm from 'src/sections/@ces/account/AccountChangePasswordForm'
+// _mock_
+import AccountNewEditForm from 'src/sections/@ces/account/AccountNewEditForm'
+import EaOrderTableCustom from 'src/sections/@ces/account/EaOrderTableCustom'
+import TransactionTableCustom from 'src/sections/@ces/account/TransactionTableCustom'
 // components
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs'
 import Iconify from '../../../components/Iconify'
@@ -19,8 +23,6 @@ import Layout from '../../../layouts'
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths'
 import { AccountBilling } from '../../../sections/@dashboard/user/account'
-// _mock_
-import AccountNewEditForm from 'src/sections/@ces/account/AccountNewEditForm'
 import { _userAddressBook, _userInvoices, _userPayment } from '../../../_mock'
 
 // ----------------------------------------------------------------------
@@ -72,6 +74,16 @@ export default function UserAccount() {
       icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
       component: <AccountChangePasswordForm onSubmit={handleChangePasswordSubmit} />,
     })
+    ACCOUNT_TABS.push({
+      value: 'Transaction',
+      icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
+      component: <TransactionTableCustom />,
+    })
+    ACCOUNT_TABS.push({
+      value: 'Order',
+      icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
+      component: <EaOrderTableCustom />,
+    })
   } else {
     ACCOUNT_TABS.push({
       value: 'change password',
@@ -120,3 +132,4 @@ export default function UserAccount() {
     </Page>
   )
 }
+
