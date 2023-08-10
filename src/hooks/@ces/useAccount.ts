@@ -7,6 +7,7 @@ type UseAccountProps = {
   options?: SWRConfiguration
   id?: string
   roleId?: string
+  enable?: boolean
 }
 
 export function useAccountEmployeeCompany({ options, params }: UseAccountProps) {
@@ -89,10 +90,14 @@ export function useAccountListByRoleId({ options, params, roleId }: UseAccountPr
   }
 }
 
-export function useAccountDetails({ id, options }: UseAccountProps) {
-  const { data, error, mutate } = useSWR(['account', id], () => accountApi.getById(id!), {
-    ...options,
-  })
+export function useAccountDetails({ enable = true, id, options }: UseAccountProps) {
+  const { data, error, mutate } = useSWR(
+    enable ? ['account', id] : null,
+    () => accountApi.getById(id!),
+    {
+      ...options,
+    }
+  )
 
   return {
     data,

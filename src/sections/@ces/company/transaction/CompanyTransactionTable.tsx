@@ -3,6 +3,7 @@ import {
   Card,
   FormControlLabel,
   Switch,
+  Tab,
   Table,
   TableBody,
   TableContainer,
@@ -19,7 +20,7 @@ import {
   TableSelectedActions,
   TableSkeleton,
 } from 'src/components/table'
-import { usePayment } from 'src/hooks/@ces/usePayment'
+import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
 import useTable, { emptyRows } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import LoadingTable from 'src/utils/loadingTable'
@@ -29,16 +30,6 @@ import CompanyTransactionTableToolbar from './CompanyTransactionTableToolbar'
 // ----------------------------------------------------------------------
 
 const FILTER_OPTIONS = ['descending', 'ascending']
-const ROLE_OPTIONS = ['supplier', 'shipper']
-const TABLE_HEAD = [
-  { id: 'invoiceId', label: 'Invoice Id', align: 'left' },
-  { id: 'createdAt', label: 'Date', align: 'left' },
-  // { id: 'description', label: 'Description', align: 'left' },
-  { id: 'total', label: 'Amount', align: 'left' },
-  { id: 'type', label: 'Method', align: 'left' },
-  { id: 'status', label: 'Status', align: 'left' },
-  { id: '' },
-]
 
 // ----------------------------------------------------------------------
 
@@ -76,17 +67,37 @@ export default function CompanyTransactionTable({ companyId }: Props) {
       CompanyId: companyId,
     },
   })
+  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
+  const STATUS_OPTIONS = ['paid', 'transfer']
+  const TABLE_HEAD =
+    filterStatus === 'paid'
+      ? [
+          { id: 'invoiceId', label: 'Id', align: 'left' },
+          { id: 'createdAt', label: 'Date', align: 'left' },
+          { id: 'total', label: 'Amount', align: 'left' },
+          { id: 'type', label: 'Method', align: 'left' },
+          { id: 'status', label: 'Status', align: 'left' },
+          { id: '' },
+        ]
+      : [
+          { id: 'id', label: 'Id', align: 'left' },
+          { id: 'createdAt', label: 'Created At', align: 'left' },
+          { id: 'total', label: 'Amount', align: 'left' },
+          { id: 'description', label: 'Description', align: 'left' },
+          { id: '' },
+        ]
+  // const DATA = data
+  // const tableData: TransactionHistory[] = data?.data || []
 
   const DATA = data
   const tableData: TransactionHistory[] = data?.data || []
 
   const [filterName, setFilterName] = useState('')
 
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
-
   useEffect(() => {
     if (filterStatus === 'paid') {
       setParams({
+        Status: 1,
         PaymentType: '1',
         Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
         Order: filterOptions == '' ? 'desc' : filterOptions,
@@ -131,30 +142,13 @@ export default function CompanyTransactionTable({ companyId }: Props) {
 
     setTimeoutName(newTimeoutname)
   }
-  // const handleFilterStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setFilterStatus(event.target.value)
-  // }
-
-  const handleDeleteRows = (selected: string[]) => {
-    setSelected([])
-  }
-
-  // const dataFiltered = applySortFilter({
-  //   tableData,
-  //   comparator: getComparator(order, orderBy),
-  //   filterName,
-  //   filterStt,
-  //   filterStatus,
-  // })
 
   const denseHeight = dense ? 52 : 72
 
   const isNotFound = (!tableData.length && !!filterName) || (!tableData.length && !!filterStatus)
   //  ||
   // (!tableData.length && !!filterStt)
-  const handleViewRow = (id: string) => {
-    // push(PATH_CES.tra.detail(id))
-  }
+  const handleViewRow = (id: string) => {}
 
   return (
     <Card>
@@ -166,15 +160,15 @@ export default function CompanyTransactionTable({ companyId }: Props) {
         onChange={onChangeFilterStatus}
         sx={{ px: 2, bgcolor: 'background.neutral' }}
       >
-        {/* {STATUS_OPTIONS.map((tab) => (
+        {STATUS_OPTIONS.map((tab) => (
           <Tab disableRipple key={tab} label={tab} value={tab} />
-        ))} */}
+        ))}
       </Tabs>
 
       <CompanyTransactionTableToolbar
         filterName={filterName}
         onFilterName={handleFilterName}
-        optionsStatus={ROLE_OPTIONS}
+        // optionsStatus={ROLE_OPTIONS}
         filterOptions={filterOptions}
         filterAttribute={filterAttribute}
         optionsSort={TABLE_HEAD}
