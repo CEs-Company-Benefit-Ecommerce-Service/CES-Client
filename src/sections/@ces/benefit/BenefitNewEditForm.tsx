@@ -89,7 +89,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       const parseTimeToNumber = new Date(payload.timeFilter).getHours()
       payload.timeFilter = parseTimeToNumber
     }
-    delete payload.status
+    if (!isEdit) delete payload.status
     console.log({ payload })
     await onSubmit?.(payload)
   }
