@@ -7,7 +7,7 @@ export const debtApi = {
     return axiosClient.get('/debtandreceipt/debt', { params })
   },
   getById(id: string) {
-    return axiosClient.get(`/debtandreceipt/debt/${id}`)
+    return axiosClient.get(`/transaction/${id}`)
   },
   getByCompanyId(id: string) {
     return axiosClient.get(`/debtandreceipt/debt/company/${id}`)

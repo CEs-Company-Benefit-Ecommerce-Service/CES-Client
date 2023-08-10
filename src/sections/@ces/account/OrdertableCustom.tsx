@@ -1,25 +1,25 @@
 import {
-    Box,
-    Button,
-    Card,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Divider,
-    FormControlLabel,
-    IconButton,
-    Stack,
-    Switch,
-    Tab,
-    Table,
-    TableBody,
-    TableContainer,
-    TablePagination,
-    Tabs,
-    Tooltip,
-    Typography,
-    useTheme
+  Box,
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Stack,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
+  TableContainer,
+  TablePagination,
+  Tabs,
+  Tooltip,
+  Typography,
+  useTheme,
 } from '@mui/material'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -28,11 +28,11 @@ import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import Scrollbar from 'src/components/Scrollbar'
 import {
-    TableEmptyRows,
-    TableHeadCustom,
-    TableNoData,
-    TableSelectedActions,
-    TableSkeleton
+  TableEmptyRows,
+  TableHeadCustom,
+  TableNoData,
+  TableSelectedActions,
+  TableSkeleton,
 } from 'src/components/table'
 import { useOrderBySupplierId, useOrderDetail } from 'src/hooks/@ces'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -209,7 +209,7 @@ export default function OrderTableCustom({ supplierId }: Props) {
           <Tab disableRipple key={tab} label={tab} value={tab} />
         ))}
       </Tabs>
-      <Divider />
+
       <CompanyOrderTableToolbar
         orderValueType={orderValueType}
         orderType={null}

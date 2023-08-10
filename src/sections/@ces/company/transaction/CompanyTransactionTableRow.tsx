@@ -1,7 +1,7 @@
 import { Checkbox, MenuItem, TableCell, TableRow, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
 import { TransactionHistory } from 'src/@types/@ces'
-import { ReceiptStatus } from 'src/@types/@ces/debt'
+import { DebtStatus } from 'src/@types/@ces/debt'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
@@ -39,7 +39,7 @@ export default function CompanyTransactionTableRow({
     setOpenMenuActions(null)
   }
   const mapStatus = (status: number) => {
-    const rs = Object.values(ReceiptStatus)
+    const rs = Object.values(DebtStatus)
     return rs[status]
   }
 

@@ -50,11 +50,11 @@ export enum UpdateOrderStatus {
   'new',
   'ready',
 }
-export enum DebtStatus {
-  NOTPAYMENT = 'Not Payment',
-  COMPLETE = 'Complete',
-  CANCEL = 'Cancel',
-}
+// export enum DebtStatus {
+//   NOTPAYMENT = 'Not Payment',
+//   COMPLETE = 'Complete',
+//   CANCEL = 'Cancel',
+// }
 export enum ProductStatus {
   ACTIVE = 'Active',
   INACTIVE = 'InActive',

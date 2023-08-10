@@ -8,6 +8,8 @@ export type Debt = {
   updatedAt: string
   companyId: string
   company: Company
+  imageUrl: string
+  invoiceId: string
 }
 
 export type Company = {
@@ -26,7 +28,9 @@ export type Company = {
   expiredDate: string
 }
 
-export enum ReceiptStatus {
+export enum DebtStatus {
   NEW = 'New',
-  PAID = "Paid"
+  COMPLETE = 'Complete',
+  CANCEL = 'Cancel',
+  PROGRESSING = 'Progressing',
 }

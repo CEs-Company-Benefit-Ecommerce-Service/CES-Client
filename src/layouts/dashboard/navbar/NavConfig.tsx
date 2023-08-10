@@ -68,6 +68,12 @@ const navConfig = [
         roles: [Role['System Admin']],
       },
       {
+        title: 'Debt',
+        path: PATH_CES.debt.root,
+        icon: ICONS.project,
+        roles: [Role['System Admin']],
+      },
+      {
         title: 'benefit',
         path: PATH_CES.benefit.root,
         icon: ICONS.blog,
@@ -83,7 +89,7 @@ const navConfig = [
         title: 'transaction',
         path: PATH_CES.transaction.root,
         icon: ICONS.banking,
-        roles: [Role['System Admin'], Role['Enterprise Admin'], Role['System Admin']],
+        roles: [Role['System Admin'], Role['Enterprise Admin']],
       },
       {
         title: 'order',

@@ -11,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -26,7 +26,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -200,8 +200,6 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
           <Tab disableRipple key={tab.code} label={tab.label} value={tab.code} />
         ))}
       </Tabs>
-
-      <Divider />
 
       <AccountTableToolbar
         filterName={filterName}

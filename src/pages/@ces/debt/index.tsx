@@ -3,20 +3,19 @@ import {
   Box,
   Card,
   Container,
-  Divider,
   FormControlLabel,
   IconButton,
   Switch,
-  Tab,
   Table,
   TableBody,
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
-import { Params, Role, TransactionHistory } from 'src/@types/@ces'
+import { Params, TransactionHistory } from 'src/@types/@ces'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
@@ -26,17 +25,17 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
-import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
+import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
 import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
+import { PATH_CES } from 'src/routes/paths'
 import DebtTableRow from 'src/sections/@ces/debt/DebtTableRow'
-import TransactionTableRow from 'src/sections/@ces/transaction/TransactionTableRow'
-import TransactionTableToolbar from 'src/sections/@ces/transaction/TransactionTableToolbar'
+import DebtTableToolbar from 'src/sections/@ces/debt/DebtTableToolbar'
 import LoadingTable from 'src/utils/loadingTable'
 
 // ----------------------------------------------------------------------
@@ -44,7 +43,7 @@ import LoadingTable from 'src/utils/loadingTable'
 const FILTER_OPTIONS = ['descending', 'ascending']
 const ROLE_OPTIONS = ['supplier', 'shipper']
 const TABLE_HEAD = [
-  { id: 'companyName', label: 'Name', align: 'left' },
+  { id: 'companyName', label: 'Company Name', align: 'left' },
   { id: 'total', label: 'Total', align: 'left' },
   { id: 'type', label: 'Type', align: 'left' },
   { id: 'createdAt', label: 'Created At', align: 'left' },
@@ -52,19 +51,11 @@ const TABLE_HEAD = [
   { id: '' },
 ]
 
-const TABLE_HEAD2 = [
-  { id: 'description', label: 'Description', align: 'left' },
-  { id: 'total', label: 'Total', align: 'left' },
-  { id: 'type', label: 'Type', align: 'left' },
-  { id: 'createdAt', label: 'Created At', align: 'left' },
-  { id: '' },
-]
-
-TransactionPage.getLayout = function getLayout(page: React.ReactElement) {
+DebtPage.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }
 
-export default function TransactionPage() {
+export default function DebtPage() {
   const {
     dense,
     page,
@@ -84,46 +75,32 @@ export default function TransactionPage() {
     onChangeRowsPerPage,
   } = useTable()
 
-  // const { push } = useRouter()
+  const { push } = useRouter()
   const { user } = useAuth()
-  const compId = user?.companyId?.toString()
   const [params, setParams] = useState<Partial<Params>>()
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
-  const { data, isLoading } = usePayment({ companyId: compId, params })
-  const { data: paymentSAData } = usePaymentSystem({ params })
-  const STATUS_OPTIONS = user?.role == Role['Enterprise Admin'] ? ['paid', 'transfer'] : ['paid']
-  const DATA = user?.role == Role['Enterprise Admin'] ? data : paymentSAData
-  const tableData: TransactionHistory[] =
-    user?.role == Role['Enterprise Admin'] ? data?.data || [] : paymentSAData?.data || []
+
+  const { data, isLoading } = usePaymentSystem({ params })
+  const tableData: TransactionHistory[] = data?.data || []
 
   const [filterName, setFilterName] = useState('')
 
   const [filterStt, setFilterStatus] = useState('supplier')
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
+  console.log({ page, rowsPerPage, total: data?.metaData?.total })
 
   useMemo(() => {
-    if (filterStatus === 'paid') {
-      setParams({
-        PaymentType: '1',
-        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
-        Order: filterOptions == '' ? 'desc' : filterOptions,
-        Page: page + 1,
-        Size: rowsPerPage,
-      })
-    } else {
-      setParams({
-        Page: page + 1,
-        Size: rowsPerPage,
-        Type: '4',
-        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
-        Order: filterOptions == '' ? 'desc' : filterOptions,
-      })
-    }
-  }, [filterAttribute, filterOptions, filterStatus, page, rowsPerPage])
-  console.log(filterStatus)
+    setParams({
+      Type: '6',
+      Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
+      Order: filterOptions == '' ? 'desc' : filterOptions,
+      Page: page + 1,
+      Size: rowsPerPage,
+    })
+  }, [filterAttribute, filterOptions, page, rowsPerPage])
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
   }
@@ -174,15 +151,15 @@ export default function TransactionPage() {
     (!dataFiltered.length && !!filterStatus) ||
     (!dataFiltered.length && !!filterStt)
   const handleViewRow = (id: string) => {
-    // push(PATH_CES.tra.detail(id))
+    push(PATH_CES.debt.detail(id))
   }
 
   return (
     <RoleBasedGuard hasContent>
-      <Page title="Transaction: List">
+      <Page title="Debt: List">
         <Container>
           <HeaderBreadcrumbs
-            heading="Transaction List"
+            heading="Debt List"
             links={[{ name: 'Dashboard', href: '' }, { name: 'Debt', href: '' }, { name: 'List' }]}
           />
           <Card>
@@ -194,12 +171,12 @@ export default function TransactionPage() {
               onChange={onChangeFilterStatus}
               sx={{ px: 2, bgcolor: 'background.neutral' }}
             >
-              {STATUS_OPTIONS.map((tab) => (
+              {/* {STATUS_OPTIONS.map((tab) => (
                 <Tab disableRipple key={tab} label={tab} value={tab} />
-              ))}
+              ))} */}
             </Tabs>
 
-            <TransactionTableToolbar
+            <DebtTableToolbar
               filterName={filterName}
               filterStatus={filterStt}
               onFilterName={handleFilterName}
@@ -207,7 +184,7 @@ export default function TransactionPage() {
               optionsStatus={ROLE_OPTIONS}
               filterOptions={filterOptions}
               filterAttribute={filterAttribute}
-              optionsSort={filterStatus == 'transfer' ? TABLE_HEAD2 : TABLE_HEAD}
+              optionsSort={TABLE_HEAD}
               optionsOrderBy={FILTER_OPTIONS}
               onFilterAttribute={handleFilterAttribute}
               onFilterOptions={handleFilterOptions}
@@ -241,7 +218,7 @@ export default function TransactionPage() {
                   <TableHeadCustom
                     order={order}
                     orderBy={orderBy}
-                    headLabel={filterStatus == 'transfer' ? TABLE_HEAD2 : TABLE_HEAD}
+                    headLabel={TABLE_HEAD}
                     rowCount={tableData.length}
                     numSelected={selected.length}
                     onSort={onSort}
@@ -252,42 +229,30 @@ export default function TransactionPage() {
                       )
                     }
                   />
-
                   <TableBody>
                     {isLoading
                       ? Array.from(Array(rowsPerPage)).map((e) => (
                           <TableSkeleton sx={{ height: denseHeight, px: dense ? 1 : 0 }} key={e} />
                         ))
-                      : dataFiltered.map((row) =>
-                          filterStatus == 'transfer' ? (
-                            <TransactionTableRow
-                              key={row.id}
-                              row={row}
-                              isValidating={isLoading}
-                              selected={selected.includes(row.id)}
-                              onSelectRow={() => onSelectRow(row.id)}
-                              onViewRow={() => handleViewRow(row.id)}
-                              onDeleteRow={() => handleViewRow(row.id)}
-                            />
-                          ) : (
-                            <DebtTableRow
-                              key={row.id}
-                              row={row}
-                              isValidating={isLoading}
-                              selected={selected.includes(row.id)}
-                              onSelectRow={() => onSelectRow(row.id)}
-                              onViewRow={() => handleViewRow(row.id)}
-                              onDeleteRow={() => handleViewRow(row.id)}
-                            />
-                          )
-                        )}
+                      : dataFiltered.map((row) => (
+                          <DebtTableRow
+                            key={row.id}
+                            row={row}
+                            isValidating={isLoading}
+                            selected={selected.includes(row.id)}
+                            onSelectRow={() => onSelectRow(row.id)}
+                            onViewRow={() => handleViewRow(row.id)}
+                            onDeleteRow={() => handleViewRow(row.id)}
+                          />
+                        ))}
+
                     {!isLoading && (
                       <TableEmptyRows
                         height={denseHeight}
                         emptyRows={emptyRows(page + 1, rowsPerPage, data?.metaData?.total)}
                       />
                     )}
-                    <TableNoData isNotFound={isNotFound} />
+                    <TableNoData isNotFound={isNotFound && !isLoading} />
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -297,7 +262,7 @@ export default function TransactionPage() {
               <TablePagination
                 rowsPerPageOptions={[5, 10]}
                 component="div"
-                count={DATA?.metaData?.total}
+                count={data?.metaData?.total || 0}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={onChangePage}

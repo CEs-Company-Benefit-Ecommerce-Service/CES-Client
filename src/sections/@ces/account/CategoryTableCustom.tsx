@@ -1,6 +1,7 @@
 // @mui
 import {
-  Box, Card,
+  Box,
+  Card,
   Container,
   Divider,
   FormControlLabel,
@@ -10,7 +11,8 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  Tooltip
+  Tabs,
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -25,7 +27,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import { useCategoryListBySupplier } from 'src/hooks/@ces/useCategory'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -176,108 +178,118 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
     (!dataFiltered.length && !!filterStatus)
 
   return (
-    <Container>
-      <Card>
-        <CategoryTableToolbar
-          filterName={filterName}
-          onFilterName={handleFilterName}
-          filterOptions={filterOptions}
-          filterAttribute={filterAttribute}
-          optionsSort={TABLE_HEAD}
-          optionsOrderBy={FILTER_OPTIONS}
-          onFilterAttribute={handleFilterAttribute}
-          onFilterOptions={handleFilterOptions}
-          handleClearFilter={handleClearFilter}
+    <Card>
+      <Tabs
+        allowScrollButtonsMobile
+        variant="scrollable"
+        scrollButtons="auto"
+        value={filterStatus}
+        onChange={onChangeFilterStatus}
+        sx={{ px: 2, bgcolor: 'background.neutral' }}
+      >
+        {/* {STATUS_OPTIONS.map((tab) => (
+            <Tab disableRipple key={tab} label={tab} value={tab} />
+          ))} */}
+      </Tabs>
+      <CategoryTableToolbar
+        filterName={filterName}
+        onFilterName={handleFilterName}
+        filterOptions={filterOptions}
+        filterAttribute={filterAttribute}
+        optionsSort={TABLE_HEAD}
+        optionsOrderBy={FILTER_OPTIONS}
+        onFilterAttribute={handleFilterAttribute}
+        onFilterOptions={handleFilterOptions}
+        handleClearFilter={handleClearFilter}
+      />
+      <LoadingTable isValidating={isLoading} />
+
+      <Scrollbar>
+        <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
+          {selected.length > 0 && (
+            <TableSelectedActions
+              dense={dense}
+              numSelected={selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => `${row.id}`)
+                )
+              }
+              actions={
+                <Tooltip title="Delete">
+                  <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
+                    <Iconify icon={'eva:trash-2-outline'} />
+                  </IconButton>
+                </Tooltip>
+              }
+            />
+          )}
+
+          <Table size={dense ? 'small' : 'medium'}>
+            <TableHeadCustom
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={tableData.length}
+              numSelected={selected.length}
+              onSort={onSort}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => `${row.id}`)
+                )
+              }
+            />
+
+            <TableBody>
+              {isLoading
+                ? Array.from(Array(rowsPerPage)).map((e) => (
+                    <TableSkeleton sx={{ height: denseHeight, px: dense ? 1 : 0 }} key={e} />
+                  ))
+                : dataFiltered.map((row) => (
+                    <CategoryTableRow
+                      key={`${row.id}`}
+                      row={row}
+                      isValidating={isLoading}
+                      selected={selected.includes(`${row.id}`)}
+                      onSelectRow={() => onSelectRow(`${row.id}`)}
+                      onDeleteRow={() => handleDeleteRow(`${row.id}`)}
+                      onEditRow={() => handleEditRow(row.id)}
+                    />
+                  ))}
+
+              {!isLoading && (
+                <TableEmptyRows
+                  height={denseHeight}
+                  emptyRows={emptyRows(page + 1, rowsPerPage, data?.metaData?.total)}
+                />
+              )}
+
+              <TableNoData isNotFound={isNotFound && !isLoading} />
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Scrollbar>
+
+      <Box sx={{ position: 'relative' }}>
+        <TablePagination
+          rowsPerPageOptions={[5, 10]}
+          component="div"
+          count={data?.metaData?.total || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={onChangePage}
+          onRowsPerPageChange={onChangeRowsPerPage}
         />
-        <LoadingTable isValidating={isLoading} />
-
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-            {selected.length > 0 && (
-              <TableSelectedActions
-                dense={dense}
-                numSelected={selected.length}
-                rowCount={tableData.length}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => `${row.id}`)
-                  )
-                }
-                actions={
-                  <Tooltip title="Delete">
-                    <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                      <Iconify icon={'eva:trash-2-outline'} />
-                    </IconButton>
-                  </Tooltip>
-                }
-              />
-            )}
-            <Divider />
-            <Table size={dense ? 'small' : 'medium'}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => `${row.id}`)
-                  )
-                }
-              />
-
-              <TableBody>
-                {isLoading
-                  ? Array.from(Array(rowsPerPage)).map((e) => (
-                      <TableSkeleton sx={{ height: denseHeight, px: dense ? 1 : 0 }} key={e} />
-                    ))
-                  : dataFiltered.map((row) => (
-                      <CategoryTableRow
-                        key={`${row.id}`}
-                        row={row}
-                        isValidating={isLoading}
-                        selected={selected.includes(`${row.id}`)}
-                        onSelectRow={() => onSelectRow(`${row.id}`)}
-                        onDeleteRow={() => handleDeleteRow(`${row.id}`)}
-                        onEditRow={() => handleEditRow(row.id)}
-                      />
-                    ))}
-
-                {!isLoading && (
-                  <TableEmptyRows
-                    height={denseHeight}
-                    emptyRows={emptyRows(page + 1, rowsPerPage, data?.metaData?.total)}
-                  />
-                )}
-
-                <TableNoData isNotFound={isNotFound && !isLoading} />
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-
-        <Box sx={{ position: 'relative' }}>
-          <TablePagination
-            rowsPerPageOptions={[5, 10]}
-            component="div"
-            count={data?.metaData?.total || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={onChangePage}
-            onRowsPerPageChange={onChangeRowsPerPage}
-          />
-          <FormControlLabel
-            control={<Switch checked={dense} onChange={onChangeDense} />}
-            label="Dense"
-            sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-          />
-        </Box>
-      </Card>
-    </Container>
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={onChangeDense} />}
+          label="Dense"
+          sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+        />
+      </Box>
+    </Card>
   )
 }
 
