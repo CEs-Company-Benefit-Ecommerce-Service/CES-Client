@@ -20,7 +20,7 @@ import {
   TableSelectedActions,
   TableSkeleton,
 } from 'src/components/table'
-import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
+import { usePayment } from 'src/hooks/@ces/usePayment'
 import useTable, { emptyRows } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import LoadingTable from 'src/utils/loadingTable'

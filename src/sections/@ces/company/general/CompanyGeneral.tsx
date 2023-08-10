@@ -1,13 +1,29 @@
 // @mui
-import { Card, Grid, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useSnackbar } from 'notistack'
-import { AccountPayload, CompanyPayload } from 'src/@types/@ces'
+import {
+  ACCOUNT_STATUS_OPTIONS_FORM,
+  AccountData,
+  AccountPayload,
+  AccountStatus,
+  CompanyPayload,
+  ROLE_OPTIONS_FORM_EA,
+  ROLE_OPTIONS_FORM_SA,
+  Role,
+} from 'src/@types/@ces'
 import { accountApi, companyApi } from 'src/api-client'
-import Image from 'src/components/Image'
 import { useAccountDetails, useCompanyDetails } from 'src/hooks/@ces'
-import { fNumber } from 'src/utils/formatNumber'
-import AccountNewEditForm from '../../account/AccountNewEditForm'
-import CompanyNewEditForm from '../CompanyNewEditForm'
+import { fData } from 'src/utils/formatNumber'
+// import CompanyNewEditForm from '../CompanyNewEditForm'
 
 // ----------------------------------------------------------------------
 
@@ -49,43 +65,475 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <CompanyNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditCompanySubmit} />
+        <CompanyEditFormGeneral
+          isEdit
+          currentUser={data?.data}
+          onSubmit={handleEditCompanySubmit}
+        />
       </Grid>
       <Grid item xs={12}>
-        <AccountNewEditForm
+        <AccountEditFormGeneral
           isEdit
           currentUser={accountDetails?.data}
           onSubmit={handleEditAccountSubmit}
         />
       </Grid>
-      <Grid item xs={12} md={12}>
+      {/* <Grid item xs={8}>
         <Stack spacing={3}>
           {accountDetails?.data?.wallets &&
-            accountDetails?.data?.wallets.map((wallet) => (
-              <Card key={wallet.id} sx={{ p: 3 }}>
-                <Stack direction={'row'} alignItems={'center'} spacing={1} mb={3}>
+            accountDetails?.data?.wallets.map((x) => (
+              <Card key={x.id} sx={{ p: 3 }}>
+                <Stack direction={'row'} alignItems={'center'} spacing={2} mb={3}>
                   <Image alt="icon" src={'/assets/icons/ic_wallet.png'} sx={{ maxWidth: 36 }} />
                   <Typography
                     variant="overline"
                     sx={{ mb: 3, display: 'block', color: 'text.secondary' }}
                   >
-                    {wallet.name}
+                    Wallet
                   </Typography>
                 </Stack>
-
-                <Stack direction={'row'} alignItems={'center'}>
-                  <Typography variant="h6" flex={1}>
-                    {fNumber(wallet.balance)} / {fNumber(wallet.limits)}đ
+                <Stack spacing={1}>
+                  <Typography variant="h6" noWrap sx={{ color: 'text.primary' }}>
+                    Balance:
                   </Typography>
-                  <Stack direction={'row'} spacing={1} flex={1}>
-                    <Typography variant="h6">Used:</Typography>
-                    <Typography variant="h6">{fNumber(wallet.used)}đ</Typography>
-                  </Stack>
+                  <Typography variant="h6" noWrap sx={{ color: 'text.secondary' }}>
+                    {fCurrency(x.balance)} / {fCurrency(x.limits)}đ
+                  </Typography>
+                  <Box my={1} />
+                  <Typography variant="h6" noWrap sx={{ color: 'text.primary' }}>
+                    Used:
+                  </Typography>
+                  <Typography variant="h6" noWrap sx={{ color: 'text.secondary' }}>
+                    {fCurrency(x.used)}đ
+                  </Typography>
                 </Stack>
               </Card>
             ))}
         </Stack>
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }
+
+// -------------------------------------------------------------------------
+import { yupResolver } from '@hookform/resolvers/yup'
+import { DatePicker, LoadingButton } from '@mui/lab'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import Iconify from 'src/components/Iconify'
+import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar } from 'src/components/hook-form'
+import useAuth from 'src/hooks/useAuth'
+import { fDateParam } from 'src/utils/formatTime'
+import uploadCompanyImage from 'src/utils/uploadCompanyImage'
+import uploadImageAccount from 'src/utils/uploadImageAccount'
+import * as Yup from 'yup'
+
+type CompanyEditFormGeneralProps = {
+  isEdit?: boolean
+  currentUser?: CompanyPayload
+  onSubmit?: (payload: CompanyPayload) => void
+}
+
+function CompanyEditFormGeneral({
+  isEdit = false,
+  currentUser,
+  onSubmit,
+}: CompanyEditFormGeneralProps) {
+  const NewUserSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    address: Yup.string().required('Address is required'),
+    expiredDate: Yup.string().required('ExpiredDate is required'),
+    limits: Yup.number().required('Limits is required'),
+  })
+
+  const defaultValues = useMemo(
+    () => ({
+      name: currentUser?.name || '',
+      address: currentUser?.address || '',
+      expiredDate: currentUser?.expiredDate || '',
+      limits: currentUser?.limits || 0,
+      imageUrl: currentUser?.imageUrl || '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentUser]
+  )
+
+  const methods = useForm<CompanyPayload>({
+    resolver: yupResolver(NewUserSchema),
+    defaultValues,
+  })
+
+  const {
+    reset,
+    watch,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods
+
+  const values = watch('expiredDate')
+  console.log(values)
+
+  useEffect(() => {
+    if (isEdit && currentUser) {
+      reset(defaultValues)
+    }
+    if (!isEdit) {
+      reset(defaultValues)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEdit, currentUser])
+
+  const handleFormSubmit = async (payload: CompanyPayload) => {
+    const formatExp = fDateParam(payload.expiredDate)
+    payload.expiredDate = formatExp
+    await onSubmit?.(payload)
+  }
+  //------------------------IMAGE UPLOAD------------------------
+  const handleDrop = useCallback(
+    async (acceptedFiles) => {
+      uploadCompanyImage({ acceptedFiles, setValue })
+    },
+    [setValue]
+  )
+  //------------------------IMAGE UPLOAD------------------------
+
+  return (
+    <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+      <Card sx={{ p: 3 }}>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="h6">Company Information</Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <RHFUploadAvatar
+              name="imageUrl"
+              accept="image/*"
+              maxSize={3145728}
+              onDrop={handleDrop}
+              helperText={
+                <Typography
+                  variant="caption"
+                  sx={{
+                    mt: 2,
+                    mx: 'auto',
+                    display: 'block',
+                    textAlign: 'center',
+                    color: 'text.secondary',
+                  }}
+                >
+                  Allowed *.jpeg, *.jpg, *.png, *.gif
+                  <br /> max size of {fData(3145728)}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Box
+              sx={{
+                display: 'grid',
+                columnGap: 2,
+                rowGap: 3,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }}
+            >
+              <RHFTextField name="name" label="Company Name" />
+              <RHFTextField name="address" label="Company Address" />
+              <RHFTextField name="limits" label="Limit" type="number" />
+
+              <Controller
+                name="expiredDate"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <DatePicker
+                    label="Expired date"
+                    value={field.value}
+                    onChange={(newValue) => {
+                      field.onChange(newValue)
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        error={!!error}
+                        helperText={error?.message}
+                      />
+                    )}
+                  />
+                )}
+              />
+            </Box>
+
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                {!isEdit ? 'Create Company' : 'Edit'}
+              </LoadingButton>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Card>
+    </FormProvider>
+  )
+}
+// -------------------------------------------------------------------------
+type AccountEditFormGeneralProps = {
+  isDetail?: boolean
+  isViewCompany?: boolean
+  isEdit?: boolean
+  currentUser?: AccountData
+  onSubmit?: (payload: AccountPayload) => void
+}
+
+function AccountEditFormGeneral({
+  isEdit = false,
+  currentUser,
+  onSubmit,
+  isDetail,
+  isViewCompany,
+}: AccountEditFormGeneralProps) {
+  const [showPassword, setShowPassword] = useState(false)
+  const { user } = useAuth()
+  const { pathname } = useRouter()
+
+  const NewUserSchema = isEdit
+    ? Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().required('Email is required').email(),
+        address: Yup.string().required('Address is required'),
+        phone: Yup.string().required('Phone is required'),
+        status: Yup.number().required('Status is required'),
+        role: Yup.number().required('Role is required'),
+      })
+    : user?.role == Role['System Admin']
+    ? Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().required('Email is required').email('Email must be a valid email'),
+        address: Yup.string().required('Address is required'),
+        phone: Yup.string().required('Phone is required'),
+        status: Yup.number().required('Status is required'),
+        role: Yup.number().required('Role is required'),
+        password: Yup.string()
+          .required('Password is required')
+          .min(6, 'Password must be at least 6 characters'),
+        company: Yup.object().when('role', {
+          is: Role['Enterprise Admin'],
+          then: Yup.object().shape({
+            name: Yup.string().required('Company Name is required'),
+            // expiredDate: Yup.string().required('Expired Date is required'),
+            // limits: Yup.number().required('Limit is required'),
+          }),
+        }),
+      })
+    : Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().required('Email is required').email(),
+        address: Yup.string().required('Address is required'),
+        phone: Yup.string().required('Phone is required'),
+        status: Yup.number().required('Status is required'),
+        role: Yup.number().required('Role is required'),
+      })
+
+  const defaultValues: AccountPayload = useMemo(
+    () => ({
+      name: currentUser?.name || '',
+      email: currentUser?.email || '',
+      address: currentUser?.address
+        ? currentUser?.address
+        : user?.role == Role['Enterprise Admin']
+        ? user.address
+        : '',
+      phone: currentUser?.phone || '',
+      imageUrl:
+        currentUser?.imageUrl === 'string'
+          ? null
+          : currentUser?.imageUrl
+          ? currentUser?.imageUrl
+          : null,
+      status: currentUser?.status || AccountStatus['Active'],
+      role: currentUser?.role
+        ? currentUser?.role
+        : user?.role == Role['Enterprise Admin']
+        ? Role.Employee
+        : undefined,
+      password: '',
+      // companyId: null,
+      // company
+    }),
+    [currentUser, user]
+  )
+
+  const methods = useForm<AccountPayload>({
+    resolver: yupResolver(NewUserSchema),
+    defaultValues,
+  })
+
+  const {
+    reset,
+    watch,
+    // control,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods
+
+  // const values = watch()
+  const watchShowCompany = watch('role')
+
+  useEffect(() => {
+    if (isEdit && currentUser) {
+      reset(defaultValues)
+    }
+    if (!isEdit) {
+      reset(defaultValues)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEdit, currentUser])
+
+  const handleFormSubmit = async (payload: AccountPayload) => {
+    if (payload.role === Role['Enterprise Admin'] && payload.company) {
+      payload = {
+        ...payload,
+        company: {
+          ...payload.company,
+          limits: 0,
+          expiredDate: fDateParam(payload.company.expiredDate || Date.now()),
+          imageUrl: payload.imageUrl,
+          address: payload.address,
+        },
+      }
+    }
+
+    await onSubmit?.(payload)
+  }
+
+  const handleDrop = useCallback(
+    async (acceptedFiles) => {
+      uploadImageAccount({ acceptedFiles, setValue })
+    },
+    [setValue]
+  )
+
+  const statusList = ACCOUNT_STATUS_OPTIONS_FORM
+
+  type RoleOptions = typeof ROLE_OPTIONS_FORM_SA | typeof ROLE_OPTIONS_FORM_EA
+  const roleOptionsLookup: Partial<Record<Role, RoleOptions>> = {
+    [Role['System Admin']]: ROLE_OPTIONS_FORM_SA,
+    [Role['Enterprise Admin']]: ROLE_OPTIONS_FORM_EA,
+  }
+  const roleList: RoleOptions = roleOptionsLookup[user?.role as Role] || []
+
+  return (
+    <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+      <Card sx={{ p: 3 }}>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="h6">Admin Account Information</Typography>
+          </Grid>
+          {!isViewCompany && (
+            <Grid item xs={12} md={4}>
+              <Box>
+                <RHFUploadAvatar
+                  disabled={isDetail}
+                  name="imageUrl"
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  helperText={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 2,
+                        mx: 'auto',
+                        display: 'block',
+                        textAlign: 'center',
+                        color: 'text.secondary',
+                      }}
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      <br /> max size of {fData(3145728)}
+                    </Typography>
+                  }
+                />
+              </Box>
+            </Grid>
+          )}
+
+          <Grid item xs={12} md={!isViewCompany ? 8 : 12}>
+            <Box
+              sx={{
+                display: 'grid',
+                columnGap: 2,
+                rowGap: 3,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }}
+            >
+              <RHFTextField name="name" label="Name" disabled={isDetail} />
+              <RHFTextField name="email" label="Email Address" disabled={isEdit || isDetail} />
+              {!isEdit && !isDetail && (
+                <RHFTextField
+                  name="password"
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                          <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+              <RHFTextField name="phone" label="Phone Number" disabled={isDetail} />
+              {!(user?.role == Role['Enterprise Admin']) && (
+                <RHFTextField name="address" label="Address" disabled={isDetail} />
+              )}
+              {/* <RHFTextField name="address" label="Address" /> */}
+              <RHFSelect name="status" label="Status" placeholder="Status" disabled={isDetail}>
+                <option value={undefined} />
+                {statusList.map((option) => (
+                  <option key={option.code} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+              {pathname !== '/dashboard/user/account' && !(user?.role == Role['Enterprise Admin']) && (
+                <RHFSelect
+                  name="role"
+                  label="Role"
+                  placeholder="Role"
+                  disabled={isEdit || isDetail}
+                >
+                  <option value={undefined} />
+                  {roleList?.map((option) => (
+                    <option key={option.code} value={option.code}>
+                      {option.label}
+                    </option>
+                  ))}
+                </RHFSelect>
+              )}
+              <Box />
+              {watchShowCompany == Role['Enterprise Admin'] && !isEdit && (
+                <>
+                  <RHFTextField name="company.name" label="Company Name" disabled={isDetail} />
+                </>
+              )}
+            </Box>
+
+            <Stack alignItems="flex-end">
+              {!isDetail && (
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                  {!isEdit ? 'Create User' : 'Edit'}
+                </LoadingButton>
+              )}
+            </Stack>
+          </Grid>
+        </Grid>
+      </Card>
+    </FormProvider>
+  )
+}
+// -------------------------------------------------------------------------
