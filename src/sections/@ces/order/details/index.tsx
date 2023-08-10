@@ -69,7 +69,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
     setLoading(false)
     // setChangeStatus(!changeStatus)
   }
-  console.log(rsu[status])
+
   return (
     <>
       <Card sx={{ pt: 5, px: 5 }}>

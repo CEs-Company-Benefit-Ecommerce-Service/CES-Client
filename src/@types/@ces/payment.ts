@@ -25,3 +25,8 @@ export type TransactionPayload = {
   total: number
   imageUrl: string
 }
+
+export type TransactionUpdatePayload = {
+  status: number
+  imageUrl: string
+}

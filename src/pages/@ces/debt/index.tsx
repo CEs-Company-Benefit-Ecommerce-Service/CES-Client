@@ -11,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
@@ -25,7 +25,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -95,6 +95,7 @@ export default function DebtPage() {
   useMemo(() => {
     setParams({
       Type: '6',
+      Status: 3,
       Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
       Order: filterOptions == '' ? 'desc' : filterOptions,
       Page: page + 1,

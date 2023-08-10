@@ -32,7 +32,7 @@ export default function DebtDetail() {
 
   const { query } = useRouter()
   const { transactionId } = query
-  const { data, isLoading } = useDebtDetail({ id: `${transactionId}` })
+  const { data, isLoading, mutate } = useDebtDetail({ id: `${transactionId}` })
   const { data: company } = useCompanyDetails({ id: `${data?.data?.companyId}` })
   if (isLoading) {
     return <LoadingScreen />
@@ -54,7 +54,7 @@ export default function DebtDetail() {
             ]}
           />
 
-          <DebtDetails debt={data?.data} compId={company?.data?.id} />
+          <DebtDetails debt={data?.data} compId={company?.data?.id} mutate={mutate} />
         </Container>
       </Page>
     </RoleBasedGuard>

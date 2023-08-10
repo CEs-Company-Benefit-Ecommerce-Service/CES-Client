@@ -69,10 +69,12 @@ export default function DebtTableRow({
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={status === 1 ? 'success' : status === 3 ? 'info' : 'error'}
+          color={
+            status === 1 ? 'success' : status === 3 ? 'info' : status === 0 ? 'warning' : 'error'
+          }
           sx={{ textTransform: 'capitalize' }}
         >
-          {status === 1 ? 'Success' : status === 2 ? 'Cancel' : 'Processing'}
+          {status === 1 ? 'Success' : status === 2 ? 'Cancel' : status === 0 ? 'New' : 'Processing'}
         </Label>
       </TableCell>
 

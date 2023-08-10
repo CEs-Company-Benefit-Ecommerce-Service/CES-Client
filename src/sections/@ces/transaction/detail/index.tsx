@@ -1,10 +1,12 @@
 // @mui
+import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Card,
   Divider,
   Grid,
   MenuItem,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -16,14 +18,16 @@ import {
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { toNumber } from 'lodash'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { Debt } from 'src/@types/@ces'
+import { Debt, TransactionUpdatePayload } from 'src/@types/@ces'
 import { DebtStatus } from 'src/@types/@ces/debt'
+import { paymentApi } from 'src/api-client/payment'
+import Image from 'src/components/Image'
 import { useCompanyDetails } from 'src/hooks/@ces'
 import { fCurrency } from 'src/utils/formatNumber'
-import { fDate, fDateVN } from 'src/utils/formatTime'
+import { fDateVN } from 'src/utils/formatTime'
 // utils
 // components
 import Label from '../../../../components/Label'
@@ -43,14 +47,19 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 type Props = {
   debt?: Debt
   compId?: string
+  mutate?: any
+  // handleEditOrderSubmit?: (id: string, status: number) => void
 }
 
-export default function DebtDetails({ debt, compId }: Props) {
+export default function DebtDetails({ debt, compId, mutate }: Props) {
   const theme = useTheme()
+  const [loading, setLoading] = useState(false)
   const [changeStatus, setChangeStatus] = useState(false)
   const [statusValue, setStatusValue] = useState<number>()
   const { query, push } = useRouter()
   const { data: company } = useCompanyDetails({ id: `${compId}` })
+  const { enqueueSnackbar } = useSnackbar()
+
   if (!debt) {
     return null
   }
@@ -62,11 +71,22 @@ export default function DebtDetails({ debt, compId }: Props) {
     setChangeStatus(!changeStatus)
   }
 
+  const handleUpdate = async (status: number) => {
+    const payload: TransactionUpdatePayload = { status: status, imageUrl: imageUrl }
+    try {
+      paymentApi.updateDebt(id, payload)
+      mutate()
+      enqueueSnackbar('Update success!')
+    } catch (error) {
+      enqueueSnackbar('Update failed!')
+      console.error(error)
+    }
+  }
   return (
     <>
       <Card sx={{ pt: 2, px: 2 }}>
         <Grid container>
-          <Grid item xs={12} sm={12} sx={{ mb: 5 }}>
+          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'left' } }}>
               {!changeStatus ? (
                 <Label
@@ -116,7 +136,36 @@ export default function DebtDetails({ debt, compId }: Props) {
               <Typography variant="h6">{`DBT-${id}`}</Typography>
             </Box>
           </Grid>
+          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
+            <Stack
+              justifyContent="flex-end"
+              direction="row"
+              sx={{ textAlign: { sm: 'right' } }}
+              spacing={2}
+            >
+              <LoadingButton
+                variant="contained"
+                size="large"
+                color={'inherit'}
+                disabled={status != 3}
+                onClick={() => handleUpdate(2)}
+              >
+                Cancel
+              </LoadingButton>
+
+              <LoadingButton
+                variant="contained"
+                color={'primary'}
+                disabled={status != 3}
+                size="large"
+                onClick={() => handleUpdate(1)}
+              >
+                Complete
+              </LoadingButton>
+            </Stack>
+          </Grid>
           <Grid item xs={12} sm={3} sx={{ mb: 5 }}>
+            {}
             <Image src={imageUrl} alt="banking image" width={300} height={400} />
           </Grid>
 

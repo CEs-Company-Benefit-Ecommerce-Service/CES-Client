@@ -6,6 +6,7 @@ import {
   PaymentPayload,
   TransactionHistory,
   TransactionPayload,
+  TransactionUpdatePayload
 } from 'src/@types/@ces'
 import axiosClient from './axiosClient'
 
@@ -22,4 +23,6 @@ export const paymentApi = {
 
   createPaymentDebt: async (payload: TransactionPayload) =>
     await axiosClient.post('/transaction', payload),
+  updateDebt: async (id: string, payload: TransactionUpdatePayload) =>
+    await axiosClient.put(`/transaction/${id}`, payload),
 }
