@@ -1,7 +1,14 @@
-import { DatePicker, LocalizationProvider } from '@mui/lab'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { TextField } from '@mui/material'
-import { useState } from 'react'
+import { DatePicker } from '@mui/lab'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import {
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+} from '@mui/material'
+import { SetStateAction, JSX, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 type IProps = {
   name: string
@@ -23,10 +30,15 @@ export default function RHFDatePicker({ name, label }: Props) {
           <DatePicker
             label={label}
             value={originalReleaseDate}
-            onChange={(newValue) => {
+            onChange={(newValue: SetStateAction<null>) => {
               setOriginalReleaseDate(newValue)
             }}
-            renderInput={(params) => (
+            renderInput={(
+              params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                  FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                  'variant'
+                >
+            ) => (
               <TextField
                 {...field}
                 fullWidth

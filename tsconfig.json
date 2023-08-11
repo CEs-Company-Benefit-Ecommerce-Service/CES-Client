@@ -6,6 +6,11 @@
       "es6",
       "dom"
     ],
+    "paths": {
+      "react": [
+        "./node_modules/@types/react"
+      ]
+    },
     "strict": true,
     "noEmit": true,
     "allowJs": true,

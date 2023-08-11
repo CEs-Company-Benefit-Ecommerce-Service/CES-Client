@@ -1,28 +1,28 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Button, Popover, ButtonProps, LinkProps } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles'
+import { Button, Popover, ButtonProps, LinkProps } from '@mui/material'
 // config
-import { NAVBAR } from '../../../config';
+import { NAVBAR } from '../../../config'
 
 // ----------------------------------------------------------------------
 
-type IProps = LinkProps & ButtonProps;
+type IProps = LinkProps & ButtonProps
 
 export interface ListItemStyleProps extends IProps {
-  component?: ReactNode;
-  activeRoot?: boolean;
-  activeSub?: boolean;
-  subItem?: boolean;
-  open?: boolean;
-  roles?: number[];
+  component?: ReactNode | any
+  activeRoot?: boolean
+  activeSub?: boolean
+  subItem?: boolean
+  open?: boolean
+  roles?: number[]
 }
 
 export const ListItemStyle = styled(Button, {
   shouldForwardProp: (prop) =>
     prop !== 'activeRoot' && prop !== 'activeSub' && prop !== 'subItem' && prop !== 'open',
 })<ListItemStyleProps>(({ activeRoot, activeSub, subItem, open, theme }) => {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   const activeRootStyle = {
     color: theme.palette.grey[800],
@@ -31,7 +31,7 @@ export const ListItemStyle = styled(Button, {
       isLight ? theme.palette.grey[500] : theme.palette.common.black,
       0.16
     )}`,
-  };
+  }
 
   return {
     ...theme.typography.body2,
@@ -68,8 +68,8 @@ export const ListItemStyle = styled(Button, {
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.action.hover,
       }),
-  };
-});
+  }
+})
 
 // ----------------------------------------------------------------------
 
@@ -82,4 +82,4 @@ export const PaperStyle = styled(Popover)(({ theme }) => ({
     borderRadius: Number(theme.shape.borderRadius) * 1.5,
     boxShadow: theme.customShadows.dropdown,
   },
-}));
+}))

@@ -1,21 +1,30 @@
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form'
 // @mui
-import DatePicker from '@mui/lab/DatePicker';
-import { Stack, TextField, MenuItem } from '@mui/material';
+import DatePicker from '@mui/lab/DatePicker'
+import {
+  FilledTextFieldProps,
+  MenuItem,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+} from '@mui/material'
 // components
-import { RHFSelect, RHFTextField } from '../../../../components/hook-form';
+import { JSX } from 'react'
+import { RHFSelect, RHFTextField } from '../../../../components/hook-form'
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = ['paid', 'unpaid', 'overdue', 'draft'];
+const STATUS_OPTIONS = ['paid', 'unpaid', 'overdue', 'draft']
 
 // ----------------------------------------------------------------------
 
 export default function InvoiceNewEditStatusDate() {
-  const { control, watch } = useFormContext();
+  const { control, watch } = useFormContext()
 
-  const values = watch();
+  const values = watch()
 
   return (
     <Stack
@@ -61,12 +70,15 @@ export default function InvoiceNewEditStatusDate() {
           <DatePicker
             label="Date create"
             value={field.value}
-            onChange={(newValue) => {
-              field.onChange(newValue);
+            onChange={(newValue: any) => {
+              field.onChange(newValue)
             }}
-            renderInput={(params) => (
-              <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-            )}
+            renderInput={(
+              params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                  OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                  'variant'
+                >
+            ) => <TextField {...params} fullWidth error={!!error} helperText={error?.message} />}
           />
         )}
       />
@@ -78,15 +90,18 @@ export default function InvoiceNewEditStatusDate() {
           <DatePicker
             label="Due date"
             value={field.value}
-            onChange={(newValue) => {
-              field.onChange(newValue);
+            onChange={(newValue: any) => {
+              field.onChange(newValue)
             }}
-            renderInput={(params) => (
-              <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-            )}
+            renderInput={(
+              params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                  OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                  'variant'
+                >
+            ) => <TextField {...params} fullWidth error={!!error} helperText={error?.message} />}
           />
         )}
       />
     </Stack>
-  );
+  )
 }

@@ -1,9 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
 import { DatePicker, LoadingButton } from '@mui/lab'
-import { Box, Card, Grid, Stack, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  FilledTextFieldProps,
+  Grid,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+  Typography,
+} from '@mui/material'
 // next
-import { useCallback, useEffect, useMemo } from 'react'
+import { JSX, useCallback, useEffect, useMemo } from 'react'
 // form
 import { Controller, useForm } from 'react-hook-form'
 import { CompanyPayload } from 'src/@types/@ces'
@@ -12,8 +23,8 @@ import * as Yup from 'yup'
 import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form'
 // routes
 // utils
-import { fData } from '../../../utils/formatNumber'
 import { fDateParam } from 'src/utils/formatTime'
+import { fData } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
@@ -137,10 +148,17 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
                   <DatePicker
                     label="Expired date"
                     value={field.value}
-                    onChange={(newValue) => {
+                    onChange={(newValue: any) => {
                       field.onChange(newValue)
                     }}
-                    renderInput={(params) => (
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & {
+                        variant?: TextFieldVariants | undefined
+                      } & Omit<
+                          FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                          'variant'
+                        >
+                    ) => (
                       <TextField
                         {...params}
                         fullWidth

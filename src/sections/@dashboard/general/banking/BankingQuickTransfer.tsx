@@ -1,7 +1,7 @@
-import Slider from 'react-slick';
-import { useState, useEffect, useRef } from 'react';
+import Slider from 'react-slick'
+import { useState, useEffect, useRef } from 'react'
 // @mui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles'
 import {
   Box,
   Card,
@@ -21,47 +21,47 @@ import {
   DialogProps,
   DialogActions,
   Slider as MuiSlider,
-} from '@mui/material';
+} from '@mui/material'
 // utils
-import { fCurrency } from '../../../../utils/formatNumber';
+import { fCurrency } from '../../../../utils/formatNumber'
 // components
-import { CarouselArrows } from '../../../../components/carousel';
+import { CarouselArrows } from '../../../../components/carousel'
 
 // ----------------------------------------------------------------------
 
-const MIN_AMOUNT = 0;
+const MIN_AMOUNT = 0
 
-const MAX_AMOUNT = 1000;
+const MAX_AMOUNT = 1000
 
-const STEP = 50;
+const STEP = 50
 
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
-  title?: string;
-  subheader?: string;
+  title?: string
+  subheader?: string
   list: {
-    id: string;
-    name: string;
-    email: string;
-    avatar: string;
-  }[];
+    id: string
+    name: string
+    email: string
+    avatar: string
+  }[]
 }
 
 export default function BankingQuickTransfer({ title, subheader, list, sx, ...other }: Props) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const carouselRef = useRef<Slider | null>(null);
+  const carouselRef = useRef<Slider | null>(null)
 
-  const [autoWidth, setAutoWidth] = useState(24);
+  const [autoWidth, setAutoWidth] = useState(24)
 
-  const [openConfirm, setOpenConfirm] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false)
 
-  const [selectContact, setSelectContact] = useState(0);
+  const [selectContact, setSelectContact] = useState(0)
 
-  const [amount, setAmount] = useState<AmountProps>(0);
+  const [amount, setAmount] = useState<AmountProps>(0)
 
-  const getContactInfo = list.find((_, index) => index === selectContact);
+  const getContactInfo = list.find((_, index) => index === selectContact)
 
   const sliderSettings = {
     dots: false,
@@ -81,51 +81,51 @@ export default function BankingQuickTransfer({ title, subheader, list, sx, ...ot
         },
       },
     ],
-  };
+  }
 
   useEffect(() => {
     if (amount) {
-      handleAutoWidth();
+      handleAutoWidth()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount]);
+  }, [amount])
 
   const handleOpenConfirm = () => {
-    setOpenConfirm(true);
-  };
+    setOpenConfirm(true)
+  }
 
   const handleCloseConfirm = () => {
-    setOpenConfirm(false);
-  };
+    setOpenConfirm(false)
+  }
 
   const handleAutoWidth = () => {
-    const getNumberLength = amount.toString().length;
-    setAutoWidth(getNumberLength * 22);
-  };
+    const getNumberLength = amount.toString().length
+    setAutoWidth(getNumberLength * 22)
+  }
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setAmount(newValue);
-  };
+    setAmount(newValue)
+  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value === '' ? '' : Number(event.target.value));
-  };
+    setAmount(event.target.value === '' ? '' : Number(event.target.value))
+  }
 
   const handleBlur = () => {
-    if (amount < 0) {
-      setAmount(0);
-    } else if (amount > MAX_AMOUNT) {
-      setAmount(MAX_AMOUNT);
+    if ((amount as number) < 0) {
+      setAmount(0)
+    } else if ((amount as number) > MAX_AMOUNT) {
+      setAmount(MAX_AMOUNT)
     }
-  };
+  }
 
   const handlePrevious = () => {
-    carouselRef.current?.slickPrev();
-  };
+    carouselRef.current?.slickPrev()
+  }
 
   const handleNext = () => {
-    carouselRef.current?.slickNext();
-  };
+    carouselRef.current?.slickNext()
+  }
 
   return (
     <>
@@ -239,16 +239,16 @@ export default function BankingQuickTransfer({ title, subheader, list, sx, ...ot
         onChange={handleInputChange}
       />
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
-type AmountProps = number | string | Array<number | string>;
+type AmountProps = number | string | Array<number | string>
 
 interface InputAmountProps extends InputProps {
-  autoWidth: number;
-  amount: AmountProps;
+  autoWidth: number
+  amount: AmountProps
 }
 
 function InputAmount({ autoWidth, amount, onBlur, onChange, sx, ...other }: InputAmountProps) {
@@ -273,21 +273,21 @@ function InputAmount({ autoWidth, amount, onBlur, onChange, sx, ...other }: Inpu
         {...other}
       />
     </Stack>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
-type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
+type TConfirmTransferDialogProps = InputAmountProps & DialogProps
 
 interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
   contactInfo?: {
-    id: string;
-    name: string;
-    avatar: string;
-    email: string;
-  };
-  onClose: VoidFunction;
+    id: string
+    name: string
+    avatar: string
+    email: string
+  }
+  onClose: VoidFunction
 }
 
 function ConfirmTransferDialog({
@@ -335,5 +335,5 @@ function ConfirmTransferDialog({
         <Button onClick={onClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

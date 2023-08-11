@@ -1,46 +1,50 @@
-import { useState, useRef, useEffect } from 'react';
+import { JSX, useEffect, useRef, useState } from 'react'
 // form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 // @mui
+import { LoadingButton } from '@mui/lab'
+import DatePicker from '@mui/lab/DatePicker'
 import {
-  Stack,
-  Grid,
   Button,
-  TextField,
-  Typography,
+  FilledTextFieldProps,
+  FormHelperText,
+  Grid,
   IconButton,
   InputAdornment,
-  FormHelperText,
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import DatePicker from '@mui/lab/DatePicker';
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+  Typography,
+} from '@mui/material'
 // utils
-import { fData } from '../../../../utils/formatNumber';
-import { fTimestamp } from '../../../../utils/formatTime';
+import { fData } from '../../../../utils/formatNumber'
+import { fTimestamp } from '../../../../utils/formatTime'
 // components
-import Iconify from '../../../../components/Iconify';
+import Iconify from '../../../../components/Iconify'
 import {
   FormProvider,
-  RHFTextField,
   RHFCheckbox,
   RHFEditor,
-} from '../../../../components/hook-form';
+  RHFTextField,
+} from '../../../../components/hook-form'
 //
-import { FormValuesProps, FormSchema, defaultValues } from '.';
+import { FormSchema, FormValuesProps, defaultValues } from '.'
 
 // ----------------------------------------------------------------------
 
 export default function ReactHookForm() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   const methods = useForm<FormValuesProps>({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
     defaultValues,
-  });
+  })
 
   const {
     watch,
@@ -51,26 +55,26 @@ export default function ReactHookForm() {
     resetField,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = methods;
+  } = methods
 
-  const values = watch();
+  const values = watch()
 
   useEffect(() => {
     if (values.editor === '<p><br></p>') {
-      resetField('editor');
+      resetField('editor')
     }
-  }, [resetField, values.editor]);
+  }, [resetField, values.editor])
 
   const handleShowPassword = () => {
-    setShowPassword((show) => !show);
-  };
+    setShowPassword((show) => !show)
+  }
 
   const handleClickAttachPhoto = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   const onSubmit = async (data: FormValuesProps) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500))
     alert(
       JSON.stringify(
         {
@@ -82,10 +86,10 @@ export default function ReactHookForm() {
         null,
         2
       )
-    );
+    )
 
-    reset();
-  };
+    reset()
+  }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -107,7 +111,14 @@ export default function ReactHookForm() {
                     {...field}
                     label="Start date"
                     inputFormat="dd/MM/yyyy"
-                    renderInput={(params) => (
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & {
+                        variant?: TextFieldVariants | undefined
+                      } & Omit<
+                          OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                          'variant'
+                        >
+                    ) => (
                       <TextField
                         fullWidth
                         {...params}
@@ -127,7 +138,14 @@ export default function ReactHookForm() {
                     {...field}
                     label="End date"
                     inputFormat="dd/MM/yyyy"
-                    renderInput={(params) => (
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & {
+                        variant?: TextFieldVariants | undefined
+                      } & Omit<
+                          OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                          'variant'
+                        >
+                    ) => (
                       <TextField
                         fullWidth
                         {...params}
@@ -203,8 +221,8 @@ export default function ReactHookForm() {
                   ref={fileInputRef}
                   type="file"
                   onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    setValue('photo', file);
+                    const file = event.target.files?.[0]
+                    setValue('photo', file)
                   }}
                   style={{ display: 'none' }}
                 />
@@ -241,5 +259,5 @@ export default function ReactHookForm() {
         </Grid>
       </Grid>
     </FormProvider>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 // @mui
 import {
   Stack,
@@ -10,35 +10,35 @@ import {
   ListItemText,
   ListItemAvatar,
   InputAdornment,
-} from '@mui/material';
+} from '@mui/material'
 // _mock_
-import { _contacts } from '../../../_mock';
+import { _contacts } from '../../../_mock'
 // components
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
+import Iconify from '../../../components/Iconify'
+import Scrollbar from '../../../components/Scrollbar'
 
 // ----------------------------------------------------------------------
 
-const ITEM_HEIGHT = 64;
+const ITEM_HEIGHT = 64
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  open: boolean;
-  onClose: VoidFunction;
-};
+  open: boolean
+  onClose: VoidFunction
+}
 
 export default function KanbanContactsDialog({ open, onClose }: Props) {
-  const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState('')
 
   const handleSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterName(event.target.value);
-  };
+    setFilterName(event.target.value)
+  }
 
   const dataFiltered = applySortFilter({
     listData: _contacts,
     filterName,
-  });
+  })
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
@@ -92,7 +92,7 @@ export default function KanbanContactsDialog({ open, onClose }: Props) {
         ))}
       </Scrollbar>
     </Dialog>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -100,11 +100,11 @@ export default function KanbanContactsDialog({ open, onClose }: Props) {
 function applySortFilter<T>({ listData, filterName }: { listData: T[]; filterName: string }) {
   if (filterName) {
     listData = listData.filter(
-      (item: Record<string, any>) =>
+      (item: any) =>
         item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
         item.email.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
+    )
   }
 
-  return listData;
+  return listData
 }

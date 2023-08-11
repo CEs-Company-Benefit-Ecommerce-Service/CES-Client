@@ -1,21 +1,27 @@
-import { useState } from 'react';
-import isWeekend from 'date-fns/isWeekend';
+import isWeekend from 'date-fns/isWeekend'
+import { JSX, SetStateAction, useState } from 'react'
 // @mui
-import { TextField } from '@mui/material';
 import {
-  Masonry,
   DatePicker,
-  StaticDatePicker,
-  MobileDatePicker,
   DesktopDatePicker,
-} from '@mui/lab';
+  Masonry,
+  MobileDatePicker,
+  StaticDatePicker,
+} from '@mui/lab'
+import {
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+} from '@mui/material'
 //
-import { Block } from '../../Block';
+import { Block } from '../../Block'
 
 // ----------------------------------------------------------------------
 
 export default function PickerDate() {
-  const [value, setValue] = useState<Date | null>(new Date());
+  const [value, setValue] = useState<Date | null>(new Date())
 
   return (
     <Masonry columns={{ xs: 1, md: 2 }} spacing={3}>
@@ -24,20 +30,30 @@ export default function PickerDate() {
           label="For desktop"
           value={value}
           minDate={new Date('2017-01-01')}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => <TextField fullWidth {...params} margin="normal" />}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField fullWidth {...params} margin="normal" />}
         />
 
         <MobileDatePicker
           orientation="portrait"
           label="For mobile"
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => <TextField fullWidth {...params} margin="normal" />}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField fullWidth {...params} margin="normal" />}
         />
       </Block>
 
@@ -47,10 +63,15 @@ export default function PickerDate() {
           openTo="day"
           value={value}
           shouldDisableDate={isWeekend}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} />}
         />
       </Block>
 
@@ -59,12 +80,15 @@ export default function PickerDate() {
           views={['year']}
           label="Year only"
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => (
-            <TextField {...params} fullWidth margin="normal" helperText={null} />
-          )}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} fullWidth margin="normal" helperText={null} />}
         />
         <DatePicker
           views={['year', 'month']}
@@ -72,48 +96,60 @@ export default function PickerDate() {
           minDate={new Date('2012-03-01')}
           maxDate={new Date('2023-06-01')}
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => (
-            <TextField {...params} fullWidth margin="normal" helperText={null} />
-          )}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} fullWidth margin="normal" helperText={null} />}
         />
         <DatePicker
           openTo="year"
           views={['year', 'month', 'day']}
           label="Year, month and date"
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => (
-            <TextField {...params} fullWidth margin="normal" helperText={null} />
-          )}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} fullWidth margin="normal" helperText={null} />}
         />
         <DatePicker
           views={['day', 'month', 'year']}
           label="Invert the order of views"
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => (
-            <TextField {...params} fullWidth margin="normal" helperText={null} />
-          )}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} fullWidth margin="normal" helperText={null} />}
         />
         <DatePicker
           views={['day']}
           label="Just date"
           value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
+          onChange={(newValue: SetStateAction<Date | null>) => {
+            setValue(newValue)
           }}
-          renderInput={(params) => (
-            <TextField {...params} fullWidth margin="normal" helperText={null} />
-          )}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} fullWidth margin="normal" helperText={null} />}
         />
       </Block>
     </Masonry>
-  );
+  )
 }

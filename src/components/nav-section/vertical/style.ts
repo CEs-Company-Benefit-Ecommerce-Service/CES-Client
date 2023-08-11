@@ -1,26 +1,26 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 import {
   LinkProps,
   ListItemText,
   ListItemButton,
   ListItemIcon,
   ListItemButtonProps,
-} from '@mui/material';
+} from '@mui/material'
 // config
-import { ICON, NAVBAR } from '../../../config';
+import { ICON, NAVBAR } from '../../../config'
 
 // ----------------------------------------------------------------------
 
-type IProps = LinkProps & ListItemButtonProps;
+type IProps = LinkProps & ListItemButtonProps
 
 export interface ListItemStyleProps extends IProps {
-  component?: ReactNode;
-  activeRoot?: boolean;
-  activeSub?: boolean;
-  subItem?: boolean;
-  roles?: number[];
+  component?: ReactNode | any
+  activeRoot?: boolean
+  activeSub?: boolean
+  subItem?: boolean
+  roles?: number[]
 }
 
 export const ListItemStyle = styled(ListItemButton, {
@@ -50,10 +50,10 @@ export const ListItemStyle = styled(ListItemButton, {
   ...(subItem && {
     height: NAVBAR.DASHBOARD_ITEM_SUB_HEIGHT,
   }),
-}));
+}))
 
 interface ListItemTextStyleProps extends ListItemButtonProps {
-  isCollapse?: boolean;
+  isCollapse?: boolean
 }
 
 export const ListItemTextStyle = styled(ListItemText, {
@@ -67,7 +67,7 @@ export const ListItemTextStyle = styled(ListItemText, {
     width: 0,
     opacity: 0,
   }),
-}));
+}))
 
 export const ListItemIconStyle = styled(ListItemIcon)({
   width: ICON.NAVBAR_ITEM,
@@ -76,4 +76,4 @@ export const ListItemIconStyle = styled(ListItemIcon)({
   alignItems: 'center',
   justifyContent: 'center',
   '& svg': { width: '100%', height: '100%' },
-});
+})

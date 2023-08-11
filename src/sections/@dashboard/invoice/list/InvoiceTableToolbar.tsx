@@ -1,23 +1,33 @@
-import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import DatePicker from '@mui/lab/DatePicker'
+import {
+  FilledTextFieldProps,
+  InputAdornment,
+  MenuItem,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+} from '@mui/material'
 // components
-import Iconify from '../../../../components/Iconify';
+import { JSX } from 'react'
+import Iconify from '../../../../components/Iconify'
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 160;
+const INPUT_WIDTH = 160
 
 type Props = {
-  optionsService: string[];
-  filterName: string;
-  filterService: string;
-  filterStartDate: Date | null;
-  filterEndDate: Date | null;
-  onFilterName: (value: string) => void;
-  onFilterService: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onFilterStartDate: (value: Date | null) => void;
-  onFilterEndDate: (value: Date | null) => void;
-};
+  optionsService: string[]
+  filterName: string
+  filterService: string
+  filterStartDate: Date | null
+  filterEndDate: Date | null
+  onFilterName: (value: string) => void
+  onFilterService: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onFilterStartDate: (value: Date | null) => void
+  onFilterEndDate: (value: Date | null) => void
+}
 
 export default function InvoiceTableToolbar({
   optionsService,
@@ -69,7 +79,12 @@ export default function InvoiceTableToolbar({
         label="Start date"
         value={filterStartDate}
         onChange={onFilterStartDate}
-        renderInput={(params) => (
+        renderInput={(
+          params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+              OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+              'variant'
+            >
+        ) => (
           <TextField
             {...params}
             fullWidth
@@ -84,7 +99,12 @@ export default function InvoiceTableToolbar({
         label="End date"
         value={filterEndDate}
         onChange={onFilterEndDate}
-        renderInput={(params) => (
+        renderInput={(
+          params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+              OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps,
+              'variant'
+            >
+        ) => (
           <TextField
             {...params}
             fullWidth
@@ -112,5 +132,5 @@ export default function InvoiceTableToolbar({
         }}
       />
     </Stack>
-  );
+  )
 }

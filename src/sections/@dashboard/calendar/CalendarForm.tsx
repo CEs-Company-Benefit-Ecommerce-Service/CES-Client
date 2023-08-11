@@ -1,21 +1,34 @@
-import * as Yup from 'yup';
-import merge from 'lodash/merge';
-import { isBefore } from 'date-fns';
-import { useSnackbar } from 'notistack';
-import { EventInput } from '@fullcalendar/common';
+import { EventInput } from '@fullcalendar/common'
+import { isBefore } from 'date-fns'
+import merge from 'lodash/merge'
+import { useSnackbar } from 'notistack'
+import * as Yup from 'yup'
 // form
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 // @mui
-import { Box, Stack, Button, Tooltip, TextField, IconButton, DialogActions } from '@mui/material';
-import { LoadingButton, MobileDateTimePicker } from '@mui/lab';
+import { LoadingButton, MobileDateTimePicker } from '@mui/lab'
+import {
+  Box,
+  Button,
+  DialogActions,
+  FilledTextFieldProps,
+  IconButton,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+  Tooltip,
+} from '@mui/material'
 // redux
-import { useDispatch } from '../../../redux/store';
-import { createEvent, updateEvent, deleteEvent } from '../../../redux/slices/calendar';
+import { createEvent, deleteEvent, updateEvent } from '../../../redux/slices/calendar'
+import { useDispatch } from '../../../redux/store'
 // components
-import Iconify from '../../../components/Iconify';
-import { ColorSinglePicker } from '../../../components/color-utils';
-import { FormProvider, RHFTextField, RHFSwitch } from '../../../components/hook-form';
+import { JSX } from 'react'
+import Iconify from '../../../components/Iconify'
+import { ColorSinglePicker } from '../../../components/color-utils'
+import { FormProvider, RHFSwitch, RHFTextField } from '../../../components/hook-form'
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +40,7 @@ const COLOR_OPTIONS = [
   '#FF4842', // theme.palette.error.main
   '#04297A', // theme.palette.info.darker
   '#7A0C2E', // theme.palette.error.darker
-];
+]
 
 const getInitialValues = (event: EventInput, range: { start: Date; end: Date } | null) => {
   const _event = {
@@ -37,51 +50,51 @@ const getInitialValues = (event: EventInput, range: { start: Date; end: Date } |
     allDay: false,
     start: range ? new Date(range.start) : new Date(),
     end: range ? new Date(range.end) : new Date(),
-  };
-
-  if (event || range) {
-    return merge({}, _event, event);
   }
 
-  return _event;
-};
+  if (event || range) {
+    return merge({}, _event, event)
+  }
+
+  return _event
+}
 
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
-  title: string;
-  description: string;
-  textColor: string;
-  allDay: boolean;
-  start: Date | null;
-  end: Date | null;
-};
+  title: string
+  description: string
+  textColor: string
+  allDay: boolean
+  start: Date | null
+  end: Date | null
+}
 
 type Props = {
-  event: EventInput;
+  event: EventInput
   range: {
-    start: Date;
-    end: Date;
-  } | null;
-  onCancel: VoidFunction;
-};
+    start: Date
+    end: Date
+  } | null
+  onCancel: VoidFunction
+}
 
 export default function CalendarForm({ event, range, onCancel }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const isCreating = Object.keys(event).length === 0;
+  const isCreating = Object.keys(event).length === 0
 
   const EventSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required'),
     description: Yup.string().max(5000),
-  });
+  })
 
   const methods = useForm({
     resolver: yupResolver(EventSchema),
     defaultValues: getInitialValues(event, range),
-  });
+  })
 
   const {
     reset,
@@ -89,7 +102,7 @@ export default function CalendarForm({ event, range, onCancel }: Props) {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
@@ -100,35 +113,35 @@ export default function CalendarForm({ event, range, onCancel }: Props) {
         allDay: data.allDay,
         start: data.start,
         end: data.end,
-      };
-      if (event.id) {
-        dispatch(updateEvent(event.id, newEvent));
-        enqueueSnackbar('Update success!');
-      } else {
-        enqueueSnackbar('Create success!');
-        dispatch(createEvent(newEvent));
       }
-      onCancel();
-      reset();
+      if (event.id) {
+        dispatch(updateEvent(event.id, newEvent))
+        enqueueSnackbar('Update success!')
+      } else {
+        enqueueSnackbar('Create success!')
+        dispatch(createEvent(newEvent))
+      }
+      onCancel()
+      reset()
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleDelete = async () => {
-    if (!event.id) return;
+    if (!event.id) return
     try {
-      onCancel();
-      dispatch(deleteEvent(event.id));
-      enqueueSnackbar('Delete success!');
+      onCancel()
+      dispatch(deleteEvent(event.id))
+      enqueueSnackbar('Delete success!')
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
-  const values = watch();
+  const values = watch()
 
-  const isDateError = isBefore(new Date(values.end), new Date(values.start));
+  const isDateError = isBefore(new Date(values.end), new Date(values.start))
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -147,7 +160,14 @@ export default function CalendarForm({ event, range, onCancel }: Props) {
               {...field}
               label="Start date"
               inputFormat="dd/MM/yyyy hh:mm a"
-              renderInput={(params) => <TextField {...params} fullWidth />}
+              renderInput={(
+                params: JSX.IntrinsicAttributes & {
+                  variant?: TextFieldVariants | undefined
+                } & Omit<
+                    FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                    'variant'
+                  >
+              ) => <TextField {...params} fullWidth />}
             />
           )}
         />
@@ -160,7 +180,14 @@ export default function CalendarForm({ event, range, onCancel }: Props) {
               {...field}
               label="End date"
               inputFormat="dd/MM/yyyy hh:mm a"
-              renderInput={(params) => (
+              renderInput={(
+                params: JSX.IntrinsicAttributes & {
+                  variant?: TextFieldVariants | undefined
+                } & Omit<
+                    FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                    'variant'
+                  >
+              ) => (
                 <TextField
                   {...params}
                   fullWidth
@@ -204,5 +231,5 @@ export default function CalendarForm({ event, range, onCancel }: Props) {
         </LoadingButton>
       </DialogActions>
     </FormProvider>
-  );
+  )
 }

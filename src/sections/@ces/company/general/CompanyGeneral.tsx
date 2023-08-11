@@ -2,11 +2,15 @@
 import {
   Box,
   Card,
+  FilledTextFieldProps,
   Grid,
   IconButton,
   InputAdornment,
+  OutlinedTextFieldProps,
   Stack,
+  StandardTextFieldProps,
   TextField,
+  TextFieldVariants,
   Typography,
 } from '@mui/material'
 import { useSnackbar } from 'notistack'
@@ -119,7 +123,7 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DatePicker, LoadingButton } from '@mui/lab'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Iconify from 'src/components/Iconify'
 import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar } from 'src/components/hook-form'
@@ -250,10 +254,17 @@ function CompanyEditFormGeneral({
                   <DatePicker
                     label="Expired date"
                     value={field.value}
-                    onChange={(newValue) => {
+                    onChange={(newValue: any) => {
                       field.onChange(newValue)
                     }}
-                    renderInput={(params) => (
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & {
+                        variant?: TextFieldVariants | undefined
+                      } & Omit<
+                          FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                          'variant'
+                        >
+                    ) => (
                       <TextField
                         {...params}
                         fullWidth

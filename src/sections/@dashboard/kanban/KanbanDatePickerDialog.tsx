@@ -1,17 +1,29 @@
 // @mui
-import { Dialog, DialogTitle, TextField, DialogActions, Button, Stack } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import DatePicker from '@mui/lab/DatePicker'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+} from '@mui/material'
+import { JSX } from 'react'
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  open: boolean;
-  startTime: Date | null;
-  endTime: Date | null;
-  onClose: VoidFunction;
-  onChangeStartTime: (newValue: Date | null) => void;
-  onChangeEndTime: (newValue: Date | null) => void;
-};
+  open: boolean
+  startTime: Date | null
+  endTime: Date | null
+  onClose: VoidFunction
+  onChangeStartTime: (newValue: Date | null) => void
+  onChangeEndTime: (newValue: Date | null) => void
+}
 
 export default function KanbanDatePickerDialog({
   startTime,
@@ -30,14 +42,24 @@ export default function KanbanDatePickerDialog({
           label="Start date"
           value={startTime}
           onChange={onChangeStartTime}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} />}
         />
 
         <DatePicker
           label="End date"
           value={endTime}
           onChange={onChangeEndTime}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(
+            params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined } & Omit<
+                FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                'variant'
+              >
+          ) => <TextField {...params} />}
         />
       </Stack>
 
@@ -47,5 +69,5 @@ export default function KanbanDatePickerDialog({
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

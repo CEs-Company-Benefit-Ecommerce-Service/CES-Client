@@ -1,9 +1,9 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 import {
   Box,
   List,
@@ -15,24 +15,24 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemButtonProps,
-} from '@mui/material';
+} from '@mui/material'
 // config
-import { NAVBAR } from '../../config';
+import { NAVBAR } from '../../config'
 // components
-import Logo from '../../components/Logo';
-import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import { IconButtonAnimate } from '../../components/animate';
-import { NavSectionVertical } from '../../components/nav-section';
+import Logo from '../../components/Logo'
+import Iconify from '../../components/Iconify'
+import Scrollbar from '../../components/Scrollbar'
+import { IconButtonAnimate } from '../../components/animate'
+import { NavSectionVertical } from '../../components/nav-section'
 //
-import { MenuProps, MenuItemProps } from './type';
+import { MenuProps, MenuItemProps } from './type'
 
 // ----------------------------------------------------------------------
 
-type StyleProps = LinkProps & ListItemButtonProps;
+type StyleProps = LinkProps & ListItemButtonProps
 
 interface ListItemStyleProps extends StyleProps {
-  component?: ReactNode;
+  component?: ReactNode | any
 }
 
 const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => ({
@@ -40,35 +40,35 @@ const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => 
   height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
   textTransform: 'capitalize',
   color: theme.palette.text.secondary,
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
-  const { pathname } = useRouter();
+  const { pathname } = useRouter()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
     if (drawerOpen) {
-      handleDrawerClose();
+      handleDrawerClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleOpen = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
+    setDrawerOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+    setDrawerOpen(false)
+  }
 
   return (
     <>
@@ -100,22 +100,22 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
         </Scrollbar>
       </Drawer>
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 type MenuMobileItemProps = {
-  item: MenuItemProps;
-  isOpen: boolean;
-  onOpen: VoidFunction;
-};
+  item: MenuItemProps
+  isOpen: boolean
+  onOpen: VoidFunction
+}
 
 function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
-  const { pathname } = useRouter();
-  const { title, path, icon, children } = item;
+  const { pathname } = useRouter()
+  const { title, path, icon, children } = item
 
-  const isActive = pathname === path;
+  const isActive = pathname === path
 
   if (children) {
     return (
@@ -148,7 +148,7 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
           </Box>
         </Collapse>
       </>
-    );
+    )
   }
 
   if (title === 'Documentation') {
@@ -157,7 +157,7 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText disableTypography primary={title} />
       </ListItemStyle>
-    );
+    )
   }
 
   return (
@@ -176,5 +176,5 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
         <ListItemText disableTypography primary={title} />
       </ListItemStyle>
     </NextLink>
-  );
+  )
 }

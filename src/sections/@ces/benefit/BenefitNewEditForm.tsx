@@ -1,11 +1,21 @@
-import { useEffect, useMemo } from 'react'
-import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
 import { DatePicker, LoadingButton, TimePicker } from '@mui/lab'
-import { Box, Card, Stack, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  Stack,
+  StandardTextFieldProps,
+  TextField,
+  TextFieldVariants,
+  Typography,
+} from '@mui/material'
+import { JSX, useEffect, useMemo } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { BenefitData, BenefitPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
 import { fDateParam } from 'src/utils/formatTime'
+import * as Yup from 'yup'
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form'
 
 // ----------------------------------------------------------------------
@@ -142,10 +152,17 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                   inputFormat="dd/MM/yyyy"
                   label="Start Date"
                   value={field.value}
-                  onChange={(newValue) => {
+                  onChange={(newValue: string | number | Date) => {
                     if (newValue) field.onChange(fDateParam(newValue))
                   }}
-                  renderInput={(params) => (
+                  renderInput={(
+                    params: JSX.IntrinsicAttributes & {
+                      variant?: TextFieldVariants | undefined
+                    } & Omit<
+                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                        'variant'
+                      >
+                  ) => (
                     <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
                   )}
                 />
@@ -161,10 +178,17 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                   inputFormat="dd/MM/yyyy"
                   label="End date"
                   value={field.value}
-                  onChange={(newValue) => {
+                  onChange={(newValue: string | number | Date) => {
                     if (newValue) field.onChange(fDateParam(newValue))
                   }}
-                  renderInput={(params) => (
+                  renderInput={(
+                    params: JSX.IntrinsicAttributes & {
+                      variant?: TextFieldVariants | undefined
+                    } & Omit<
+                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                        'variant'
+                      >
+                  ) => (
                     <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
                   )}
                 />
@@ -191,10 +215,17 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                   ampm={false}
                   label="Time Filter"
                   value={field.value}
-                  onChange={(newValue) => {
+                  onChange={(newValue: any) => {
                     if (newValue) field.onChange(newValue)
                   }}
-                  renderInput={(params) => (
+                  renderInput={(
+                    params: JSX.IntrinsicAttributes & {
+                      variant?: TextFieldVariants | undefined
+                    } & Omit<
+                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                        'variant'
+                      >
+                  ) => (
                     <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
                   )}
                 />

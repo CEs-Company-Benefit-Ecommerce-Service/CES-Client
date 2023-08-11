@@ -1,27 +1,27 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Box, Link, Tooltip, Typography, Checkbox, LinkProps } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Box, Link, Tooltip, Typography, Checkbox, LinkProps } from '@mui/material'
 // redux
-import { useSelector } from '../../../redux/store';
+import { useSelector } from '../../../redux/store'
 // hooks
-import useResponsive from '../../../hooks/useResponsive';
+import useResponsive from '../../../hooks/useResponsive'
 // utils
-import { fDate } from '../../../utils/formatTime';
-import createAvatar from '../../../utils/createAvatar';
+import { fDate } from '../../../utils/formatTime'
+import createAvatar from '../../../utils/createAvatar'
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths'
 // @types
-import { Mail } from '../../../@types/mail';
+import { Mail } from '../../../@types/mail'
 // components
-import Label from '../../../components/Label';
-import Avatar from '../../../components/Avatar';
-import Iconify from '../../../components/Iconify';
+import Label from '../../../components/Label'
+import Avatar from '../../../components/Avatar'
+import Iconify from '../../../components/Iconify'
 //
-import MailItemAction from './MailItemAction';
+import MailItemAction from './MailItemAction'
 
 // ----------------------------------------------------------------------
 
@@ -38,10 +38,10 @@ const RootStyle = styled('div')(({ theme }) => ({
     boxShadow: theme.customShadows.z24,
     '& .showActions': { opacity: 1 },
   },
-}));
+}))
 
 interface WrapStyleProps extends LinkProps {
-  component?: ReactNode;
+  component?: ReactNode | any
 }
 
 const WrapStyle = styled(Link)<WrapStyleProps>(({ theme }) => ({
@@ -49,30 +49,30 @@ const WrapStyle = styled(Link)<WrapStyleProps>(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(2, 0),
   transition: theme.transitions.create('padding'),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 const linkTo = (params: { systemLabel?: string; customLabel?: string }, mailId: string) => {
-  const { systemLabel, customLabel } = params;
-  const baseUrl = PATH_DASHBOARD.mail.root;
+  const { systemLabel, customLabel } = params
+  const baseUrl = PATH_DASHBOARD.mail.root
 
   if (systemLabel) {
-    return `${baseUrl}/${systemLabel}/${mailId}`;
+    return `${baseUrl}/${systemLabel}/${mailId}`
   }
   if (customLabel) {
-    return `${baseUrl}/label/${customLabel}/${mailId}`;
+    return `${baseUrl}/label/${customLabel}/${mailId}`
   }
-  return baseUrl;
-};
+  return baseUrl
+}
 
 type Props = {
-  mail: Mail;
-  isDense: boolean;
-  isSelected: boolean;
-  onDeselect: VoidFunction;
-  onSelect: VoidFunction;
-};
+  mail: Mail
+  isDense: boolean
+  isSelected: boolean
+  onDeselect: VoidFunction
+  onSelect: VoidFunction
+}
 
 export default function MailItem({
   mail,
@@ -82,15 +82,15 @@ export default function MailItem({
   onDeselect,
   ...other
 }: Props) {
-  const { query } = useRouter();
-  const params = query;
-  const { labels } = useSelector((state) => state.mail);
+  const { query } = useRouter()
+  const params = query
+  const { labels } = useSelector((state) => state.mail)
 
-  const isDesktop = useResponsive('up', 'md');
+  const isDesktop = useResponsive('up', 'md')
 
-  const isAttached = mail.files.length > 0;
+  const isAttached = mail.files.length > 0
 
-  const handleChangeCheckbox = (checked: boolean) => (checked ? onSelect() : onDeselect());
+  const handleChangeCheckbox = (checked: boolean) => (checked ? onSelect() : onDeselect())
 
   return (
     <RootStyle
@@ -189,8 +189,8 @@ export default function MailItem({
               <>
                 <Box sx={{ display: 'flex' }}>
                   {mail.labelIds.map((labelId) => {
-                    const label = labels.find((_label) => _label.id === labelId);
-                    if (!label) return null;
+                    const label = labels.find((_label) => _label.id === labelId)
+                    if (!label) return null
                     return (
                       <Label
                         key={label.id}
@@ -203,7 +203,7 @@ export default function MailItem({
                       >
                         {label.name}
                       </Label>
-                    );
+                    )
                   })}
                 </Box>
 
@@ -238,5 +238,5 @@ export default function MailItem({
 
       <MailItemAction className="showActions" />
     </RootStyle>
-  );
+  )
 }
