@@ -81,7 +81,7 @@ export default function CompanyEmployeeToolbar({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search user..."
+        placeholder="Search employee name..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

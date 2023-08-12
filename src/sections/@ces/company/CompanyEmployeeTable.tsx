@@ -257,7 +257,7 @@ export default function CompanyEmployeeTable({ companyId }: Props) {
               onSelectAllRows={(checked) =>
                 onSelectAllRows(
                   checked,
-                  accountList.map((row: any) => `${row.id}`)
+                  accountList.map((row) => `${row.id}`)
                 )
               }
             />

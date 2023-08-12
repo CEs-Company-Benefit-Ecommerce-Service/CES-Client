@@ -1,17 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { DatePicker, LoadingButton, TimePicker } from '@mui/lab'
-import {
-  Box,
-  Card,
-  FilledTextFieldProps,
-  OutlinedTextFieldProps,
-  Stack,
-  StandardTextFieldProps,
-  TextField,
-  TextFieldVariants,
-  Typography,
-} from '@mui/material'
-import { JSX, useEffect, useMemo } from 'react'
+import { LoadingButton } from '@mui/lab'
+import { Box, Card, Stack, Typography } from '@mui/material'
+import { DatePicker, TimePicker } from '@mui/x-date-pickers'
+import { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { BenefitData, BenefitPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
 import { fDateParam } from 'src/utils/formatTime'
@@ -65,7 +56,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
         new Date().setHours(currentUser?.groups?.[0].timeFilter, 0),
       dateFilter: currentUser?.groups?.[0].dateFilter,
       dayFilter: currentUser?.groups?.[0].dayFilter,
-      endDate: currentUser?.groups?.[0].endDate,
+      endDate: new Date(currentUser?.groups?.[0].endDate || ''),
     }),
     [currentUser]
   )
@@ -95,12 +86,14 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
   }, [isEdit, currentUser])
 
   const handleFormSubmit = async (payload: BenefitPayload) => {
-    if (payload.timeFilter) {
+    if (payload.timeFilter && payload.endDate) {
+      const parseDateParam = fDateParam(payload.endDate)
       const parseTimeToNumber = new Date(payload.timeFilter).getHours()
+      payload.endDate = parseDateParam
       payload.timeFilter = parseTimeToNumber
     }
     if (!isEdit) delete payload.status
-    console.log({ payload })
+
     await onSubmit?.(payload)
   }
 
@@ -148,23 +141,31 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               defaultValue={null}
               render={({ field, fieldState: { error } }) => (
                 <DatePicker
+                  disabled={isEdit}
                   disablePast
-                  inputFormat="dd/MM/yyyy"
+                  format="dd/MM/yyyy"
                   label="Start Date"
                   value={field.value}
-                  onChange={(newValue: string | number | Date) => {
-                    if (newValue) field.onChange(fDateParam(newValue))
+                  onChange={(newValue) => {
+                    if (newValue) field.onChange(newValue)
                   }}
-                  renderInput={(
-                    params: JSX.IntrinsicAttributes & {
-                      variant?: TextFieldVariants | undefined
-                    } & Omit<
-                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                        'variant'
-                      >
-                  ) => (
-                    <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-                  )}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!error,
+                      helperText: error?.message,
+                    },
+                  }}
+                  // renderInput={(
+                  //   params: JSX.IntrinsicAttributes & {
+                  //     variant?: TextFieldVariants | undefined
+                  //   } & Omit<
+                  //       FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
+                  //       'variant'
+                  //     >
+                  // ) => (
+                  //   <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
+                  // )}
                 />
               )}
             />
@@ -174,29 +175,27 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               defaultValue={null}
               render={({ field, fieldState: { error } }) => (
                 <DatePicker
+                  disabled={isEdit}
                   disablePast
-                  inputFormat="dd/MM/yyyy"
-                  label="End date"
+                  format="dd/MM/yyyy"
+                  label="End Date"
                   value={field.value}
-                  onChange={(newValue: string | number | Date) => {
-                    if (newValue) field.onChange(fDateParam(newValue))
+                  onChange={(newValue) => {
+                    if (newValue) field.onChange(newValue)
                   }}
-                  renderInput={(
-                    params: JSX.IntrinsicAttributes & {
-                      variant?: TextFieldVariants | undefined
-                    } & Omit<
-                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                        'variant'
-                      >
-                  ) => (
-                    <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-                  )}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!error,
+                      helperText: error?.message,
+                    },
+                  }}
                 />
               )}
             />
           </Stack>
           <Stack direction={'row'} spacing={3}>
-            <RHFSelect name="type" label="Type" placeholder="Status">
+            <RHFSelect name="type" label="Type" placeholder="Status" disabled={isEdit}>
               <option value={undefined} />
               {PLAN_TYPE.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -211,23 +210,21 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               defaultValue={null}
               render={({ field, fieldState: { error } }) => (
                 <TimePicker
+                  disabled={isEdit}
                   views={['hours']}
                   ampm={false}
                   label="Time Filter"
                   value={field.value}
-                  onChange={(newValue: any) => {
+                  onChange={(newValue) => {
                     if (newValue) field.onChange(newValue)
                   }}
-                  renderInput={(
-                    params: JSX.IntrinsicAttributes & {
-                      variant?: TextFieldVariants | undefined
-                    } & Omit<
-                        FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                        'variant'
-                      >
-                  ) => (
-                    <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-                  )}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!error,
+                      helperText: error?.message,
+                    },
+                  }}
                 />
               )}
             />
@@ -235,12 +232,14 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
 
           <Stack direction={'row'} spacing={3}>
             {watch('type') == 2 && (
-              // <Box sx={{ ml: 1 }}>
-              //   <RHFRadioGroup name="dayFilter" options={DAY_IN_WEEK} />
-              // </Box>
               <>
                 <Box flex={1}>
-                  <RHFSelect name="dayFilter" label="Day Filter" placeholder="Status">
+                  <RHFSelect
+                    name="dayFilter"
+                    label="Day Filter"
+                    placeholder="Status"
+                    disabled={isEdit}
+                  >
                     <option value={undefined} />
                     {DAY_IN_WEEK.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -253,10 +252,14 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               </>
             )}
             {watch('type') == 3 && (
-              // <RHFRadioGroup name="dayFilter" options={DATE_IN_MONTH} />
               <>
                 <Box flex={1}>
-                  <RHFSelect name="dateFilter" label="Date Filter" placeholder="Status">
+                  <RHFSelect
+                    name="dateFilter"
+                    label="Date Filter"
+                    placeholder="Status"
+                    disabled={isEdit}
+                  >
                     <option value={undefined} />
                     {DATE_IN_MONTH.map((option) => (
                       <option key={option.value} value={option.value}>

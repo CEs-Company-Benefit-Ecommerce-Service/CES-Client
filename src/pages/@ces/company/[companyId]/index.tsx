@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import { useCompanyDetails } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
@@ -29,6 +30,7 @@ export default function CompanyDetails() {
 
   const { query } = useRouter()
   const { companyId } = query
+  const { data } = useCompanyDetails({ id: `${companyId}` })
 
   const ACCOUNT_TABS = [
     {
@@ -72,8 +74,8 @@ export default function CompanyDetails() {
           heading="Company"
           links={[
             { name: 'Dashboard', href: PATH_CES.root },
-            { name: 'Company', href: PATH_CES.account.root },
-            { name: 'Company Details' },
+            { name: 'Company List', href: PATH_CES.company.root },
+            { name: `${data?.data?.name || capitalCase(companyId as string)}` },
           ]}
         />
 

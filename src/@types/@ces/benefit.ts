@@ -50,6 +50,6 @@ export type BenefitPayload = {
   timeFilter: number | null
   dateFilter: number | null
   dayFilter: number | null
-  endDate: string | null
+  endDate: string | null | Date
   status?: any
 }

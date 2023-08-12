@@ -163,7 +163,7 @@ export default function CompanyOrderTable({ companyId }: Props) {
   }
 
   const handleClickRow = (id: string) => {
-    // push(PATH_CES.order.detail(paramCase(id)))
+    handleViewRow(id)
   }
 
   const dataFiltered = applySortFilter({

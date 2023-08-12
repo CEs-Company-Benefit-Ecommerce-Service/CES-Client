@@ -5,7 +5,7 @@ export const companyApi = {
   getAll(params: Partial<Params>): Promise<BaseResponse<CompanyData[]>> {
     return axiosClient.get(`/company`, { params })
   },
-  getById(id: string) {
+  getById(id: string): Promise<BaseResponse<CompanyData>> {
     return axiosClient.get(`/company/${id}`)
   },
   create: async (payload: CompanyPayload) => await axiosClient.post('/company', payload),

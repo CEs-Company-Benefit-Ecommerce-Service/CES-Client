@@ -33,7 +33,7 @@ export type Props = {
 export default function useTable(props?: Props) {
   const [dense, setDense] = useState(props?.defaultDense || false)
 
-  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name')
+  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy|| "abcxyz")
 
   const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc')
 
@@ -140,9 +140,9 @@ export function getComparator<Key extends keyof any>(
 // }
 
 export function emptyRows(page: number, rowsPerPage: number, arrayLength: number) {
-  const lastPage = Math.ceil(arrayLength / rowsPerPage);
+  const lastPage = Math.ceil(arrayLength / rowsPerPage)
   if (page === lastPage) {
-    return rowsPerPage - (arrayLength % rowsPerPage);
+    return rowsPerPage - (arrayLength % rowsPerPage)
   }
-  return 0;
+  return 0
 }

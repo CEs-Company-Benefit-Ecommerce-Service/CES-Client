@@ -57,9 +57,9 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
   { id: 'limits', label: 'Limit', align: 'left' },
   { id: 'used', label: 'Used', align: 'left' },
-  { id: 'expiredDate', label: 'ExpiredDate', align: 'left' },
-  { id: 'createdat', label: 'Created At', align: 'left' },
-  { id: 'updatedat', label: 'Updated At', align: 'left' },
+  { id: 'expiredDate', label: 'Expired Date', align: 'left' },
+  { id: 'createdAt', label: 'Created At', align: 'left' },
+  { id: 'updatedAt', label: 'Updated At', align: 'left' },
   { id: '' },
 ]
 
@@ -109,7 +109,7 @@ export default function CompanyPage() {
 
   const [filterName, setFilterName] = useState('')
 
- 
+
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
   const filterNameFuction = (value: string) => {

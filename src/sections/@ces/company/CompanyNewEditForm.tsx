@@ -1,20 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
-import { DatePicker, LoadingButton } from '@mui/lab'
-import {
-  Box,
-  Card,
-  FilledTextFieldProps,
-  Grid,
-  OutlinedTextFieldProps,
-  Stack,
-  StandardTextFieldProps,
-  TextField,
-  TextFieldVariants,
-  Typography,
-} from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Box, Card, Grid, Stack, Typography } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers'
 // next
-import { JSX, useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 // form
 import { Controller, useForm } from 'react-hook-form'
 import { CompanyPayload } from 'src/@types/@ces'
@@ -83,8 +73,10 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
   }, [isEdit, currentUser])
 
   const handleFormSubmit = async (payload: CompanyPayload) => {
-    const formatExp = fDateParam(payload.expiredDate)
-    payload.expiredDate = formatExp
+    if (payload.expiredDate) {
+      const formatExp = fDateParam(payload.expiredDate)
+      payload.expiredDate = formatExp
+    }
     await onSubmit?.(payload)
   }
   //------------------------IMAGE UPLOAD------------------------
@@ -146,26 +138,20 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DatePicker
+                    disablePast
+                    format="dd/MM/yyyy"
                     label="Expired date"
                     value={field.value}
-                    onChange={(newValue: any) => {
-                      field.onChange(newValue)
+                    onChange={(newValue) => {
+                      if (newValue) field.onChange(newValue)
                     }}
-                    renderInput={(
-                      params: JSX.IntrinsicAttributes & {
-                        variant?: TextFieldVariants | undefined
-                      } & Omit<
-                          FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                          'variant'
-                        >
-                    ) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        error={!!error}
-                        helperText={error?.message}
-                      />
-                    )}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!error,
+                        helperText: error?.message,
+                      },
+                    }}
                   />
                 )}
               />
