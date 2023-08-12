@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { toNumber } from 'lodash'
@@ -63,7 +63,6 @@ export default function DebtDetails({ debt, compId, mutate }: Props) {
   const rs = Object.values(DebtStatus)
 
   const { id, total, status, imageUrl, createdAt } = debt
-
 
   const handleUpdate = async (status: number) => {
     const payload: TransactionUpdatePayload = { status: status, imageUrl: imageUrl }
@@ -186,10 +185,19 @@ export default function DebtDetails({ debt, compId, mutate }: Props) {
                     <TableRow
                       sx={{
                         borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-                      }}  
+                      }}
                     >
                       <TableCell>{id}</TableCell>
                       <TableCell align="left">{company?.data?.name}</TableCell>
+                      {/* <TableCell align="left">
+                        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+                          {fDateVN(createdAt)}
+                        </Typography>
+                        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+                          {fTime(createdAt)}
+                        </Typography>
+                      </TableCell> */}
+
                       <TableCell align="left">{fDateVN(createdAt)}</TableCell>
                       <TableCell align="left">{company?.data?.used}</TableCell>
                       <TableCell align="right">{fCurrency(total)}</TableCell>

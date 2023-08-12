@@ -1,4 +1,4 @@
-import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
+import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
 // @mui
 import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
@@ -7,7 +7,7 @@ import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
 import { fNumber } from 'src/utils/formatNumber'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 type Props = {
   row: Order
   selected: boolean
@@ -66,8 +66,23 @@ export default function OrderTableRow({
         {fNumber(total)}
       </TableCell>
       <TableCell align="left">{companyName}</TableCell>
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
-      <TableCell align="left">{fDateVN(updatedAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(updatedAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(updatedAt)}
+        </Typography>
+      </TableCell>
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

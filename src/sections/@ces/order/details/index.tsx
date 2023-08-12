@@ -6,7 +6,8 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent, Grid,
+  CardContent,
+  Grid,
   MenuItem,
   Stack,
   Table,
@@ -16,7 +17,7 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { useState } from 'react'
@@ -60,7 +61,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
 
   const { id, orderCode, total, updatedAt, createdAt, status, employee, orderDetails } = order
 
-
   const handleUpdate = async () => {
     setLoading(true)
     await handleEditOrderSubmit(id, status + 1)
@@ -97,7 +97,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                   label="Status"
                   defaultValue={status}
                   // value={status}
-            
+
                   SelectProps={{
                     MenuProps: {
                       sx: { '& .MuiPaper-root': { maxHeight: 260 } },
@@ -203,6 +203,23 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                             </Box>
                           </TableCell>
                           <TableCell align="left">{row?.quantity}</TableCell>
+                          {/* <TableCell align="left">
+                            <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+                              {fDateVN(createdAt)}
+                            </Typography>
+                            <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+                              {fTime(createdAt)}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+                              {fDateVN(updatedAt)}
+                            </Typography>
+                            <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+                              {fTime(updatedAt)}
+                            </Typography>
+                          </TableCell> */}
                           <TableCell align="left">{fDateVN(createdAt!)}</TableCell>
                           <TableCell align="left">{fDateVN(updatedAt!)}</TableCell>
                           <TableCell align="right">{fCurrency(row?.product?.price)}</TableCell>

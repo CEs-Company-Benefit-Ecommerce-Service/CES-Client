@@ -1,9 +1,9 @@
-import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
+import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
 import { useState } from 'react'
 import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import { TableMoreMenu } from 'src/components/table'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
 // components
@@ -27,7 +27,6 @@ export default function TransactionTableRow({
   onDeleteRow,
   isValidating,
 }: Props) {
-
   const { description, total, type, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
@@ -39,7 +38,6 @@ export default function TransactionTableRow({
   const handleCloseMenu = () => {
     setOpenMenuActions(null)
   }
-
 
   if (isValidating) {
     return null
@@ -56,7 +54,14 @@ export default function TransactionTableRow({
       </TableCell>
       <TableCell align="left">{type === 3 ? 'ZALOPAY' : 'VNPAY'}</TableCell>
 
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
 
       <TableCell align="right">
         <TableMoreMenu

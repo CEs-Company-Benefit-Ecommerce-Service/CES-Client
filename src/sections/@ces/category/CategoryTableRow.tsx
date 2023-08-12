@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Category } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import { TableMoreMenu } from 'src/components/table'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
 // components
@@ -56,10 +56,24 @@ export default function CategoryTableRow({
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>
-
       </TableCell>
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
-      <TableCell align="left">{fDateVN(updatedAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(updatedAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(updatedAt)}
+        </Typography>
+      </TableCell>
 
       <TableCell align="right">
         <TableMoreMenu

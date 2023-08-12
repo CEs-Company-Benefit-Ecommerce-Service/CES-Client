@@ -1,28 +1,28 @@
-import { useState } from 'react';
-import { sentenceCase } from 'change-case';
+import { sentenceCase } from 'change-case'
+import { useState } from 'react'
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { TableRow, Checkbox, TableCell, Typography, MenuItem } from '@mui/material';
+import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 // utils
-import { fDate } from '../../../../utils/formatTime';
-import { fCurrency } from '../../../../utils/formatNumber';
+import { fCurrency } from '../../../../utils/formatNumber'
+import { fDateVN, fTime } from '../../../../utils/formatTime'
 // @types
-import { Product } from '../../../../@types/product';
+import { Product } from '../../../../@types/product'
 // components
-import Label from '../../../../components/Label';
-import Image from '../../../../components/Image';
-import Iconify from '../../../../components/Iconify';
-import { TableMoreMenu } from '../../../../components/table';
+import Iconify from '../../../../components/Iconify'
+import Image from '../../../../components/Image'
+import Label from '../../../../components/Label'
+import { TableMoreMenu } from '../../../../components/table'
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  row: Product;
-  selected: boolean;
-  onEditRow: VoidFunction;
-  onSelectRow: VoidFunction;
-  onDeleteRow: VoidFunction;
-};
+  row: Product
+  selected: boolean
+  onEditRow: VoidFunction
+  onSelectRow: VoidFunction
+  onDeleteRow: VoidFunction
+}
 
 export default function ProductTableRow({
   row,
@@ -31,19 +31,19 @@ export default function ProductTableRow({
   onDeleteRow,
   onEditRow,
 }: Props) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const { name, cover, createdAt, inventoryType, price } = row;
+  const { name, cover, createdAt, inventoryType, price } = row
 
-  const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null);
+  const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setOpenMenuActions(event.currentTarget);
-  };
+    setOpenMenuActions(event.currentTarget)
+  }
 
   const handleCloseMenu = () => {
-    setOpenMenuActions(null);
-  };
+    setOpenMenuActions(null)
+  }
 
   return (
     <TableRow hover selected={selected}>
@@ -63,7 +63,14 @@ export default function ProductTableRow({
         </Typography>
       </TableCell>
 
-      <TableCell>{fDate(createdAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
 
       <TableCell align="center">
         <Label
@@ -90,8 +97,8 @@ export default function ProductTableRow({
             <>
               <MenuItem
                 onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
+                  onDeleteRow()
+                  handleCloseMenu()
                 }}
                 sx={{ color: 'error.main' }}
               >
@@ -100,8 +107,8 @@ export default function ProductTableRow({
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
+                  onEditRow()
+                  handleCloseMenu()
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
@@ -112,5 +119,5 @@ export default function ProductTableRow({
         />
       </TableCell>
     </TableRow>
-  );
+  )
 }

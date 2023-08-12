@@ -1,4 +1,4 @@
-import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
+import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
 // @mui
 import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
@@ -6,7 +6,7 @@ import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
 // components
@@ -32,7 +32,7 @@ export default function DebtTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const {  companyName, total, type, status, createdAt } = row
+  const { companyName, total, type, status, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -43,7 +43,6 @@ export default function DebtTableRow({
   const handleCloseMenu = () => {
     setOpenMenuActions(null)
   }
-
 
   if (isValidating) {
     return null
@@ -61,7 +60,15 @@ export default function DebtTableRow({
       <TableCell align="left">
         {type === 3 ? 'ZALOPAY' : type === 6 ? 'BANKING' : 'VNPAY'}
       </TableCell>
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 // @mui
-import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
+import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { BenefitData } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
 import { fCurrency } from 'src/utils/formatNumber'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 
 // ----------------------------------------------------------------------
 
@@ -81,8 +81,23 @@ export default function BenefitTableRow({
         </Label>
       </TableCell>
 
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
-      <TableCell align="left">{fDateVN(updatedAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(updatedAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(updatedAt)}
+        </Typography>
+      </TableCell>
 
       <TableCell
         align="right"

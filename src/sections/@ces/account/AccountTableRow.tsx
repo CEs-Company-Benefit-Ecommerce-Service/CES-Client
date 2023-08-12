@@ -8,7 +8,7 @@ import { TableMoreMenu } from 'src/components/table'
 import Iconify from 'src/components/Iconify'
 import createAvatar from 'src/utils/createAvatar'
 import Avatar from 'src/components/Avatar'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 // import { UserManager } from '../../../../@types/user';
 // // components
@@ -95,8 +95,23 @@ export default function AccountTableRow({
         </Label>
       </TableCell>
 
-      <TableCell align="left">{fDateVN(createdAt)}</TableCell>
-      <TableCell align="left">{fDateVN(updatedAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(updatedAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(updatedAt)}
+        </Typography>
+      </TableCell>
 
       <TableCell
         align="right"
