@@ -1,10 +1,12 @@
 // @mui
+import { LoadingButton } from '@mui/lab'
 import {
+  Avatar,
   Box,
   Button,
   Card,
-  Divider,
-  Grid,
+  CardActions,
+  CardContent, Grid,
   MenuItem,
   Stack,
   Table,
@@ -14,20 +16,19 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
-import { toNumber } from 'lodash'
 import { useState } from 'react'
 //
 import { Order, Status, UpdateOrderStatus } from 'src/@types/@ces/order'
+import createAvatar from 'src/utils/createAvatar'
 import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN } from 'src/utils/formatTime'
 // utils
 // components
 import Label from '../../../../components/Label'
 import Scrollbar from '../../../../components/Scrollbar'
-import { LoadingButton } from '@mui/lab'
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +51,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
 
   const [loading, setLoading] = useState(false)
   const [changeStatus, setChangeStatus] = useState(false)
-  const [statusValue, setStatusValue] = useState<number>()
   // const { query, push } = useRouter()
   if (!order) {
     return null
@@ -60,9 +60,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
 
   const { id, orderCode, total, updatedAt, createdAt, status, employee, orderDetails } = order
 
-  const handleUpdateStatus = () => {
-    setChangeStatus(!changeStatus)
-  }
+
   const handleUpdate = async () => {
     setLoading(true)
     await handleEditOrderSubmit(id, status + 1)
@@ -72,8 +70,9 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
 
   return (
     <>
-      <Card sx={{ pt: 5, px: 5 }}>
-        <Grid container>
+      {/* <Card sx={{ pt: 5, px: 5 }}> */}
+      <Grid container spacing={2}>
+        <Grid container item>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'left' } }}>
               {!changeStatus ? (
@@ -98,9 +97,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                   label="Status"
                   defaultValue={status}
                   // value={status}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setStatusValue(toNumber(e.target.value))
-                  }
+            
                   SelectProps={{
                     MenuProps: {
                       sx: { '& .MuiPaper-root': { maxHeight: 260 } },
@@ -160,109 +157,129 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
               </LoadingButton>
             </Stack>
           </Grid>
+        </Grid>
+        <Grid container item spacing={2} sx={{ justifyContent: 'space-between' }}>
+          <Grid item xs={12} sm={8} sx={{ mb: 5 }} component={Card}>
+            <CardContent>
+              <Typography variant="h5">Details</Typography>
+            </CardContent>
+            <CardActions sx={{ pb: 4 }}>
+              {' '}
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 600 }}>
+                  <Table>
+                    <TableHead
+                      sx={{
+                        borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
+                        '& th': { backgroundColor: 'transparent' },
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell width={40}>#</TableCell>
+                        <TableCell align="left">Product</TableCell>
+                        <TableCell align="left">Qty</TableCell>
+                        <TableCell align="left">Created At</TableCell>
+                        <TableCell align="left">Updated At</TableCell>
+                        <TableCell align="right">Unit price</TableCell>
+                        <TableCell align="right">Total</TableCell>
+                      </TableRow>
+                    </TableHead>
 
-          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Customer Information
-            </Typography>
-            <Typography variant="body2">Name: {employee?.account.name}</Typography>
-            <Typography variant="body2">Address: {employee?.account.address}</Typography>
-            <Typography variant="body2">Email: {employee?.account.email}</Typography>
-            <Typography variant="body2">Phone: {employee?.account.phone}</Typography>
+                    <TableBody>
+                      {orderDetails?.map((row: any, index: any) => (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
+                          }}
+                        >
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell align="left">
+                            <Box sx={{ maxWidth: 560 }}>
+                              <Typography variant="subtitle2">{row?.product?.name}</Typography>
+                              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                {row?.product?.notes}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell align="left">{row?.quantity}</TableCell>
+                          <TableCell align="left">{fDateVN(createdAt!)}</TableCell>
+                          <TableCell align="left">{fDateVN(updatedAt!)}</TableCell>
+                          <TableCell align="right">{fCurrency(row?.product?.price)}</TableCell>
+                          <TableCell align="right">{fCurrency(row.price)}</TableCell>
+                        </TableRow>
+                      ))}
+
+                      <RowResultStyle>
+                        <TableCell colSpan={5} />
+                        <TableCell align="right">
+                          <Box sx={{ mt: 2 }} />
+                          <Typography>Subtotal</Typography>
+                        </TableCell>
+                        <TableCell align="right" width={120}>
+                          <Box sx={{ mt: 2 }} />
+                          <Typography>{fCurrency(total)}</Typography>
+                        </TableCell>
+                      </RowResultStyle>
+
+                      <RowResultStyle>
+                        <TableCell colSpan={5} />
+                        <TableCell align="right">
+                          <Typography>Discount</Typography>
+                        </TableCell>
+                        <TableCell align="right" width={120}>
+                          <Typography sx={{ color: 'error.main' }}>
+                            {/* {discount && fCurrency(-discount)} */}Nah
+                          </Typography>
+                        </TableCell>
+                      </RowResultStyle>
+                      <RowResultStyle>
+                        <TableCell colSpan={5} />
+                        <TableCell align="right">
+                          <Typography variant="h6">Total</Typography>
+                        </TableCell>
+                        <TableCell align="right" width={140}>
+                          <Typography variant="h6">{fCurrency(total)}</Typography>
+                        </TableCell>
+                      </RowResultStyle>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+            </CardActions>
           </Grid>
-
-          <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Date create
-            </Typography>
-            <Typography variant="body2">{fDateVN(createdAt!)}</Typography>
-            <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Date update
-            </Typography>
-            <Typography variant="body2">{fDateVN(updatedAt!)}</Typography>
+          <Grid item xs={12} sm={3.5} sx={{ mb: 5 }} component={Card}>
+            <CardContent>
+              <Typography variant="h6">Customer Info</Typography>
+            </CardContent>
+            <CardActions sx={{ pl: 3 }}>
+              {' '}
+              <Grid item xs={3} sx={{ alignItems: 'none' }}>
+                <Avatar
+                  src={employee?.account?.imageUrl}
+                  alt={'image employee'}
+                  sx={{ width: 56, height: 56 }}
+                  color={
+                    employee?.account?.imageUrl
+                      ? 'default'
+                      : createAvatar(employee?.account?.imageUrl || '').color
+                  }
+                >
+                  {createAvatar(employee?.account?.imageUrl || '').name}
+                </Avatar>
+              </Grid>
+              <Grid item xs={9}>
+                <Typography variant="body1">{employee?.account.name}</Typography>
+                <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+                  {employee?.account.email}
+                </Typography>
+                <Typography variant="body2">Shipping to {employee?.account.address}</Typography>
+                <Typography variant="body2">Phone {employee?.account.phone}</Typography>
+              </Grid>
+            </CardActions>
           </Grid>
         </Grid>
-
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 960 }}>
-            <Table>
-              <TableHead
-                sx={{
-                  borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-                  '& th': { backgroundColor: 'transparent' },
-                }}
-              >
-                <TableRow>
-                  <TableCell width={40}>#</TableCell>
-                  <TableCell align="left">Product</TableCell>
-                  <TableCell align="left">Qty</TableCell>
-                  <TableCell align="right">Unit price</TableCell>
-                  <TableCell align="right">Total</TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {orderDetails?.map((row: any, index: any) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-                    }}
-                  >
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell align="left">
-                      <Box sx={{ maxWidth: 560 }}>
-                        <Typography variant="subtitle2">{row?.product?.name}</Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                          {row?.product?.notes}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="left">{row?.quantity}</TableCell>
-                    <TableCell align="right">{fCurrency(row?.product?.price)}</TableCell>
-                    <TableCell align="right">{fCurrency(row.price)}</TableCell>
-                  </TableRow>
-                ))}
-
-                <RowResultStyle>
-                  <TableCell colSpan={3} />
-                  <TableCell align="right">
-                    <Box sx={{ mt: 2 }} />
-                    <Typography>Subtotal</Typography>
-                  </TableCell>
-                  <TableCell align="right" width={120}>
-                    <Box sx={{ mt: 2 }} />
-                    <Typography>{fCurrency(total)}</Typography>
-                  </TableCell>
-                </RowResultStyle>
-
-                <RowResultStyle>
-                  <TableCell colSpan={3} />
-                  <TableCell align="right">
-                    <Typography>Discount</Typography>
-                  </TableCell>
-                  <TableCell align="right" width={120}>
-                    <Typography sx={{ color: 'error.main' }}>
-                      {/* {discount && fCurrency(-discount)} */}Nah
-                    </Typography>
-                  </TableCell>
-                </RowResultStyle>
-                <RowResultStyle>
-                  <TableCell colSpan={3} />
-                  <TableCell align="right">
-                    <Typography variant="h6">Total</Typography>
-                  </TableCell>
-                  <TableCell align="right" width={140}>
-                    <Typography variant="h6">{fCurrency(total)}</Typography>
-                  </TableCell>
-                </RowResultStyle>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-
-        <Divider sx={{ mt: 5 }} />
-      </Card>
+      </Grid>
     </>
   )
 }

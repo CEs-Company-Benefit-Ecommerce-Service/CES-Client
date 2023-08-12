@@ -3,9 +3,7 @@ import Iconify from 'src/components/Iconify'
 type Props = {
   optionsStatus: string[]
   filterName: string
-  filterStatus: string
   onFilterName: (value: string) => void
-  onFilterStatus: (event: React.ChangeEvent<HTMLInputElement>) => void
   optionsSort: {
     id: string
     label?: string
@@ -21,9 +19,7 @@ type Props = {
 
 export default function DebtTableToolbar({
   filterName,
-  filterStatus,
   onFilterName,
-  onFilterStatus,
   optionsStatus,
   filterOptions,
   onFilterOptions,

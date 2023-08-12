@@ -1,44 +1,33 @@
-import { useState } from 'react'
-import { sentenceCase } from 'change-case'
-// @mui
-import { useTheme } from '@mui/material/styles'
 import {
   Box,
-  Card,
-  Table,
   Button,
+  Card,
+  CardHeader,
+  CardProps,
   Divider,
   MenuItem,
-  TableRow,
+  Table,
   TableBody,
   TableCell,
-  CardProps,
-  CardHeader,
   TableContainer,
-  Typography,
+  TableRow,
+  Typography
 } from '@mui/material'
-// utils
-import { fCurrency } from '../../../../../utils/formatNumber'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { Order } from 'src/@types/@ces'
+import Scrollbar from 'src/components/Scrollbar'
+import { PATH_CES } from 'src/routes/paths'
+import { fDateVN } from 'src/utils/formatTime'
 // components
 // import Label from '../../../../../components/Label'
 import Iconify from '../../../../../components/Iconify'
 // import Scrollbar from '../../../../../components/Scrollbar'
-import { TableMoreMenu, TableHeadCustom } from '../../../../../components/table'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import { Order } from 'src/@types/@ces'
-import { fDateVN } from 'src/utils/formatTime'
-import { PATH_CES } from 'src/routes/paths'
-import { useRouter } from 'next/router'
+import { TableHeadCustom, TableMoreMenu } from '../../../../../components/table'
+// utils
+import { fCurrency } from '../../../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
-
-type RowProps = {
-  id: string
-  category: string
-  price: number
-  status: string
-}
 
 interface Props extends CardProps {
   title?: string
@@ -101,7 +90,6 @@ type AppNewInvoiceRowProps = {
 }
 
 function AppNewInvoiceRow({ row }: AppNewInvoiceRowProps) {
-  const theme = useTheme()
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 

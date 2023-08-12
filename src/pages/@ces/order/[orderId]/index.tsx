@@ -31,7 +31,7 @@ InvoiceDetails.getLayout = function getLayout(page: React.ReactElement) {
 export default function InvoiceDetails() {
   const { themeStretch } = useSettings()
   const { enqueueSnackbar } = useSnackbar()
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { orderId } = query
   const { data, mutate, isLoading } = useOrderDetail({ id: `${orderId}` })
   const handleEditOrderSubmit = async (id: string, status: number) => {

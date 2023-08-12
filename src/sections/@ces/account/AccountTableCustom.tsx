@@ -63,7 +63,6 @@ export default function AccountTableCustom({}: Props) {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,

@@ -1,7 +1,6 @@
 import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
 import { useState } from 'react'
 import { TransactionHistory } from 'src/@types/@ces'
-import { DebtStatus } from 'src/@types/@ces/debt'
 import Iconify from 'src/components/Iconify'
 import { TableMoreMenu } from 'src/components/table'
 import { fNumber } from 'src/utils/formatNumber'
@@ -26,7 +25,7 @@ export default function EmployeeTransactionTableRow({
 }: Props) {
   // const theme = useTheme()
 
-  const { invoiceId, total, type, id, description, status, createdAt } = row
+  const { total, type, id, description, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -36,10 +35,6 @@ export default function EmployeeTransactionTableRow({
 
   const handleCloseMenu = () => {
     setOpenMenuActions(null)
-  }
-  const mapStatus = (status: number) => {
-    const rs = Object.values(DebtStatus)
-    return rs[status]
   }
 
   if (isValidating) {

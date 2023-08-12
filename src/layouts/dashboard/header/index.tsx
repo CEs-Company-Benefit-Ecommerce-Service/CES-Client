@@ -1,23 +1,20 @@
 // @mui
+import { AppBar, Box, Stack, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar } from '@mui/material';
+import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from '../../../components/Iconify';
+// components
+import Logo from '../../../components/Logo';
+// config
+import { HEADER, NAVBAR } from '../../../config';
 // hooks
 import useOffSetTop from '../../../hooks/useOffSetTop';
 import useResponsive from '../../../hooks/useResponsive';
 // utils
 import cssStyles from '../../../utils/cssStyles';
-// config
-import { HEADER, NAVBAR } from '../../../config';
-// components
-import Logo from '../../../components/Logo';
-import Iconify from '../../../components/Iconify';
-import { IconButtonAnimate } from '../../../components/animate';
+import AccountPopover from './AccountPopover';
 //
 import Searchbar from './Searchbar';
-import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import ContactsPopover from './ContactsPopover';
-import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 

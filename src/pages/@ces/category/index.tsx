@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   FormControlLabel,
   IconButton,
   Switch,
@@ -12,7 +11,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -30,7 +29,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useAccountDetails } from 'src/hooks/@ces'
@@ -68,7 +67,6 @@ export default function CategoryPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
@@ -106,16 +104,11 @@ export default function CategoryPage() {
 
   const [filterName, setFilterName] = useState('')
 
-  const [filterRole, setFilterRole] = useState('all')
-
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
+  const { currentTab: filterStatus } = useTabs('all')
 
-  const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterRole(event.target.value)
-  }
   useMemo(
     () =>
       setParams({
@@ -180,16 +173,14 @@ export default function CategoryPage() {
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
+
     filterStatus,
   })
 
   const denseHeight = dense ? 52 : 72
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
-    (!dataFiltered.length && !!filterStatus)
+    (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
 
   return (
     <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
@@ -247,7 +238,6 @@ export default function CategoryPage() {
                     }
                   />
                 )}
-                <Divider />
                 <Table size={dense ? 'small' : 'medium'}>
                   <TableHeadCustom
                     order={order}
@@ -323,13 +313,11 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-  filterRole,
 }: {
   tableData: Category[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-  filterRole: string
 }) {
   return tableData
 }

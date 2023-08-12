@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { Params, Role } from 'src/@types/@ces'
-import { ProjectData, PROJECT_STATUS_OPTIONS } from 'src/@types/@ces/project'
+import { ProjectData } from 'src/@types/@ces/project'
 import { projectApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
@@ -70,7 +70,6 @@ export default function ProjectPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     // setSelected,
@@ -90,10 +89,8 @@ export default function ProjectPage() {
   const { enqueueSnackbar } = useSnackbar()
   const [params, setParams] = useState<Partial<Params>>()
 
-  const { data, isValidating, isLoading } = useProjectList({ params })
+  const { data, isLoading } = useProjectList({ params })
   const projectList: ProjectData[] = data?.data || []
-
-  const statusList = PROJECT_STATUS_OPTIONS
 
   const [filterName, setFilterName] = useState('')
 
@@ -101,7 +98,7 @@ export default function ProjectPage() {
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
+  const { currentTab: filterStatus } = useTabs('all')
   useMemo(
     () =>
       setParams({

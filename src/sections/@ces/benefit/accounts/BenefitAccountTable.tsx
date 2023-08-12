@@ -16,13 +16,13 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { capitalCase, paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
-import { ACCOUNT_STATUS_OPTIONS_SA, Params, Role } from 'src/@types/@ces'
+import { Params, Role } from 'src/@types/@ces'
 import { accountApi, projectApi } from 'src/api-client'
 import Iconify from 'src/components/Iconify'
 import Scrollbar from 'src/components/Scrollbar'
@@ -31,7 +31,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { useAccountDetails, useProjectListMemberNotInGroup } from 'src/hooks/@ces'
 import useAuth from 'src/hooks/useAuth'
@@ -88,7 +88,6 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
 
   const { user } = useAuth()
 
-  const statusOptions = ACCOUNT_STATUS_OPTIONS_SA
 
   const { enqueueSnackbar } = useSnackbar()
   const [params, setParams] = useState<Partial<Params>>()
@@ -189,9 +188,7 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
     })
   }
 
-  const handleDeleteRows = (selected: string[]) => {
-    console.log('delete all account action', selected)
-  }
+
 
   const handleEditRow = (id: string) => {
     // push(PATH_CES.account.edit(paramCase(id)))

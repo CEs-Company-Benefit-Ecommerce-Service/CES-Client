@@ -1,10 +1,7 @@
 // @mui
 import {
   Box,
-  Card,
-  Container,
-  Divider,
-  FormControlLabel,
+  Card, FormControlLabel,
   IconButton,
   Switch,
   Table,
@@ -12,7 +9,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -27,7 +24,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { useCategoryListBySupplier } from 'src/hooks/@ces/useCategory'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -64,7 +61,6 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
@@ -81,7 +77,7 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
 
   const [params, setParams] = useState<Partial<Params>>()
 
-  const { data, mutate, isLoading, isValidating } = useCategoryListBySupplier({
+  const { data, mutate, isLoading } = useCategoryListBySupplier({
     supplierId,
     params,
   })
@@ -92,16 +88,12 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
 
   const [filterName, setFilterName] = useState('')
 
-  const [filterRole, setFilterRole] = useState('all')
 
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
 
-  const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterRole(event.target.value)
-  }
   useMemo(
     () =>
       setParams({
@@ -166,7 +158,6 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
     filterStatus,
   })
 
@@ -174,7 +165,6 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
 
   const isNotFound =
     (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
     (!dataFiltered.length && !!filterStatus)
 
   return (
@@ -300,13 +290,11 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-  filterRole,
 }: {
   tableData: Category[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-  filterRole: string
 }) {
   return tableData
 }

@@ -11,7 +11,6 @@ import {
   TablePagination,
   Tabs,
   Tooltip,
-  useTheme
 } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
@@ -56,7 +55,6 @@ export default function TransactionTableCustom() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
@@ -69,8 +67,6 @@ export default function TransactionTableCustom() {
     onChangeRowsPerPage,
   } = useTable()
 
-  // const { push } = useRouter()
-  const theme = useTheme()
   const { user } = useAuth()
   const compId = user?.companyId?.toString()
   const [params, setParams] = useState<Partial<Params>>()

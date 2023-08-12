@@ -1,10 +1,7 @@
 // @mui
 import {
   Box,
-  Card,
-  Container,
-  Divider,
-  FormControlLabel,
+  Card, FormControlLabel,
   IconButton,
   Switch,
   Table,
@@ -12,7 +9,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -28,7 +25,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { useCategoryListBySupplier } from 'src/hooks/@ces'
 import { useProductBySupplierId } from 'src/hooks/@ces/useProduct'
@@ -69,7 +66,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
     order,
     orderBy,
     rowsPerPage,
-    setPage,
+
     //
     selected,
     setSelected,
@@ -84,7 +81,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
 
   const { push } = useRouter()
   const [filterName, setFilterName] = useState('')
-  const [filterRole, setFilterRole] = useState('all')
+
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
@@ -175,7 +172,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
+
     filterStatus,
   })
 
@@ -183,7 +180,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
 
   const isNotFound =
     (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
+
     (!dataFiltered.length && !!filterStatus)
   return (
     <Card>
@@ -311,13 +308,13 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-  filterRole,
+
 }: {
   tableData: Product[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-  filterRole: string
+
 }) {
   return tableData
 }

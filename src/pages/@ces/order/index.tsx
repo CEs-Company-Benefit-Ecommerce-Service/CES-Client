@@ -91,7 +91,7 @@ export default function OrderPage() {
   const { push } = useRouter()
 
   const [params, setParams] = useState<Partial<Params>>()
-  const { data, isValidating, isLoading: supLoading, mutate } = useOrder({ params })
+  const { data, isValidating, isLoading: supLoading } = useOrder({ params })
   const { data: orders, isLoading: monthLoading } = useOrderByCompanyId({
     companyId: user?.companyId?.toString(),
     params,

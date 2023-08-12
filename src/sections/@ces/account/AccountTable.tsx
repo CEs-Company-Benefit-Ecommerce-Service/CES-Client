@@ -1,8 +1,6 @@
 import {
   Box,
-  Card,
-  Divider,
-  FormControlLabel,
+  Card, FormControlLabel,
   IconButton,
   Switch,
   Tab,
@@ -11,7 +9,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -26,7 +24,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'

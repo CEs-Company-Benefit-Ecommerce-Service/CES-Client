@@ -64,8 +64,7 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
 
   const {
     reset,
-    watch,
-    // control,
+
     setValue,
     handleSubmit,
     formState: { isSubmitting },

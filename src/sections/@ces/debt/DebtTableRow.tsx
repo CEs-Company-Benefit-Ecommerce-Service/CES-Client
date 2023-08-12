@@ -1,9 +1,8 @@
-import { Avatar, Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
+import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
 // @mui
 import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 import { TransactionHistory } from 'src/@types/@ces'
-import { DebtStatus } from 'src/@types/@ces/debt'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
@@ -33,7 +32,7 @@ export default function DebtTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { description, companyName, total, type, status, createdAt } = row
+  const {  companyName, total, type, status, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -44,10 +43,7 @@ export default function DebtTableRow({
   const handleCloseMenu = () => {
     setOpenMenuActions(null)
   }
-  const mapStatus = (status: number) => {
-    const rs = Object.values(DebtStatus)
-    return rs[status]
-  }
+
 
   if (isValidating) {
     return null

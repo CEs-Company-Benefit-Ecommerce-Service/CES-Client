@@ -1,11 +1,7 @@
-import { Avatar, Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
-// @mui
-import { useTheme } from '@mui/material/styles'
+import { Checkbox, MenuItem, TableCell, TableRow } from '@mui/material'
 import { useState } from 'react'
-import { Debt, TransactionHistory } from 'src/@types/@ces'
-import { DebtStatus } from 'src/@types/@ces/debt'
+import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
-import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
 import { fDateVN } from 'src/utils/formatTime'
 // @types
@@ -31,9 +27,8 @@ export default function TransactionTableRow({
   onDeleteRow,
   isValidating,
 }: Props) {
-  const theme = useTheme()
 
-  const { description, companyName, total, type, status, createdAt } = row
+  const { description, total, type, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -44,10 +39,7 @@ export default function TransactionTableRow({
   const handleCloseMenu = () => {
     setOpenMenuActions(null)
   }
-  const mapStatus = (status: number) => {
-    const rs = Object.values(DebtStatus)
-    return rs[status]
-  }
+
 
   if (isValidating) {
     return null

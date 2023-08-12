@@ -8,7 +8,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  Tabs,
+  Tabs
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Params, TransactionHistory } from 'src/@types/@ces'
@@ -18,7 +18,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { usePayment } from 'src/hooks/@ces/usePayment'
 import useTable, { emptyRows } from 'src/hooks/useTable'
@@ -44,10 +44,8 @@ export default function CompanyTransactionTable({ companyId }: Props) {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
-    setSelected,
     onSelectRow,
     onSelectAllRows,
     //

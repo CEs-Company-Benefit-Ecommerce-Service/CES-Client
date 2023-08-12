@@ -74,7 +74,6 @@ export default function CompanyPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     // setSelected,
@@ -110,7 +109,7 @@ export default function CompanyPage() {
 
   const [filterName, setFilterName] = useState('')
 
-  const [filterRole, setFilterRole] = useState('all')
+ 
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
   const filterNameFuction = (value: string) => {
@@ -185,7 +184,6 @@ export default function CompanyPage() {
     tableData: companyList,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
     filterStatus,
   })
 
@@ -193,7 +191,6 @@ export default function CompanyPage() {
 
   const isNotFound =
     (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
     (!dataFiltered.length && !!filterStatus)
 
   return (
@@ -349,13 +346,11 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-  filterRole,
 }: {
   tableData: CompanyData[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-  filterRole: string
 }) {
   return tableData
 }

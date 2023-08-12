@@ -33,20 +33,31 @@ export function usePayment({ params, options }: UsePaymentProps) {
   }
 }
 
-export function usePaymentSystem({ params, options, companyId }: UsePaymentProps) {
+export function usePaymentSystem({ params, options }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
-    ['/transaction-sa-wallet', params],
+    ['/transaction-sa-wallet-debt', params],
     () => paymentApi.satransaction(params!),
     {
-      // revalidateOnFocus: false,
-      // dedupingInterval: 10 * 1000, // 10s
+      revalidateOnFocus: true,
       keepPreviousData: true,
-      fallbackData: {
-        code: 0,
-        message: '',
-        metaData: null,
-        data: [],
-      },
+      ...options,
+    }
+  )
+  return {
+    data,
+    error,
+    mutate,
+    isLoading,
+  }
+}
+
+export function usePaymentSystemDebt({ params, options }: UsePaymentProps) {
+  const { data, error, mutate, isLoading } = useSWR(
+    ['/transaction-debt', params],
+    () => paymentApi.satransaction(params!),
+    {
+      revalidateOnFocus: false,
+      keepPreviousData: true,
       ...options,
     }
   )

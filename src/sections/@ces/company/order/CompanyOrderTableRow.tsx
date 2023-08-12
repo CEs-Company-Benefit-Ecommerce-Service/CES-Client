@@ -26,7 +26,7 @@ export default function CompanyOrderTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { total, orderCode, createdAt, updatedAt, status, employee } = row
+  const { total, orderCode, createdAt, status, employee } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 

@@ -1,7 +1,5 @@
 import { Params } from 'src/@types/@ces'
 import { debtApi } from 'src/api-client/debt'
-import { orderApi } from 'src/api-client/order'
-import { productApi } from 'src/api-client/product'
 import useSWR, { SWRConfiguration } from 'swr'
 
 type UseDebtProps = {

@@ -14,11 +14,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { toNumber } from 'lodash'
-import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { Debt, TransactionUpdatePayload } from 'src/@types/@ces'
@@ -53,10 +52,8 @@ type Props = {
 
 export default function DebtDetails({ debt, compId, mutate }: Props) {
   const theme = useTheme()
-  const [loading, setLoading] = useState(false)
   const [changeStatus, setChangeStatus] = useState(false)
   const [statusValue, setStatusValue] = useState<number>()
-  const { query, push } = useRouter()
   const { data: company } = useCompanyDetails({ id: `${compId}` })
   const { enqueueSnackbar } = useSnackbar()
 
@@ -65,11 +62,8 @@ export default function DebtDetails({ debt, compId, mutate }: Props) {
   }
   const rs = Object.values(DebtStatus)
 
-  const { id, name, total, status, infoPayment, imageUrl, createdAt, updatedAt, companyId } = debt
+  const { id, total, status, imageUrl, createdAt } = debt
 
-  const handleUpdateStatus = () => {
-    setChangeStatus(!changeStatus)
-  }
 
   const handleUpdate = async (status: number) => {
     const payload: TransactionUpdatePayload = { status: status, imageUrl: imageUrl }
@@ -146,7 +140,7 @@ export default function DebtDetails({ debt, compId, mutate }: Props) {
               <LoadingButton
                 variant="contained"
                 size="large"
-                color={'inherit'}
+                color={'error'}
                 disabled={status != 3}
                 onClick={() => handleUpdate(2)}
               >
@@ -192,7 +186,7 @@ export default function DebtDetails({ debt, compId, mutate }: Props) {
                     <TableRow
                       sx={{
                         borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-                      }}
+                      }}  
                     >
                       <TableCell>{id}</TableCell>
                       <TableCell align="left">{company?.data?.name}</TableCell>

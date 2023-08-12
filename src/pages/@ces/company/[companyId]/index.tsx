@@ -1,24 +1,18 @@
-import { capitalCase } from 'change-case'
 // @mui
 import { Box, Container, Tab, Tabs } from '@mui/material'
+import { capitalCase } from 'change-case'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
-import { CompanyPayload } from 'src/@types/@ces'
-import { companyApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
-import { useCompanyDetails } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
 import { PATH_CES } from 'src/routes/paths'
-import AccountWallet from 'src/sections/@ces/account/wallet/AccountWallet'
 import CompanyEmployeeTable from 'src/sections/@ces/company/CompanyEmployeeTable'
-import CompanyNewEditForm from 'src/sections/@ces/company/CompanyNewEditForm'
+import CompanyGeneral from 'src/sections/@ces/company/general/CompanyGeneral'
 import CompanyOrderTable from 'src/sections/@ces/company/order/CompanyOrderTable'
 import CompanyTransactionTable from 'src/sections/@ces/company/transaction/CompanyTransactionTable'
-import CompanyGeneral from 'src/sections/@ces/company/general/CompanyGeneral'
 
 // ----------------------------------------------------------------------
 

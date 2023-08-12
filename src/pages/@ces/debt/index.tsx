@@ -11,11 +11,11 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
-import { Params, TransactionHistory } from 'src/@types/@ces'
+import { useEffect, useState } from 'react'
+import { Params, Role, TransactionHistory } from 'src/@types/@ces'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
@@ -25,11 +25,10 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
-import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
@@ -62,13 +61,10 @@ export default function DebtPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
-    //
     selected,
     setSelected,
     onSelectRow,
     onSelectAllRows,
-    //
     onSort,
     onChangeDense,
     onChangePage,
@@ -76,35 +72,33 @@ export default function DebtPage() {
   } = useTable()
 
   const { push } = useRouter()
-  const { user } = useAuth()
   const [params, setParams] = useState<Partial<Params>>()
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
-
   const { data, isLoading } = usePaymentSystem({ params })
-  const tableData: TransactionHistory[] = data?.data || []
-
+  const tableData: TransactionHistory[] = data?.data ?? []
   const [filterName, setFilterName] = useState('')
-
-  const [filterStt, setFilterStatus] = useState('supplier')
-
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
-  console.log({ page, rowsPerPage, total: data?.metaData?.total })
 
-  useMemo(() => {
-    setParams({
-      Type: '6',
-      Status: 3,
-      Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
-      Order: filterOptions == '' ? 'desc' : filterOptions,
-      Page: page + 1,
-      Size: rowsPerPage,
-    })
-  }, [filterAttribute, filterOptions, page, rowsPerPage])
+  useEffect(
+    () =>
+      setParams({
+        Type: '6',
+        Status: 3,
+        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
+        Order: filterOptions == '' ? 'desc' : filterOptions,
+        Page: page + 1,
+        Size: rowsPerPage,
+      }),
+    [filterAttribute, filterOptions, page, rowsPerPage]
+  )
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
   }
+
+  console.log({ page, rowsPerPage, total: data?.metaData?.total })
+
   const handleFilterOptions = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterOptions(event.target.value)
   }
@@ -118,7 +112,6 @@ export default function DebtPage() {
   }
   const handleFilterName = (filterName: string) => {
     setFilterName(filterName)
-
     if (timeoutName) {
       clearTimeout(timeoutName)
     }
@@ -129,9 +122,6 @@ export default function DebtPage() {
 
     setTimeoutName(newTimeoutname)
   }
-  const handleFilterStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterStatus(event.target.value)
-  }
 
   const handleDeleteRows = (selected: string[]) => {
     setSelected([])
@@ -140,23 +130,22 @@ export default function DebtPage() {
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
-    filterName,
-    filterStt,
-    filterStatus,
+    filterName
   })
 
   const denseHeight = dense ? 52 : 72
 
   const isNotFound =
     (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus) ||
-    (!dataFiltered.length && !!filterStt)
+    (!dataFiltered.length && !!filterStatus)
+
+
   const handleViewRow = (id: string) => {
     push(PATH_CES.debt.detail(id))
   }
 
   return (
-    <RoleBasedGuard hasContent>
+    <RoleBasedGuard hasContent roles={[Role['System Admin']]}>
       <Page title="Debt: List">
         <Container>
           <HeaderBreadcrumbs
@@ -179,9 +168,7 @@ export default function DebtPage() {
 
             <DebtTableToolbar
               filterName={filterName}
-              filterStatus={filterStt}
               onFilterName={handleFilterName}
-              onFilterStatus={handleFilterStatus}
               optionsStatus={ROLE_OPTIONS}
               filterOptions={filterOptions}
               filterAttribute={filterAttribute}
@@ -202,7 +189,7 @@ export default function DebtPage() {
                     onSelectAllRows={(checked) =>
                       onSelectAllRows(
                         checked,
-                        tableData.map((row) => row.id)
+                        tableData.map((row) => `${row.id}`)
                       )
                     }
                     actions={
@@ -237,7 +224,7 @@ export default function DebtPage() {
                         ))
                       : dataFiltered.map((row) => (
                           <DebtTableRow
-                            key={row.id}
+                            key={`${row.id}`}
                             row={row}
                             isValidating={isLoading}
                             selected={selected.includes(row.id)}
@@ -246,7 +233,6 @@ export default function DebtPage() {
                             onDeleteRow={() => handleViewRow(row.id)}
                           />
                         ))}
-
                     {!isLoading && (
                       <TableEmptyRows
                         height={denseHeight}
@@ -289,14 +275,11 @@ function applySortFilter({
   tableData,
   comparator,
   filterName,
-  filterStt,
-  filterStatus,
+
 }: {
   tableData: TransactionHistory[]
   comparator: (a: any, b: any) => number
   filterName: string
-  filterStatus: string
-  filterStt: string
 }) {
   return tableData
 }

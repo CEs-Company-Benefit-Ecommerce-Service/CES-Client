@@ -1,22 +1,18 @@
-import { createContext, ReactNode, useEffect, useReducer, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import {
-  getAuth,
-  signOut,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword, getAuth, onAuthStateChanged,
+  signInWithEmailAndPassword, signOut
 } from 'firebase/auth'
-import { getFirestore, collection, doc, getDoc, setDoc, DocumentData } from 'firebase/firestore'
+import { collection, doc, DocumentData, getDoc, getFirestore, setDoc } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
+import { createContext, ReactNode, useEffect, useReducer, useState } from 'react'
 // @types
-import { ActionMap, FixAuthState, AuthUser, FirebaseContextType } from '../@types/auth'
+import { ActionMap, AuthUser, FirebaseContextType, FixAuthState } from '../@types/auth'
 //
-import { FIREBASE_API, FIREBASE_API_CES } from '../config';
-import { getStorage } from 'firebase/storage';
+import { FIREBASE_API_CES } from '../config'
 
 // ----------------------------------------------------------------------
 
-const ADMIN_EMAILS = ['test@gmail.com']
 
 const firebaseApp = initializeApp(FIREBASE_API_CES);
 

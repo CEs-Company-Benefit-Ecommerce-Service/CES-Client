@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   FormControlLabel,
   IconButton,
   Switch,
@@ -12,7 +11,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -31,7 +30,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useCategoryList } from 'src/hooks/@ces'
@@ -70,7 +69,6 @@ export default function ProductPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
@@ -85,7 +83,6 @@ export default function ProductPage() {
 
   const { push } = useRouter()
   const [filterName, setFilterName] = useState('')
-  const [filterRole, setFilterRole] = useState('all')
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
@@ -98,7 +95,7 @@ export default function ProductPage() {
   const categories: Category[] = cate?.data ?? []
   const tableData: Product[] = data?.data ?? []
 
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
+  const { currentTab: filterStatus } = useTabs('all')
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -176,7 +173,7 @@ export default function ProductPage() {
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
+
     filterStatus,
   })
 
@@ -259,8 +256,6 @@ export default function ProductPage() {
                       )
                     }
                   />
-
-                  <Divider />
                   <TableBody>
                     {isLoading
                       ? Array.from(Array(rowsPerPage)).map((e) => (
@@ -320,13 +315,11 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-  filterRole,
 }: {
   tableData: Product[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-  filterRole: string
 }) {
   return tableData
 }

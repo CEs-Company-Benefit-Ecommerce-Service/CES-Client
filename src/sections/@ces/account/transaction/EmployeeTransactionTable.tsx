@@ -54,10 +54,8 @@ export default function EmployeeTransactionTable({ employeeId }: Props) {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
-    setSelected,
     onSelectRow,
     onSelectAllRows,
     //
@@ -133,21 +131,7 @@ export default function EmployeeTransactionTable({ employeeId }: Props) {
 
     setTimeoutName(newTimeoutname)
   }
-  // const handleFilterStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setFilterStatus(event.target.value)
-  // }
 
-  const handleDeleteRows = (selected: string[]) => {
-    setSelected([])
-  }
-
-  // const dataFiltered = applySortFilter({
-  //   tableData,
-  //   comparator: getComparator(order, orderBy),
-  //   filterName,
-  //   filterStt,
-  //   filterStatus,
-  // })
 
   const denseHeight = dense ? 52 : 72
 

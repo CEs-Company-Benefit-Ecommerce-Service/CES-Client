@@ -351,7 +351,7 @@ type OrderDetailsProps = {
 }
 
 function OrderDetails({ handleClose, id }: OrderDetailsProps) {
-  const { data, isLoading } = useOrderDetail({
+  const { data } = useOrderDetail({
     id,
   })
   const theme = useTheme()

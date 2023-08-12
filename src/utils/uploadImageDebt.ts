@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { UseFormSetValue } from 'react-hook-form'
-import { ProductPayload, TransactionPayload } from 'src/@types/@ces'
+import { TransactionPayload } from 'src/@types/@ces'
 import { storage } from 'src/contexts/FirebaseContext'
 import { v4 } from 'uuid'
 interface uploadImageProps {

@@ -2,9 +2,7 @@
 import {
   Box,
   Card,
-  Container,
-  Divider,
-  FormControlLabel,
+  Container, FormControlLabel,
   IconButton,
   Switch,
   Tab,
@@ -13,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
@@ -26,7 +24,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -71,7 +69,6 @@ export default function TransactionPage() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
