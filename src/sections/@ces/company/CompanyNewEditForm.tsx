@@ -37,7 +37,7 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
     () => ({
       name: currentUser?.name || '',
       address: currentUser?.address || '',
-      expiredDate: currentUser?.expiredDate || '',
+      expiredDate: new Date(currentUser?.expiredDate || ''),
       limits: currentUser?.limits || 0,
       imageUrl: currentUser?.imageUrl || '',
     }),

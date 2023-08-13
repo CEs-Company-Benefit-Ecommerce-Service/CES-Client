@@ -1,18 +1,5 @@
 // @mui
-import {
-  Box,
-  Card,
-  FilledTextFieldProps,
-  Grid,
-  IconButton,
-  InputAdornment,
-  OutlinedTextFieldProps,
-  Stack,
-  StandardTextFieldProps,
-  TextField,
-  TextFieldVariants,
-  Typography,
-} from '@mui/material'
+import { Box, Card, Grid, IconButton, InputAdornment, Stack, Typography } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import {
   ACCOUNT_STATUS_OPTIONS_FORM,
@@ -121,9 +108,10 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
 
 // -------------------------------------------------------------------------
 import { yupResolver } from '@hookform/resolvers/yup'
-import { DatePicker, LoadingButton } from '@mui/lab'
+import { LoadingButton } from '@mui/lab'
+import { DatePicker } from '@mui/x-date-pickers'
 import { useRouter } from 'next/router'
-import { JSX, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Iconify from 'src/components/Iconify'
 import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar } from 'src/components/hook-form'
@@ -155,7 +143,7 @@ function CompanyEditFormGeneral({
     () => ({
       name: currentUser?.name || '',
       address: currentUser?.address || '',
-      expiredDate: currentUser?.expiredDate || '',
+      expiredDate: new Date(currentUser?.expiredDate || ''),
       limits: currentUser?.limits || 0,
       imageUrl: currentUser?.imageUrl || '',
     }),
@@ -191,8 +179,10 @@ function CompanyEditFormGeneral({
   }, [isEdit, currentUser])
 
   const handleFormSubmit = async (payload: CompanyPayload) => {
-    const formatExp = fDateParam(payload.expiredDate)
-    payload.expiredDate = formatExp
+    if (payload.expiredDate) {
+      const formatExp = fDateParam(payload.expiredDate)
+      payload.expiredDate = formatExp
+    }
     await onSubmit?.(payload)
   }
   //------------------------IMAGE UPLOAD------------------------
@@ -252,26 +242,20 @@ function CompanyEditFormGeneral({
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DatePicker
+                    disablePast
+                    format="dd/MM/yyyy"
                     label="Expired date"
                     value={field.value}
-                    onChange={(newValue: any) => {
-                      field.onChange(newValue)
+                    onChange={(newValue) => {
+                      if (newValue) field.onChange(newValue)
                     }}
-                    renderInput={(
-                      params: JSX.IntrinsicAttributes & {
-                        variant?: TextFieldVariants | undefined
-                      } & Omit<
-                          FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                          'variant'
-                        >
-                    ) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        error={!!error}
-                        helperText={error?.message}
-                      />
-                    )}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!error,
+                        helperText: error?.message,
+                      },
+                    }}
                   />
                 )}
               />
