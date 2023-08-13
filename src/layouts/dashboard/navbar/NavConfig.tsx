@@ -79,12 +79,12 @@ const navConfig = [
         icon: ICONS.blog,
         roles: [Role['Enterprise Admin']],
       },
-      {
-        title: 'group',
-        path: PATH_CES.project.root,
-        icon: ICONS.project,
-        roles: [Role['Enterprise Admin']],
-      },
+      // {
+      //   title: 'group',
+      //   path: PATH_CES.project.root,
+      //   icon: ICONS.project,
+      //   roles: [Role['Enterprise Admin']],
+      // },
       {
         title: 'transaction',
         path: PATH_CES.transaction.root,

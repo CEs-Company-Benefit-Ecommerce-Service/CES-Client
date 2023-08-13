@@ -37,11 +37,24 @@ const PLAN_TYPE = [
 ]
 
 export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   const NewUserSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required'),
-    // description: Yup.string().required('Description is required'),
-    // type: Yup.number().required('Type is required'),
-    // unitPrice: Yup.number().required('Unit Price is required'),
+    name: Yup.string().required('Name is required'),
+    description: Yup.string().required('Description is required'),
+    type: Yup.number().required('Type is required'),
+    unitPrice: Yup.number().required('Unit Price is required'),
+    endDate: Yup.date().required('End Date is required'),
+    timeFilter: Yup.date().required('Time Filter is required'),
+    dayFilter: Yup.number().when('type', {
+      is: 2,
+      then: Yup.number().required('Day Filter is required'),
+    }),
+    dateFilter: Yup.number().when('type', {
+      is: 3,
+      then: Yup.number().required('Date Filter is required'),
+    }),
   })
 
   const defaultValues = useMemo(
@@ -49,11 +62,8 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       name: currentUser?.name || '',
       status: currentUser?.status || 1,
       description: currentUser?.description || '',
-      unitPrice: currentUser?.unitPrice || 0,
+      unitPrice: currentUser?.unitPrice,
       type: currentUser?.type,
-      // timeFilter:
-      //   currentUser?.groups?.[0].timeFilter &&
-      //   new Date().setHours(currentUser?.groups?.[0].timeFilter, 0),
       timeFilter: new Date(currentUser?.groups?.[0].timeFilter || ''),
       dateFilter: currentUser?.groups?.[0].dateFilter,
       dayFilter: currentUser?.groups?.[0].dayFilter,
@@ -116,7 +126,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
             {isEdit ? (
               <Box flex={1}>
                 <RHFSelect name="status" label="Status" placeholder="Status">
-                  <option value={undefined} />
+                  {/* <option value={undefined} /> */}
                   {statusList.map((option) => (
                     <option key={option.code} value={option.code}>
                       {option.label}
@@ -143,6 +153,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 <DatePicker
                   disabled={isEdit}
                   disablePast
+                  minDate={tomorrow}
                   format="dd/MM/yyyy"
                   label="Start Date"
                   value={field.value}
@@ -167,6 +178,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 <DatePicker
                   disabled={isEdit}
                   disablePast
+                  minDate={tomorrow}
                   format="dd/MM/yyyy"
                   label="End Date"
                   value={field.value}
@@ -273,21 +285,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
           {!isEdit ? 'Create Benefit' : 'Save Changes'}
         </LoadingButton>
       </Stack>
-
-      {/* <Grid item xs={12} md={6}>
-          <Card sx={{ p: 3 }}>
-            <Box
-              sx={{
-                display: 'grid',
-                columnGap: 2,
-                rowGap: 3,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
-              }}
-            >
-
-            </Box>
-          </Card>
-        </Grid> */}
     </FormProvider>
   )
 }

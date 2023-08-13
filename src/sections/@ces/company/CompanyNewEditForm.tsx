@@ -25,6 +25,9 @@ type Props = {
 }
 
 export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     address: Yup.string().required('Address is required'),
@@ -139,6 +142,7 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
                 render={({ field, fieldState: { error } }) => (
                   <DatePicker
                     disablePast
+                    minDate={tomorrow}
                     format="dd/MM/yyyy"
                     label="Expired date"
                     value={field.value}
