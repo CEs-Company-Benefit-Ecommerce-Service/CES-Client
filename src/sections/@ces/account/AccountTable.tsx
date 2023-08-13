@@ -1,6 +1,7 @@
 import {
   Box,
-  Card, FormControlLabel,
+  Card,
+  FormControlLabel,
   IconButton,
   Switch,
   Tab,
@@ -9,12 +10,12 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AccountData, ACCOUNT_STATUS_OPTIONS_SA, BaseResponse, Params, Role } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import Iconify from 'src/components/Iconify'
@@ -24,7 +25,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -32,6 +33,7 @@ import useTabs from 'src/hooks/useTabs'
 import { PATH_CES } from 'src/routes/paths'
 import { confirmDialog } from 'src/utils/confirmDialog'
 import LoadingTable from 'src/utils/loadingTable'
+import { boolean } from 'yup'
 import AccountTableRow from './AccountTableRow'
 import AccountTableToolbar from './AccountTableToolbar'
 
@@ -64,10 +66,11 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
     order,
     orderBy,
     rowsPerPage,
+    setRowsPerPage,
     // setPage,
     //
     selected,
-    // setSelected,
+    setSelected,
     onSelectRow,
     onSelectAllRows,
     //
@@ -89,21 +92,33 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
   const accountList = data?.data || []
-  useMemo(
-    () =>
-      setParams({
-        Page: page + 1,
-        Size: rowsPerPage,
-        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
-        Order: filterOptions == '' ? 'desc' : filterOptions,
-      }),
-    [filterAttribute, filterOptions, page, rowsPerPage, setParams]
-  )
+  const total = data?.metaData?.total
+  useEffect(() => {
+    setParams({
+      Page: page + 1,
+      Size: rowsPerPage,
+      Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
+      Order: filterOptions == '' ? 'desc' : filterOptions,
+    })
+    if (rowsPerPage == total) {
+      setSelected(accountList.map((row: any) => `${row.id}`))
+    }
+  }, [
+    accountList,
+    filterAttribute,
+    total,
+    filterOptions,
+    page,
+    rowsPerPage,
+    setParams,
+    setSelected,
+  ])
   const [filterName, setFilterName] = useState('')
 
   const [filterRole] = useState('all')
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
+
   const handleClearFilter = () => {
     setFilterAttribute('')
     setFilterName('')
@@ -132,10 +147,6 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
     setTimeoutName(newTimeoutname)
   }
 
-  // const handleFilterRole = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setFilterRole(event.target.value)
-  //   setPage(0)
-  // }
 
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this account ?', async () => {
@@ -148,6 +159,14 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
         console.error(error)
       }
     })
+  }
+
+  const handleAllSelected = (checked: boolean) => {
+    setRowsPerPage(data?.metaData?.total)
+    onSelectAllRows(checked,accountList.map((row: any) => `${row.id}`))
+    setSelected(accountList.map((row: any) => `${row.id}`))
+    // setRowsPerPage(data?.metaData?.total)
+    // setListChange(accountList.map((row: any) => `${row.id}`))
   }
 
   const handleDeleteRows = (selected: string[]) => {
@@ -216,15 +235,11 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
         <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
           {selected.length > 0 && (
             <TableSelectedActions
+              loading={isLoading}
               dense={dense}
               numSelected={selected.length}
               rowCount={accountList.length}
-              onSelectAllRows={(checked) =>
-                onSelectAllRows(
-                  checked,
-                  accountList.map((row) => `${row.id}`)
-                )
-              }
+              onSelectAllRows={(checked) => handleAllSelected(checked)}
               actions={
                 true ? (
                   <Tooltip title="Delete">
@@ -252,15 +267,10 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
                   ? TABLE_HEAD.filter((x) => x.id !== 'companyId')
                   : TABLE_HEAD
               }
-              rowCount={accountList.length}
+              rowCount={rowsPerPage}
               numSelected={selected.length}
               onSort={onSort}
-              onSelectAllRows={(checked) =>
-                onSelectAllRows(
-                  checked,
-                  accountList.map((row: any) => `${row.id}`)
-                )
-              }
+              onSelectAllRows={(checked) => handleAllSelected(checked)}
             />
 
             <TableBody>
@@ -268,7 +278,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
                 ? Array.from(Array(rowsPerPage)).map((e) => (
                     <TableSkeleton sx={{ height: denseHeight, px: dense ? 1 : 0 }} key={e} />
                   ))
-                : dataFiltered.map((row) => (
+                : accountList.map((row) => (
                     <AccountTableRow
                       key={`${row.id}`}
                       row={row}
@@ -280,7 +290,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
                       onClickRow={() => handleClickRow(`${row.id}`)}
                     />
                   ))}
-
+              
               {!isLoading && (
                 <TableEmptyRows
                   height={denseHeight}

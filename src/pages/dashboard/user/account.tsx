@@ -74,16 +74,16 @@ export default function UserAccount() {
       icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
       component: <AccountChangePasswordForm onSubmit={handleChangePasswordSubmit} />,
     })
-    ACCOUNT_TABS.push({
-      value: 'Transaction',
-      icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
-      component: <TransactionTableCustom />,
-    })
-    ACCOUNT_TABS.push({
-      value: 'Order',
-      icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
-      component: <EaOrderTableCustom />,
-    })
+    // ACCOUNT_TABS.push({
+    //   value: 'Transaction',
+    //   icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
+    //   component: <TransactionTableCustom />,
+    // })
+    // ACCOUNT_TABS.push({
+    //   value: 'Order',
+    //   icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,
+    //   component: <EaOrderTableCustom />,
+    // })
   } else {
     ACCOUNT_TABS.push({
       value: 'change password',
@@ -132,4 +132,3 @@ export default function UserAccount() {
     </Page>
   )
 }
-

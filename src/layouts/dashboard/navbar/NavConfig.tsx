@@ -43,12 +43,12 @@ const navConfig = [
   {
     subheader: 'CES-CLIENT',
     items: [
-      {
-        title: 'account',
-        path: PATH_CES.account.root,
-        icon: ICONS.user,
-        roles: [Role['System Admin'], Role['Enterprise Admin']],
-      },
+      // {
+      //   title: 'account',
+      //   path: PATH_CES.account.root,
+      //   icon: ICONS.user,
+      //   roles: [Role['System Admin'], Role['Enterprise Admin']],
+      // },
       {
         title: 'supplier',
         path: PATH_CES.suaccount.root,
@@ -67,12 +67,7 @@ const navConfig = [
         icon: ICONS.project,
         roles: [Role['System Admin']],
       },
-      {
-        title: 'Debt',
-        path: PATH_CES.debt.root,
-        icon: ICONS.project,
-        roles: [Role['System Admin']],
-      },
+
       {
         title: 'benefit',
         path: PATH_CES.benefit.root,
@@ -89,6 +84,12 @@ const navConfig = [
         title: 'transaction',
         path: PATH_CES.transaction.root,
         icon: ICONS.banking,
+        roles: [Role['System Admin'], Role['Enterprise Admin']],
+      },
+      {
+        title: 'Debt',
+        path: PATH_CES.debt.root,
+        icon: ICONS.project,
         roles: [Role['System Admin'], Role['Enterprise Admin']],
       },
       {

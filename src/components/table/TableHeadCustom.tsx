@@ -9,6 +9,7 @@ import {
   TableHead,
   TableSortLabel,
 } from '@mui/material'
+import { useEffect, useState } from 'react'
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +48,12 @@ export default function TableHeadCustom({
   onSelectAllRows,
   sx,
 }: Props) {
+  const [rcw, setRcw] = useState(numSelected)
+
+  useEffect(() => {
+    setRcw(rowCount)
+  }, [rowCount])
+
   return (
     <TableHead sx={sx}>
       <TableRow>

@@ -2,7 +2,9 @@
 // @mui
 import { Container } from '@mui/material'
 import { useRouter } from 'next/router'
-import { Role } from 'src/@types/@ces'
+import { useSnackbar } from 'notistack'
+import { Role, TransactionUpdatePayload } from 'src/@types/@ces'
+import { paymentApi } from 'src/api-client/payment'
 import LoadingScreen from 'src/components/LoadingScreen'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useCompanyDetails } from 'src/hooks/@ces'
@@ -34,10 +36,20 @@ export default function DebtDetail() {
   const { transactionId } = query
   const { data, isLoading, mutate } = useDebtDetail({ id: `${transactionId}` })
   const { data: company } = useCompanyDetails({ id: `${data?.data?.companyId}` })
+  const { enqueueSnackbar } = useSnackbar()
   if (isLoading) {
     return <LoadingScreen />
   }
-
+  const handleUpdateDebt = async (id: string, payload: TransactionUpdatePayload) => {
+    try {
+      await paymentApi.updateDebt(id, payload)
+      mutate()
+      enqueueSnackbar('Update success!')
+    } catch (error) {
+      enqueueSnackbar('Update failed!')
+      console.error(error)
+    }
+  }
   return (
     <RoleBasedGuard hasContent roles={[Role['System Admin'], Role['Enterprise Admin']]}>
       <Page title="Debt: View">
@@ -54,7 +66,12 @@ export default function DebtDetail() {
             ]}
           />
 
-          <DebtDetails debt={data?.data} compId={company?.data?.id} mutate={mutate} />
+          <DebtDetails
+            debt={data?.data}
+            compId={company?.data?.id}
+            mutate={mutate}
+            handleUpdateDebt={handleUpdateDebt}
+          />
         </Container>
       </Page>
     </RoleBasedGuard>

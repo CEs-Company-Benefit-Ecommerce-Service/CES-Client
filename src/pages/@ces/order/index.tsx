@@ -32,7 +32,7 @@ import {
   TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
-import { useOrder, useOrderCompId } from 'src/hooks/@ces/useOrder'
+import { useOrder, useOrderCompIdEa } from 'src/hooks/@ces/useOrder'
 import { useOrderByCompanyId } from 'src/hooks/@ces/usePayment'
 import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -96,7 +96,7 @@ export default function OrderPage() {
     companyId: user?.companyId?.toString(),
     params,
   })
-  const { data: compOrder, isLoading: eaLoading } = useOrderCompId({ companyId: compId, params })
+  const { data: compOrder, isLoading: eaLoading } = useOrderCompIdEa({ companyId: compId, params })
 
   const [filterStt, setFilterStatus] = useState('supplier')
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')

@@ -2,7 +2,8 @@
 import {
   Box,
   Card,
-  Container, FormControlLabel,
+  Container,
+  FormControlLabel,
   IconButton,
   Switch,
   Tab,
@@ -11,7 +12,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
@@ -24,7 +25,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePayment, usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -292,7 +293,7 @@ export default function TransactionPage() {
 
             <Box sx={{ position: 'relative' }}>
               <TablePagination
-                rowsPerPageOptions={[5, 10]}
+                rowsPerPageOptions={[5, 10, 24]}
                 component="div"
                 count={DATA?.metaData?.total}
                 rowsPerPage={rowsPerPage}

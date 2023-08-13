@@ -68,6 +68,28 @@ export function useOrderCompId({ params, options, companyId }: UseOrderProps) {
     isLoading,
   }
 }
+
+export function useOrderCompIdEa({ params, options, companyId }: UseOrderProps) {
+  const { data, error, mutate, isLoading, isValidating } = useSWR(
+    ['/orderCompId', params],
+    () => orderApi.getAllByCompIdEa(params!, companyId!),
+    {
+      refreshInterval: 5000,
+      ...options,
+    }
+  )
+
+  return {
+    data,
+    error,
+    isValidating,
+    mutate,
+    isLoading,
+  }
+}
+
+
+
 export function useOrderDetail({ id, options, enable = true }: UseOrderProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(
     enable ? ['order-detail', id] : null,

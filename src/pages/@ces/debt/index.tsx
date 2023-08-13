@@ -11,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -25,10 +25,11 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
+import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
@@ -79,13 +80,17 @@ export default function DebtPage() {
   const { data, isLoading } = usePaymentSystem({ params })
   const tableData: TransactionHistory[] = data?.data ?? []
   const [filterName, setFilterName] = useState('')
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
+  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('Debt')
+  const { user } = useAuth()
+  const companyId = user?.companyId?.toString()
+  const role = user?.role
 
   useEffect(
     () =>
       setParams({
         Type: '6',
         Status: 3,
+        CompanyId: role != 3 ? '' : companyId,
         Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
         Order: filterOptions == '' ? 'desc' : filterOptions,
         Page: page + 1,
@@ -130,22 +135,20 @@ export default function DebtPage() {
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
-    filterName
+    filterName,
   })
 
   const denseHeight = dense ? 52 : 72
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus)
-
+    (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
 
   const handleViewRow = (id: string) => {
     push(PATH_CES.debt.detail(id))
   }
 
   return (
-    <RoleBasedGuard hasContent roles={[Role['System Admin']]}>
+    <RoleBasedGuard hasContent roles={[Role['System Admin'], Role['Enterprise Admin']]}>
       <Page title="Debt: List">
         <Container>
           <HeaderBreadcrumbs
@@ -275,7 +278,6 @@ function applySortFilter({
   tableData,
   comparator,
   filterName,
-
 }: {
   tableData: TransactionHistory[]
   comparator: (a: any, b: any) => number
