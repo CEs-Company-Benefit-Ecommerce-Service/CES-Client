@@ -52,8 +52,8 @@ export default function DebtDetail() {
               { name: `${debtId}` || '' },
             ]}
           />
-
-          <DebtDetails debt={data?.data} />
+          <div>no data</div>
+          {/* <DebtDetails debt={data?.data} /> */}
         </Container>
       </Page>
     </RoleBasedGuard>

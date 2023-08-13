@@ -41,6 +41,7 @@ export default function useTable(props?: Props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
+
   const [selected, setSelected] = useState<string[]>(props?.defaultSelected || [])
 
   const onSort = (id: string) => {
@@ -71,11 +72,12 @@ export default function useTable(props?: Props) {
     setSelected(newSelected)
   }
 
-  const onSelectAllRows = (checked: boolean, newSelecteds: string[]) => {
+  const onSelectAllRows = (checked: boolean, newSelecteds: string[]) => {    
     if (checked) {
       setSelected(newSelecteds)
       return
     }
+    
     setSelected([])
   }
 
@@ -101,6 +103,7 @@ export default function useTable(props?: Props) {
     setPage,
     orderBy,
     rowsPerPage,
+    setRowsPerPage,
     //
     selected,
     setSelected,

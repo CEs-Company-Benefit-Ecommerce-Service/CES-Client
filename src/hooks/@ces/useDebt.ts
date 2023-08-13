@@ -60,7 +60,7 @@ export function useCompanyDebt({ params = { Page: 1 }, options, id }: UseDebtPro
 }
 
 export function useDebtDetail({ id, options }: UseDebtProps) {
-  const { data, error, mutate, isLoading } = useSWR(['debt', id], () => debtApi.getById(id!), {
+  const { data, error, mutate, isLoading } = useSWR(['debt-detail', id], () => debtApi.getById(id!), {
     keepPreviousData: true,
     fallbackData: {
       code: 0,

@@ -42,18 +42,19 @@ type Props = {
   isEdit?: boolean
   currentUser?: AccountData
   onSubmit?: (payload: AccountPayload) => void
+  role?: number
 }
 
 export default function AccountNewEditForm({
   isEdit = false,
   currentUser,
   onSubmit,
+  role,
   isDetail,
 }: Props) {
   const [showPassword, setShowPassword] = useState(false)
   const { user } = useAuth()
   const { pathname } = useRouter()
-
   const NewUserSchema = isEdit
     ? Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -113,7 +114,7 @@ export default function AccountNewEditForm({
         ? currentUser?.role
         : user?.role == Role['Enterprise Admin']
         ? Role.Employee
-        : undefined,
+        : undefined || role,
       password: '',
       // companyId: null,
       // company
@@ -300,12 +301,7 @@ export default function AccountNewEditForm({
                 ))}
               </RHFSelect>
               {pathname !== '/dashboard/user/account' && !(user?.role == Role['Enterprise Admin']) && (
-                <RHFSelect
-                  name="role"
-                  label="Role"
-                  placeholder="Role"
-                  disabled={isEdit || isDetail}
-                >
+                <RHFSelect name="role" label="Role" placeholder="Role" disabled={true}>
                   <option value={undefined} />
                   {roleList?.map((option) => (
                     <option key={option.code} value={option.code}>

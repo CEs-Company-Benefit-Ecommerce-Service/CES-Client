@@ -32,7 +32,7 @@ export default function DebtTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const {  companyName, total, type, status, createdAt } = row
+  const { companyName, total, type, status, createdAt } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -44,10 +44,9 @@ export default function DebtTableRow({
     setOpenMenuActions(null)
   }
 
-
-  if (isValidating) {
-    return null
-  }
+  // if (isValidating) {
+  //   return null
+  // }
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">

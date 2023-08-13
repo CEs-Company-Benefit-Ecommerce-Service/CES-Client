@@ -33,7 +33,7 @@ export default function AccountPage() {
           heading="Account List"
           links={[{ name: 'Dashboard', href: '' }, { name: 'Account', href: '' }, { name: 'List' }]}
           action={
-            <NextLink href={PATH_CES.account.new} passHref>
+            <NextLink href={PATH_CES.account.new('enterprise')} passHref>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
                 New Account
               </Button>

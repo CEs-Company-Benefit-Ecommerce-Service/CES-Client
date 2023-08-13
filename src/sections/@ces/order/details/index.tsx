@@ -6,7 +6,8 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent, Grid,
+  CardContent,
+  Grid,
   MenuItem,
   Stack,
   Table,
@@ -16,12 +17,13 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 //
 import { Order, Status, UpdateOrderStatus } from 'src/@types/@ces/order'
+import useAuth from 'src/hooks/useAuth'
 import createAvatar from 'src/utils/createAvatar'
 import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN } from 'src/utils/formatTime'
@@ -48,7 +50,7 @@ type Props = {
 
 export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   const theme = useTheme()
-
+  const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [changeStatus, setChangeStatus] = useState(false)
   // const { query, push } = useRouter()
@@ -58,8 +60,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   const rs = Object.values(Status).filter((value) => typeof value === 'string')
   const rsu = Object.values(UpdateOrderStatus).filter((value) => typeof value === 'string')
 
-  const { id, orderCode, total, updatedAt, createdAt, status, employee, orderDetails } = order
-
+  const { id, orderCode, total, status, employee, orderDetails } = order
 
   const handleUpdate = async () => {
     setLoading(true)
@@ -97,7 +98,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                   label="Status"
                   defaultValue={status}
                   // value={status}
-            
+
                   SelectProps={{
                     MenuProps: {
                       sx: { '& .MuiPaper-root': { maxHeight: 260 } },
@@ -131,31 +132,25 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
-            <Stack
-              justifyContent="flex-end"
-              direction="row"
-              sx={{ textAlign: { sm: 'right' } }}
-              spacing={2}
-            >
-              {changeStatus ? (
-                <Button variant="contained" size="large" onClick={handleUpdate}>
-                  Save
-                </Button>
-              ) : (
-                ''
-              )}
-
-              <LoadingButton
-                loading={loading}
-                variant="contained"
-                color={changeStatus ? 'inherit' : 'primary'}
-                disabled={rsu[status] === undefined ? true : false}
-                size="large"
-                onClick={handleUpdate}
+            {user?.role == 3 ? null : (
+              <Stack
+                justifyContent="flex-end"
+                direction="row"
+                sx={{ textAlign: { sm: 'right' } }}
+                spacing={2}
               >
-                {status == 1 ? 'Ready' : status == 2 ? 'Shipping' : 'Update'}
-              </LoadingButton>
-            </Stack>
+                <LoadingButton
+                  loading={loading}
+                  variant="contained"
+                  color={changeStatus ? 'inherit' : 'primary'}
+                  disabled={rsu[status] === undefined ? true : false}
+                  size="large"
+                  onClick={handleUpdate}
+                >
+                  {status == 1 ? 'Ready' : status == 2 ? 'Shipping' : 'Update'}
+                </LoadingButton>
+              </Stack>
+            )}
           </Grid>
         </Grid>
         <Grid container item spacing={2} sx={{ justifyContent: 'space-between' }}>
@@ -178,9 +173,9 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                         <TableCell width={40}>#</TableCell>
                         <TableCell align="left">Product</TableCell>
                         <TableCell align="left">Qty</TableCell>
-                        <TableCell align="left">Created At</TableCell>
-                        <TableCell align="left">Updated At</TableCell>
                         <TableCell align="right">Unit price</TableCell>
+                        <TableCell align="left">{}</TableCell>
+                        <TableCell align="left">{}</TableCell>
                         <TableCell align="right">Total</TableCell>
                       </TableRow>
                     </TableHead>
@@ -203,10 +198,10 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                             </Box>
                           </TableCell>
                           <TableCell align="left">{row?.quantity}</TableCell>
-                          <TableCell align="left">{fDateVN(createdAt!)}</TableCell>
-                          <TableCell align="left">{fDateVN(updatedAt!)}</TableCell>
-                          <TableCell align="right">{fCurrency(row?.product?.price)}</TableCell>
-                          <TableCell align="right">{fCurrency(row.price)}</TableCell>
+                          <TableCell align="right">{fCurrency(row?.product?.price)}đ</TableCell>
+                          <TableCell align="left">{}</TableCell>
+                          <TableCell align="left">{}</TableCell>
+                          <TableCell align="right">{fCurrency(row.price)}đ</TableCell>
                         </TableRow>
                       ))}
 
@@ -218,19 +213,17 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                         </TableCell>
                         <TableCell align="right" width={120}>
                           <Box sx={{ mt: 2 }} />
-                          <Typography>{fCurrency(total)}</Typography>
+                          <Typography>{fCurrency(total)}đ</Typography>
                         </TableCell>
                       </RowResultStyle>
 
                       <RowResultStyle>
                         <TableCell colSpan={5} />
                         <TableCell align="right">
-                          <Typography>Discount</Typography>
+                          <Typography>Shipping Fee</Typography>
                         </TableCell>
                         <TableCell align="right" width={120}>
-                          <Typography sx={{ color: 'error.main' }}>
-                            {/* {discount && fCurrency(-discount)} */}Nah
-                          </Typography>
+                          <Typography>{fCurrency(5000)}đ</Typography>
                         </TableCell>
                       </RowResultStyle>
                       <RowResultStyle>
@@ -239,7 +232,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                           <Typography variant="h6">Total</Typography>
                         </TableCell>
                         <TableCell align="right" width={140}>
-                          <Typography variant="h6">{fCurrency(total)}</Typography>
+                          <Typography variant="h6">{fCurrency(total)}đ</Typography>
                         </TableCell>
                       </RowResultStyle>
                     </TableBody>

@@ -27,7 +27,9 @@ export default function AccountCreatePage() {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { push } = useRouter()
+  const { query, push } = useRouter()
+  const { role } = query
+  const roleId = role == 'supplier' ? 2 : role == 'enterprise' ? 3 : 5
 
   const handleCreateAccountSubmit = async (payload: AccountPayload) => {
     try {
@@ -130,7 +132,7 @@ export default function AccountCreatePage() {
             </Stack>
           </Stack>
         )}
-        <AccountNewEditForm onSubmit={handleCreateAccountSubmit} />
+        <AccountNewEditForm onSubmit={handleCreateAccountSubmit} role={roleId} />
       </Container>
     </Page>
   )

@@ -1,14 +1,15 @@
 // @mui
-import { Checkbox, Typography, Stack, StackProps } from '@mui/material';
+import { Checkbox, Typography, Stack, StackProps } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
 interface Props extends StackProps {
-  dense?: boolean;
-  actions?: React.ReactNode;
-  rowCount: number;
-  numSelected: number;
-  onSelectAllRows: (checked: boolean) => void;
+  dense?: boolean
+  actions?: React.ReactNode
+  rowCount: number
+  numSelected: number
+  onSelectAllRows: (checked: boolean) => void
+  loading?: boolean
 }
 
 export default function TableSelectedActions({
@@ -16,6 +17,7 @@ export default function TableSelectedActions({
   actions,
   rowCount,
   numSelected,
+  loading,
   onSelectAllRows,
   sx,
   ...other
@@ -61,10 +63,10 @@ export default function TableSelectedActions({
           }),
         }}
       >
-        {numSelected} selected
+        {loading ? 'waiting...' : `${numSelected} selected`}
       </Typography>
 
       {actions && actions}
     </Stack>
-  );
+  )
 }

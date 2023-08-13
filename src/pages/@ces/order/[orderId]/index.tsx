@@ -49,7 +49,7 @@ export default function InvoiceDetails() {
   }
 
   return (
-    <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
+    <RoleBasedGuard hasContent roles={[Role['Supplier Admin'], Role['Enterprise Admin']]}>
       <Page title="Order: View">
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <HeaderBreadcrumbs
