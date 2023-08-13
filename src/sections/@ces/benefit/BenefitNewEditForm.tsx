@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import { Box, Card, Stack, Typography } from '@mui/material'
-import { DatePicker, TimePicker } from '@mui/x-date-pickers'
+import { DatePicker, TimePicker, renderTimeViewClock } from '@mui/x-date-pickers'
 import { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { BenefitData, BenefitPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
-import { fDateParam } from 'src/utils/formatTime'
+import { fDateParam, fDateTimeParam } from 'src/utils/formatTime'
 import * as Yup from 'yup'
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form'
 
@@ -51,9 +51,10 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       description: currentUser?.description || '',
       unitPrice: currentUser?.unitPrice || 0,
       type: currentUser?.type,
-      timeFilter:
-        currentUser?.groups?.[0].timeFilter &&
-        new Date().setHours(currentUser?.groups?.[0].timeFilter, 0),
+      // timeFilter:
+      //   currentUser?.groups?.[0].timeFilter &&
+      //   new Date().setHours(currentUser?.groups?.[0].timeFilter, 0),
+      timeFilter: new Date(currentUser?.groups?.[0].timeFilter || ''),
       dateFilter: currentUser?.groups?.[0].dateFilter,
       dayFilter: currentUser?.groups?.[0].dayFilter,
       endDate: new Date(currentUser?.groups?.[0].endDate || ''),
@@ -88,12 +89,11 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
   const handleFormSubmit = async (payload: BenefitPayload) => {
     if (payload.timeFilter && payload.endDate) {
       const parseDateParam = fDateParam(payload.endDate)
-      const parseTimeToNumber = new Date(payload.timeFilter).getHours()
       payload.endDate = parseDateParam
+      const parseTimeToNumber = fDateTimeParam(payload.timeFilter)
       payload.timeFilter = parseTimeToNumber
     }
     if (!isEdit) delete payload.status
-
     await onSubmit?.(payload)
   }
 
@@ -156,16 +156,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                       helperText: error?.message,
                     },
                   }}
-                  // renderInput={(
-                  //   params: JSX.IntrinsicAttributes & {
-                  //     variant?: TextFieldVariants | undefined
-                  //   } & Omit<
-                  //       FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps,
-                  //       'variant'
-                  //     >
-                  // ) => (
-                  //   <TextField {...params} fullWidth error={!!error} helperText={error?.message} />
-                  // )}
                 />
               )}
             />
@@ -211,7 +201,10 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               render={({ field, fieldState: { error } }) => (
                 <TimePicker
                   disabled={isEdit}
-                  views={['hours']}
+                  viewRenderers={{
+                    hours: renderTimeViewClock,
+                    minutes: renderTimeViewClock,
+                  }}
                   ampm={false}
                   label="Time Filter"
                   value={field.value}

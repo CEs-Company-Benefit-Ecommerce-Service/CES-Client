@@ -47,9 +47,9 @@ export type BenefitPayload = {
   unitPrice: number
   type: number
   timePicker?: any
-  timeFilter: number | null
-  dateFilter: number | null
-  dayFilter: number | null
+  timeFilter: string | null | Date
+  dateFilter: number | null | string
+  dayFilter: number | null | string
   endDate: string | null | Date
   status?: any
 }

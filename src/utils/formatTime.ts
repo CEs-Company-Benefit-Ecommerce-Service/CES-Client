@@ -1,4 +1,5 @@
 import { format, getTime, formatDistanceToNow } from 'date-fns'
+import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 // ----------------------------------------------------------------------
 
@@ -19,11 +20,21 @@ export function fTime(date: Date | string | number) {
 
 export function fDateParam(date: Date | string | number) {
   if (date) return format(new Date(date), 'yyyy-MM-dd')
-  else return 'Nah'
+  else return ''
+}
+
+export function fDateTimeParam(date: Date | string | number) {
+  if (date) {
+    const timeZone = 'Asia/Bangkok'
+    return formatInTimeZone(new Date(date), timeZone, "yyyy-MM-dd'T'HH:mm:ss")
+  } else {
+    return ''
+  }
 }
 
 export function fDateTime(date: Date | string | number) {
-  return format(new Date(date), 'dd MMM yyyy p')
+  if (date) return format(new Date(date), 'dd MMM yyyy p')
+  else return ''
 }
 
 export function fTimestamp(date: Date | string | number) {
@@ -31,7 +42,8 @@ export function fTimestamp(date: Date | string | number) {
 }
 
 export function fDateTimeSuffix(date: Date | string | number) {
-  return format(new Date(date), 'dd/MM/yyyy hh:mm p')
+  if (date) return format(new Date(date), 'dd/MM/yyyy hh:mm p')
+  else return ''
 }
 
 export function fToNow(date: Date | string | number) {
