@@ -204,19 +204,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                           <TableCell align="right">{fCurrency(row.price)}đ</TableCell>
                         </TableRow>
                       ))}
-
-                      <RowResultStyle>
-                        <TableCell colSpan={5} />
-                        <TableCell align="right">
-                          <Box sx={{ mt: 2 }} />
-                          <Typography>Subtotal</Typography>
-                        </TableCell>
-                        <TableCell align="right" width={120}>
-                          <Box sx={{ mt: 2 }} />
-                          <Typography>{fCurrency(total)}đ</Typography>
-                        </TableCell>
-                      </RowResultStyle>
-
                       <RowResultStyle>
                         <TableCell colSpan={5} />
                         <TableCell align="right">
@@ -226,6 +213,18 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                           <Typography>{fCurrency(5000)}đ</Typography>
                         </TableCell>
                       </RowResultStyle>
+                      {/* <RowResultStyle>
+                        <TableCell colSpan={5} />
+                        <TableCell align="right">
+                          <Box sx={{ mt: 2 }} />
+                          <Typography>Subtotal</Typography>
+                        </TableCell>
+                        <TableCell align="right" width={120}>
+                          <Box sx={{ mt: 2 }} />
+                          <Typography>{fCurrency(total)}đ</Typography>
+                        </TableCell>
+                      </RowResultStyle> */}
+
                       <RowResultStyle>
                         <TableCell colSpan={5} />
                         <TableCell align="right">

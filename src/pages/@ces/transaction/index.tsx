@@ -14,6 +14,7 @@ import {
   Tabs,
   Tooltip,
 } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
@@ -33,6 +34,7 @@ import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
+import { PATH_CES } from 'src/routes/paths'
 import DebtTableRow from 'src/sections/@ces/debt/DebtTableRow'
 import TransactionTableRow from 'src/sections/@ces/transaction/TransactionTableRow'
 import TransactionTableToolbar from 'src/sections/@ces/transaction/TransactionTableToolbar'
@@ -102,6 +104,8 @@ export default function TransactionPage() {
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
 
+  const { push } = useRouter()
+
   useMemo(() => {
     if (filterStatus === 'paid') {
       setParams({
@@ -121,7 +125,6 @@ export default function TransactionPage() {
       })
     }
   }, [filterAttribute, filterOptions, filterStatus, page, rowsPerPage])
-  console.log(filterStatus)
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
   }
@@ -171,8 +174,9 @@ export default function TransactionPage() {
     (!dataFiltered.length && !!filterName) ||
     (!dataFiltered.length && !!filterStatus) ||
     (!dataFiltered.length && !!filterStt)
+    
   const handleViewRow = (id: string) => {
-    // push(PATH_CES.tra.detail(id))
+    push(PATH_CES.debt.detail(id))
   }
 
   return (
@@ -234,7 +238,6 @@ export default function TransactionPage() {
                     }
                   />
                 )}
-
                 <Table size={dense ? 'small' : 'medium'}>
                   <TableHeadCustom
                     order={order}

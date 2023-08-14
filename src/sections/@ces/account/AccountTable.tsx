@@ -91,7 +91,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
-  const [total, setTotal] = useState(0)
+  // const [total, setTotal] = useState(0)
   const accountList = data?.data || []
 
   useEffect(() => {
@@ -101,19 +101,11 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
       Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
       Order: filterOptions == '' ? 'desc' : filterOptions,
     })
-    if (rowsPerPage == total) {
-      setSelected(accountList.map((row: any) => `${row.id}`))
-    }
-  }, [
-    accountList,
-    filterAttribute,
-    total,
-    filterOptions,
-    page,
-    rowsPerPage,
-    setParams,
-    setSelected,
-  ])
+    // code selected all
+    // if (rowsPerPage == total) {
+    //   setSelected(accountList.map((row: any) => `${row.id}`))
+    // }
+  }, [accountList, filterAttribute, filterOptions, page, rowsPerPage, setParams])
   const [filterName, setFilterName] = useState('')
 
   const [filterRole] = useState('all')
@@ -160,17 +152,17 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
       }
     })
   }
-
-  const handleAllSelected = (checked: boolean) => {
-    setTotal(data?.metaData?.total)
-    if (checked) {
-      setRowsPerPage(data?.metaData?.total)
-      setSelected(accountList.map((row: any) => `${row.id}`))
-    } else {
-      setSelected([])
-      setRowsPerPage(5)
-    }
-  }
+  // selected all
+  // const handleAllSelected = (checked: boolean) => {
+  //   setTotal(data?.metaData?.total)
+  //   if (checked) {
+  //     setRowsPerPage(data?.metaData?.total)
+  //     setSelected(accountList.map((row: any) => `${row.id}`))
+  //   } else {
+  //     setSelected([])
+  //     setRowsPerPage(5)
+  //   }
+  // }
 
   const handleDeleteRows = (selected: string[]) => {
     console.log('delete all account action', selected)
@@ -242,7 +234,12 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
               dense={dense}
               numSelected={selected.length}
               rowCount={accountList.length}
-              onSelectAllRows={(checked) => handleAllSelected(checked)}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  accountList.map((row) => `${row.id}`)
+                )
+              }
               actions={
                 true ? (
                   <Tooltip title="Delete">
@@ -270,10 +267,15 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
                   ? TABLE_HEAD.filter((x) => x.id !== 'companyId')
                   : TABLE_HEAD
               }
-              rowCount={rowsPerPage}
+              rowCount={accountList.length}
               numSelected={selected.length}
               onSort={onSort}
-              onSelectAllRows={(checked) => handleAllSelected(checked)}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  accountList.map((row) => `${row.id}`)
+                )
+              }
             />
 
             <TableBody>
