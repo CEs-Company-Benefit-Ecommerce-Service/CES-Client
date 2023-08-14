@@ -21,7 +21,7 @@ import {
 import { capitalCase, paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Params, Role } from 'src/@types/@ces'
 import { accountApi, projectApi } from 'src/api-client'
 import Iconify from 'src/components/Iconify'
@@ -77,6 +77,7 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
     setSelected,
     onSelectRow,
     onSelectAllRows,
+    setRowsPerPage,
     //
     onSort,
     onChangeDense,
@@ -93,25 +94,25 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
+  // const [total, setTotal] = useState(0)
+
   const { data, mutate, isLoading } = useProjectListMemberNotInGroup({
     id: benefitId,
-
-    params: {
-      ...params,
-      Status: 1,
-    },
+    params,
   })
   const accountList = data?.data || []
-  useMemo(
-    () =>
-      setParams({
-        Page: page + 1,
-        Size: rowsPerPage,
-        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
-        Order: filterOptions == '' ? 'desc' : filterOptions,
-      }),
-    [filterAttribute, filterOptions, page, rowsPerPage]
-  )
+  const total = data?.metaData?.total
+  useEffect(() => {
+    setParams({
+      Page: page + 1,
+      Size: rowsPerPage,
+      Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
+      Order: filterOptions == '' ? 'desc' : filterOptions,
+    })
+    // if (rowsPerPage == total) {
+    //   setSelected(accountList.map((row: any) => `${row.id}`))
+    // }
+  }, [filterAttribute, filterOptions, page, rowsPerPage])
   const [filterName, setFilterName] = useState('')
 
   const [filterRole] = useState('all')
@@ -144,7 +145,26 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
     }, 300)
     setTimeoutName(newTimeoutname)
   }
-  
+  // const handleAllSelected = (selected: string[]) => {
+  //   setTotal(data?.metaData?.total)
+  //   if (selected.length != total) {
+  //     setRowsPerPage(data?.metaData?.total)
+  //     setSelected(accountList.map((row: any) => `${row.id}`))
+  //   } else {
+  //     setSelected([])
+  //     setRowsPerPage(5)
+  //   }
+  // }
+
+  const handleViewAll = () => {
+    if (rowsPerPage != total) {
+      setRowsPerPage(total)
+    } else {
+      setSelected([])
+      setRowsPerPage(5)
+    }
+  }
+
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this account ?', async () => {
       try {
@@ -265,16 +285,16 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
               }
               actions={
                 <>
+                  {/* <Tooltip title="Select All">
+                    <Button color="primary" onClick={() => handleAllSelected(selected)}>
+                      {selected.length == total ? 'Cancel' : 'Select All'}
+                    </Button>
+                  </Tooltip> */}
                   <Tooltip title="Add">
                     <IconButton color="primary" onClick={() => handleAddMemberAllRows(selected)}>
                       <Iconify icon={'material-symbols:add'} />
                     </IconButton>
                   </Tooltip>
-                  {/* <Tooltip title="Delete">
-                    <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                      <Iconify icon={'eva:trash-2-outline'} />
-                    </IconButton>
-                  </Tooltip> */}
                 </>
               }
             />
@@ -346,6 +366,15 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
           control={<Switch checked={dense} onChange={onChangeDense} />}
           label="Dense"
           sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+        />
+        <FormControlLabel
+          control={
+            <Button color="inherit" variant="outlined" onClick={handleViewAll}>
+              {rowsPerPage == total ? 'Cancel' : 'View All'}
+            </Button>
+          }
+          label=""
+          sx={{ ml: 20, py: 1.5, top: 0, position: { md: 'absolute' } }}
         />
       </Box>
     </Card>
