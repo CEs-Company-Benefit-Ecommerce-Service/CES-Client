@@ -91,8 +91,9 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
   const [timeoutName, setTimeoutName] = useState<any>()
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
+  const [total, setTotal] = useState(0)
   const accountList = data?.data || []
-  const total = data?.metaData?.total
+
   useEffect(() => {
     setParams({
       Page: page + 1,
@@ -147,7 +148,6 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
     setTimeoutName(newTimeoutname)
   }
 
-
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this account ?', async () => {
       try {
@@ -162,11 +162,14 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
   }
 
   const handleAllSelected = (checked: boolean) => {
-    setRowsPerPage(data?.metaData?.total)
-    onSelectAllRows(checked,accountList.map((row: any) => `${row.id}`))
-    setSelected(accountList.map((row: any) => `${row.id}`))
-    // setRowsPerPage(data?.metaData?.total)
-    // setListChange(accountList.map((row: any) => `${row.id}`))
+    setTotal(data?.metaData?.total)
+    if (checked) {
+      setRowsPerPage(data?.metaData?.total)
+      setSelected(accountList.map((row: any) => `${row.id}`))
+    } else {
+      setSelected([])
+      setRowsPerPage(5)
+    }
   }
 
   const handleDeleteRows = (selected: string[]) => {
@@ -290,7 +293,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
                       onClickRow={() => handleClickRow(`${row.id}`)}
                     />
                   ))}
-              
+
               {!isLoading && (
                 <TableEmptyRows
                   height={denseHeight}

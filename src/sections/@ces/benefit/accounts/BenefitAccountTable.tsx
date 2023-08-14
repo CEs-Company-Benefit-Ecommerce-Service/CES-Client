@@ -144,7 +144,7 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
     }, 300)
     setTimeoutName(newTimeoutname)
   }
-
+  
   const handleDeleteRow = (id: string) => {
     confirmDialog('Do you really want to delete this account ?', async () => {
       try {

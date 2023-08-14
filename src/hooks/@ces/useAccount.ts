@@ -89,6 +89,34 @@ export function useAccountListByRoleId({ options, params, roleId }: UseAccountPr
     isLoading,
   }
 }
+export function useAccountListShipperId({ options, params, roleId }: UseAccountProps) {
+  const { data, error, mutate, isValidating, isLoading } = useSWR(
+    ['account-list-by-shipperId', params],
+    () => accountApi.getAllByRoleId(roleId!, params!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: true,
+      // dedupingInterval: 10 * 1000, // 10s
+      // revalidateOnFocus: false,
+      // keepPreviousData: true,
+      fallbackData: {
+        code: 0,
+        message: '',
+        metaData: null,
+        data: [],
+      },
+      ...options,
+    }
+  )
+
+  return {
+    data,
+    error,
+    mutate,
+    isValidating,
+    isLoading,
+  }
+}
 
 export function useAccountDetails({ enable = true, id, options }: UseAccountProps) {
   const { data, error, mutate } = useSWR(
