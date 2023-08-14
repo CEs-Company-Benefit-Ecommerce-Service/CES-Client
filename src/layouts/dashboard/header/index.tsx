@@ -71,8 +71,10 @@ export default function DashboardHeader({
 
   const isDesktop = useResponsive('up', 'lg')
 
-  const { data: dataUnRead } = useNotificationList({ params: { isRead: false } })
-  const { data: dataRead } = useNotificationList({ params: { isRead: true } })
+  const { data: dataUnRead, mutate: mutateUnRead } = useNotificationList({
+    params: { isRead: false },
+  })
+  const { data: dataRead, mutate: mutateRead } = useNotificationList({ params: { isRead: true } })
   const totalUnRead = dataUnRead?.metaData?.total || 0
 
   return (
@@ -100,6 +102,8 @@ export default function DashboardHeader({
             dataUnRead={dataUnRead?.data}
             dataRead={dataRead?.data}
             totalUnRead={totalUnRead}
+            mutateUnRead={mutateUnRead}
+            mutateRead={mutateRead}
           />
           {/* <ContactsPopover /> */}
           <AccountPopover />

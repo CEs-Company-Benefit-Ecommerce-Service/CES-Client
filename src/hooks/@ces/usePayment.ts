@@ -75,6 +75,7 @@ export function useOrderByCompanyId({ params, options, companyId }: UsePaymentPr
     {
       // revalidateOnFocus: false,
       // dedupingInterval: 10 * 1000, // 10s
+      shouldRetryOnError: true,
       keepPreviousData: true,
       fallbackData: {
         code: 0,

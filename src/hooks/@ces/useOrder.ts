@@ -15,9 +15,9 @@ export function useOrder({ params, options }: UseOrderProps) {
     ['/order-list', params],
     () => orderApi.getAll(params!),
     {
+      shouldRetryOnError: true,
       keepPreviousData: true,
       revalidateOnFocus: true,
-      // refreshInterval: 5000,
       ...options,
     }
   )
@@ -36,6 +36,7 @@ export function useOrderBySupplierId({ params, options, supplierId }: UseOrderPr
     ['/orderSupId', params],
     () => orderApi.getAllBySupplierId(params!, supplierId!),
     {
+      shouldRetryOnError: true,
       keepPreviousData: true,
       revalidateOnFocus: true,
       ...options,
@@ -55,6 +56,7 @@ export function useOrderCompId({ params, options, companyId }: UseOrderProps) {
     ['/orderCompId', params],
     () => orderApi.getAllByCompId(params!, companyId!),
     {
+      shouldRetryOnError: true,
       refreshInterval: 5000,
       ...options,
     }
@@ -71,9 +73,10 @@ export function useOrderCompId({ params, options, companyId }: UseOrderProps) {
 
 export function useOrderCompIdEa({ params, options, companyId }: UseOrderProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(
-    ['/orderCompId', params],
+    ['/orderCompIdEa', params],
     () => orderApi.getAllByCompIdEa(params!, companyId!),
     {
+      shouldRetryOnError: true,
       refreshInterval: 5000,
       ...options,
     }
@@ -87,8 +90,6 @@ export function useOrderCompIdEa({ params, options, companyId }: UseOrderProps) 
     isLoading,
   }
 }
-
-
 
 export function useOrderDetail({ id, options, enable = true }: UseOrderProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(

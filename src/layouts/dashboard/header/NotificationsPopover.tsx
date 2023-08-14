@@ -32,10 +32,14 @@ export default function NotificationsPopover({
   totalUnRead,
   dataUnRead,
   dataRead,
+  mutateUnRead,
+  mutateRead,
 }: {
   totalUnRead: number
   dataUnRead?: NotificationData[]
   dataRead?: NotificationData[]
+  mutateUnRead?: any
+  mutateRead?: any
 }) {
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
@@ -48,6 +52,9 @@ export default function NotificationsPopover({
 
   const handleMarkAllAsRead = () => {
     notificationApi.readAll()
+    mutateRead()
+    mutateUnRead()
+    setOpen(null)
   }
 
   return (
