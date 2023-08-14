@@ -43,12 +43,12 @@ const navConfig = [
   {
     subheader: 'CES-CLIENT',
     items: [
-      // {
-      //   title: 'account',
-      //   path: PATH_CES.account.root,
-      //   icon: ICONS.user,
-      //   roles: [Role['System Admin'], Role['Enterprise Admin']],
-      // },
+      {
+        title: 'account',
+        path: PATH_CES.account.root,
+        icon: ICONS.user,
+        roles: [Role['Enterprise Admin']],
+      },
       {
         title: 'supplier',
         path: PATH_CES.suaccount.root,

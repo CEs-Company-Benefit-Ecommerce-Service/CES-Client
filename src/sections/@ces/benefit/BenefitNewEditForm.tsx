@@ -40,22 +40,28 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
 
-  const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
-    type: Yup.number().required('Type is required'),
-    unitPrice: Yup.number().required('Unit Price is required'),
-    endDate: Yup.date().required('End Date is required'),
-    timeFilter: Yup.date().required('Time Filter is required'),
-    dayFilter: Yup.number().when('type', {
-      is: 2,
-      then: Yup.number().required('Day Filter is required'),
-    }),
-    dateFilter: Yup.number().when('type', {
-      is: 3,
-      then: Yup.number().required('Date Filter is required'),
-    }),
-  })
+  const NewUserSchema = !isEdit
+    ? Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        description: Yup.string().required('Description is required'),
+        type: Yup.number().required('Type is required'),
+        unitPrice: Yup.number().required('Unit Price is required'),
+        endDate: Yup.date().required('End Date is required'),
+        timeFilter: Yup.date().required('Time Filter is required'),
+        dayFilter: Yup.number().when('type', {
+          is: 2,
+          then: Yup.number().required('Day Filter is required'),
+        }),
+        dateFilter: Yup.number().when('type', {
+          is: 3,
+          then: Yup.number().required('Date Filter is required'),
+        }),
+      })
+    : Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        description: Yup.string().required('Description is required'),
+        unitPrice: Yup.number().required('Unit Price is required'),
+      })
 
   const defaultValues = useMemo(
     () => ({
@@ -63,7 +69,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       status: currentUser?.status || 1,
       description: currentUser?.description || '',
       unitPrice: currentUser?.unitPrice,
-      type: currentUser?.type,
+      type: currentUser?.type || 1,
       timeFilter: new Date(currentUser?.groups?.[0].timeFilter || ''),
       dateFilter: currentUser?.groups?.[0].dateFilter,
       dayFilter: currentUser?.groups?.[0].dayFilter,
@@ -145,7 +151,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
         <Stack spacing={3}>
           <Typography variant="h6">Config</Typography>
           <Stack direction={'row'} spacing={3}>
-            <Controller
+            {/* <Controller
               name="endDate"
               control={control}
               defaultValue={null}
@@ -169,7 +175,8 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                   }}
                 />
               )}
-            />
+            /> */}
+
             <Controller
               name="endDate"
               control={control}
@@ -195,8 +202,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 />
               )}
             />
-          </Stack>
-          <Stack direction={'row'} spacing={3}>
             <RHFSelect name="type" label="Type" placeholder="Status" disabled={isEdit}>
               <option value={undefined} />
               {PLAN_TYPE.map((option) => (
@@ -205,37 +210,75 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 </option>
               ))}
             </RHFSelect>
-
-            <Controller
-              name="timeFilter"
-              control={control}
-              defaultValue={null}
-              render={({ field, fieldState: { error } }) => (
-                <TimePicker
+          </Stack>
+          <Stack direction={'row'} spacing={3}>
+            <Box flex={1}>
+              <Controller
+                name="timeFilter"
+                control={control}
+                defaultValue={null}
+                render={({ field, fieldState: { error } }) => (
+                  <TimePicker
+                    disabled={isEdit}
+                    viewRenderers={{
+                      hours: renderTimeViewClock,
+                      minutes: renderTimeViewClock,
+                    }}
+                    ampm={false}
+                    label="Time Filter"
+                    value={field.value}
+                    onChange={(newValue) => {
+                      if (newValue) field.onChange(newValue)
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!error,
+                        helperText: error?.message,
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Box>
+            {watch('type') != 2 && watch('type') != 3 && <Box flex={1} />}
+            {watch('type') == 2 && (
+              <Box flex={1}>
+                <RHFSelect
+                  name="dayFilter"
+                  label="Day Filter"
+                  placeholder="Status"
                   disabled={isEdit}
-                  viewRenderers={{
-                    hours: renderTimeViewClock,
-                    minutes: renderTimeViewClock,
-                  }}
-                  ampm={false}
-                  label="Time Filter"
-                  value={field.value}
-                  onChange={(newValue) => {
-                    if (newValue) field.onChange(newValue)
-                  }}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      error: !!error,
-                      helperText: error?.message,
-                    },
-                  }}
-                />
-              )}
-            />
+                >
+                  <option value={undefined} />
+                  {DAY_IN_WEEK.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </RHFSelect>
+              </Box>
+            )}
+            {watch('type') == 3 && (
+              <Box flex={1}>
+                <RHFSelect
+                  name="dateFilter"
+                  label="Date Filter"
+                  placeholder="Status"
+                  disabled={isEdit}
+                >
+                  <option value={undefined} />
+                  {DATE_IN_MONTH.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </RHFSelect>
+              </Box>
+            )}
           </Stack>
 
-          <Stack direction={'row'} spacing={3}>
+          {/* <Stack direction={'row'} spacing={3}>
             {watch('type') == 2 && (
               <>
                 <Box flex={1}>
@@ -276,13 +319,13 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 <Box flex={1} />
               </>
             )}
-          </Stack>
+          </Stack> */}
         </Stack>
       </Card>
 
       <Stack alignItems="flex-end" sx={{ mt: 3 }}>
         <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-          {!isEdit ? 'Create Benefit' : 'Save Changes'}
+          {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
         </LoadingButton>
       </Stack>
     </FormProvider>
