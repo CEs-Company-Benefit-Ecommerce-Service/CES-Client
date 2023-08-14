@@ -8,4 +8,5 @@ export * from './product'
 export * from './project'
 export * from './wallet'
 export * from './report'
+export * from './notification'
 

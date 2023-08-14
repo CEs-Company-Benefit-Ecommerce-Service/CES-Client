@@ -1,56 +1,54 @@
-import { noCase } from 'change-case';
-import { useState } from 'react';
+import { useState } from 'react'
 // @mui
 import {
-  Box,
-  List,
-  Badge,
-  Button,
   Avatar,
-  Tooltip,
+  Badge,
+  Box,
+  Button,
   Divider,
   IconButton,
-  Typography,
-  ListItemText,
-  ListSubheader,
+  List,
   ListItemAvatar,
   ListItemButton,
-} from '@mui/material';
+  ListItemText,
+  ListSubheader,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 // utils
-import { fToNow } from '../../../utils/formatTime';
+import { fToNow } from '../../../utils/formatTime'
 // _mock_
-import { _notifications } from '../../../_mock';
 // components
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import MenuPopover from '../../../components/MenuPopover';
-import { IconButtonAnimate } from '../../../components/animate';
+import { NotificationData } from 'src/@types/@ces'
+import Iconify from '../../../components/Iconify'
+import MenuPopover from '../../../components/MenuPopover'
+import Scrollbar from '../../../components/Scrollbar'
+import { IconButtonAnimate } from '../../../components/animate'
+import { notificationApi } from 'src/api-client'
 
 // ----------------------------------------------------------------------
 
-export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(_notifications);
-
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
-
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+export default function NotificationsPopover({
+  totalUnRead,
+  dataUnRead,
+  dataRead,
+}: {
+  totalUnRead: number
+  dataUnRead?: NotificationData[]
+  dataRead?: NotificationData[]
+}) {
+  const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
-  };
-
+    setOpen(event.currentTarget)
+  }
   const handleClose = () => {
-    setOpen(null);
-  };
+    setOpen(null)
+  }
 
   const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
-  };
+    notificationApi.readAll()
+  }
 
   return (
     <>
@@ -73,9 +71,11 @@ export default function NotificationsPopover() {
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
-            </Typography>
+            {totalUnRead > 0 && (
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                You have {totalUnRead} unread messages
+              </Typography>
+            )}
           </Box>
 
           {totalUnRead > 0 && (
@@ -90,31 +90,35 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
-          </List>
+          {dataUnRead && dataUnRead.length > 0 && (
+            <List
+              disablePadding
+              subheader={
+                <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+                  New
+                </ListSubheader>
+              }
+            >
+              {dataUnRead?.map((item) => (
+                <NotificationItem key={item.id} notification={item} />
+              ))}
+            </List>
+          )}
 
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                Before that
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
-          </List>
+          {dataRead && dataRead.length > 0 && (
+            <List
+              disablePadding
+              subheader={
+                <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+                  Is read
+                </ListSubheader>
+              }
+            >
+              {dataRead?.map((item) => (
+                <NotificationItem key={item.id} notification={item} />
+              ))}
+            </List>
+          )}
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -126,23 +130,13 @@ export default function NotificationsPopover() {
         </Box>
       </MenuPopover>
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
-type NotificationItemProps = {
-  id: string;
-  title: string;
-  description: string;
-  avatar: string | null;
-  type: string;
-  createdAt: Date;
-  isUnRead: boolean;
-};
-
-function NotificationItem({ notification }: { notification: NotificationItemProps }) {
-  const { avatar, title } = renderContent(notification);
+function NotificationItem({ notification }: { notification: NotificationData }) {
+  const { avatar, title } = renderContent(notification)
 
   return (
     <ListItemButton
@@ -150,7 +144,7 @@ function NotificationItem({ notification }: { notification: NotificationItemProp
         py: 1.5,
         px: 2.5,
         mt: '1px',
-        ...(notification.isUnRead && {
+        ...(!notification.isRead && {
           bgcolor: 'action.selected',
         }),
       }}
@@ -176,22 +170,23 @@ function NotificationItem({ notification }: { notification: NotificationItemProp
         }
       />
     </ListItemButton>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification: NotificationItemProps) {
+function renderContent(notification: NotificationData) {
   const title = (
-    <Typography variant="subtitle2">
-      {notification.title}
-      <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {noCase(notification.description)}
-      </Typography>
-    </Typography>
-  );
+    // <Typography variant="subtitle2">
+    //   {notification.title}
+    //   <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
+    //     &nbsp; {notification.description}
+    //   </Typography>
+    // </Typography>
+    <Typography variant="subtitle2">{notification.description}</Typography>
+  )
 
-  if (notification.type === 'order_placed') {
+  if (notification.order) {
     return {
       avatar: (
         <img
@@ -200,31 +195,31 @@ function renderContent(notification: NotificationItemProps) {
         />
       ),
       title,
-    };
+    }
   }
-  if (notification.type === 'order_shipped') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_shipping.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'mail') {
-    return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_mail.svg"
-        />
-      ),
-      title,
-    };
-  }
-  if (notification.type === 'chat_message') {
+  // if (notification.type === 'order_shipped') {
+  //   return {
+  //     avatar: (
+  //       <img
+  //         alt={notification.title}
+  //         src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_shipping.svg"
+  //       />
+  //     ),
+  //     title,
+  //   }
+  // }
+  // if (notification.type === 'mail') {
+  //   return {
+  //     avatar: (
+  //       <img
+  //         alt={notification.title}
+  //         src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_mail.svg"
+  //       />
+  //     ),
+  //     title,
+  //   }
+  // }
+  if (notification.transaction) {
     return {
       avatar: (
         <img
@@ -233,10 +228,10 @@ function renderContent(notification: NotificationItemProps) {
         />
       ),
       title,
-    };
+    }
   }
   return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
+    // avatar: notification. ? <img alt={notification.title} src={notification.avatar} /> : null,
     title,
-  };
+  }
 }

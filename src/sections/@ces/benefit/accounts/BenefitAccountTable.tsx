@@ -16,7 +16,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { capitalCase, paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -31,7 +31,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import { useAccountDetails, useProjectListMemberNotInGroup } from 'src/hooks/@ces'
 import useAuth from 'src/hooks/useAuth'
@@ -88,7 +88,6 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
 
   const { user } = useAuth()
 
-
   const { enqueueSnackbar } = useSnackbar()
   const [params, setParams] = useState<Partial<Params>>()
   const [timeoutName, setTimeoutName] = useState<any>()
@@ -96,7 +95,11 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
   const [filterOptions, setFilterOptions] = useState('')
   const { data, mutate, isLoading } = useProjectListMemberNotInGroup({
     id: benefitId,
-    params,
+
+    params: {
+      ...params,
+      Status: 1,
+    },
   })
   const accountList = data?.data || []
   useMemo(
@@ -187,8 +190,6 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
       }
     })
   }
-
-
 
   const handleEditRow = (id: string) => {
     // push(PATH_CES.account.edit(paramCase(id)))

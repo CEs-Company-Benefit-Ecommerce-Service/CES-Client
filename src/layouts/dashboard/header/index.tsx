@@ -1,28 +1,30 @@
 // @mui
-import { AppBar, Box, Stack, Toolbar } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { IconButtonAnimate } from '../../../components/animate';
-import Iconify from '../../../components/Iconify';
+import { AppBar, Box, Stack, Toolbar } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { IconButtonAnimate } from '../../../components/animate'
+import Iconify from '../../../components/Iconify'
 // components
-import Logo from '../../../components/Logo';
+import Logo from '../../../components/Logo'
 // config
-import { HEADER, NAVBAR } from '../../../config';
+import { HEADER, NAVBAR } from '../../../config'
 // hooks
-import useOffSetTop from '../../../hooks/useOffSetTop';
-import useResponsive from '../../../hooks/useResponsive';
+import useOffSetTop from '../../../hooks/useOffSetTop'
+import useResponsive from '../../../hooks/useResponsive'
 // utils
-import cssStyles from '../../../utils/cssStyles';
-import AccountPopover from './AccountPopover';
+import cssStyles from '../../../utils/cssStyles'
+import AccountPopover from './AccountPopover'
 //
-import Searchbar from './Searchbar';
+import Searchbar from './Searchbar'
+import NotificationsPopover from './NotificationsPopover'
+import { useNotificationList } from 'src/hooks/@ces'
 
 // ----------------------------------------------------------------------
 
 type RootStyleProps = {
-  isCollapse: boolean;
-  isOffset: boolean;
-  verticalLayout: boolean;
-};
+  isCollapse: boolean
+  isOffset: boolean
+  verticalLayout: boolean
+}
 
 const RootStyle = styled(AppBar, {
   shouldForwardProp: (prop) =>
@@ -50,24 +52,28 @@ const RootStyle = styled(AppBar, {
       backgroundColor: theme.palette.background.default,
     }),
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  onOpenSidebar: VoidFunction;
-  isCollapse?: boolean;
-  verticalLayout?: boolean;
-};
+  onOpenSidebar: VoidFunction
+  isCollapse?: boolean
+  verticalLayout?: boolean
+}
 
 export default function DashboardHeader({
   onOpenSidebar,
   isCollapse = false,
   verticalLayout = false,
 }: Props) {
-  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
+  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout
 
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive('up', 'lg')
+
+  const { data: dataUnRead } = useNotificationList({ params: { isRead: false } })
+  const { data: dataRead } = useNotificationList({ params: { isRead: true } })
+  const totalUnRead = dataUnRead?.metaData?.total || 0
 
   return (
     <RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
@@ -90,11 +96,15 @@ export default function DashboardHeader({
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {/* <LanguagePopover /> */}
-          {/* <NotificationsPopover /> */}
+          <NotificationsPopover
+            dataUnRead={dataUnRead?.data}
+            dataRead={dataRead?.data}
+            totalUnRead={totalUnRead}
+          />
           {/* <ContactsPopover /> */}
           <AccountPopover />
         </Stack>
       </Toolbar>
     </RootStyle>
-  );
+  )
 }

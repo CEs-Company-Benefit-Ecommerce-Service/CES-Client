@@ -78,7 +78,7 @@ export default function BenefitEditPage() {
           links={[
             { name: 'Dashboard', href: '' },
             { name: 'Benefit', href: '' },
-            { name: capitalCase(data?.data?.name || (benefitId as string)) },
+            { name: data?.data?.name || (benefitId as string) },
           ]}
         />
 
