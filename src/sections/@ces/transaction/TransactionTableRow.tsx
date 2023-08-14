@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import { TableMoreMenu } from 'src/components/table'
+import { fNumber } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
@@ -50,9 +51,14 @@ export default function TransactionTableRow({
 
       <TableCell align="left">{description}</TableCell>
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {total}
+        {fNumber(total)}
       </TableCell>
-      <TableCell align="left">{type === 3 ? 'ZALOPAY' : 'VNPAY'}</TableCell>
+
+      <TableCell align="left">
+        {type === 3 ? 'ZALOPAY' : type === 5 ? 'VNPAY' : type == 6 ? 'Banking' : 'Transfer Benefit'}
+      </TableCell>
+
+      {/* <TableCell align="left">{type === 3 ? 'ZALOPAY' : 'VNPAY'}</TableCell> */}
 
       <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
