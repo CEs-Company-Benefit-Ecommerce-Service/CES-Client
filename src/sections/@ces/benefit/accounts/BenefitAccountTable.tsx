@@ -21,7 +21,7 @@ import {
 import { capitalCase, paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Params, Role } from 'src/@types/@ces'
 import { accountApi, projectApi } from 'src/api-client'
 import Iconify from 'src/components/Iconify'

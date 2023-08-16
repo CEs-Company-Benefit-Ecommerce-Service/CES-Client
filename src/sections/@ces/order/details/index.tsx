@@ -3,7 +3,6 @@ import { LoadingButton } from '@mui/lab'
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -26,7 +25,6 @@ import { Order, Status, UpdateOrderStatus } from 'src/@types/@ces/order'
 import useAuth from 'src/hooks/useAuth'
 import createAvatar from 'src/utils/createAvatar'
 import { fCurrency } from 'src/utils/formatNumber'
-import { fDateVN } from 'src/utils/formatTime'
 // utils
 // components
 import Label from '../../../../components/Label'
@@ -53,7 +51,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [changeStatus, setChangeStatus] = useState(false)
-  // const { query, push } = useRouter()
   if (!order) {
     return null
   }
@@ -159,7 +156,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
               <Typography variant="h5">Details</Typography>
             </CardContent>
             <CardActions sx={{ pb: 4 }}>
-              {' '}
               <Scrollbar>
                 <TableContainer sx={{ minWidth: 600 }}>
                   <Table>
@@ -245,7 +241,6 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
               <Typography variant="h6">Customer Info</Typography>
             </CardContent>
             <CardActions sx={{ pl: 3 }}>
-              {' '}
               <Grid item xs={3} sx={{ alignItems: 'none' }}>
                 <Avatar
                   src={employee?.account?.imageUrl}

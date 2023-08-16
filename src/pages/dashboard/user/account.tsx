@@ -9,8 +9,6 @@ import { useMe } from 'src/hooks/@ces'
 import AccountChangePasswordForm from 'src/sections/@ces/account/AccountChangePasswordForm'
 // _mock_
 import AccountNewEditForm from 'src/sections/@ces/account/AccountNewEditForm'
-import EaOrderTableCustom from 'src/sections/@ces/account/EaOrderTableCustom'
-import TransactionTableCustom from 'src/sections/@ces/account/TransactionTableCustom'
 // components
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs'
 import Iconify from '../../../components/Iconify'
@@ -21,9 +19,9 @@ import useTabs from '../../../hooks/useTabs'
 // layouts
 import Layout from '../../../layouts'
 // routes
+import { _userAddressBook, _userInvoices, _userPayment } from '../../../_mock'
 import { PATH_DASHBOARD } from '../../../routes/paths'
 import { AccountBilling } from '../../../sections/@dashboard/user/account'
-import { _userAddressBook, _userInvoices, _userPayment } from '../../../_mock'
 
 // ----------------------------------------------------------------------
 

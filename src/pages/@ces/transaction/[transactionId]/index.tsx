@@ -6,7 +6,6 @@ import { Role } from 'src/@types/@ces'
 import LoadingScreen from 'src/components/LoadingScreen'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useDebtDetail } from 'src/hooks/@ces/useDebt'
-import DebtDetails from 'src/sections/@ces/transaction/detail'
 import HeaderBreadcrumbs from '../../../../components/HeaderBreadcrumbs'
 // components
 import Page from '../../../../components/Page'

@@ -96,7 +96,7 @@ export default function DebtPage() {
         Page: page + 1,
         Size: rowsPerPage,
       }),
-    [filterAttribute, filterOptions, page, rowsPerPage]
+    [companyId, filterAttribute, filterOptions, page, role, rowsPerPage]
   )
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })

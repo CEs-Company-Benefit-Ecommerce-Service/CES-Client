@@ -119,7 +119,7 @@ export default function AccountNewEditForm({
       // companyId: null,
       // company
     }),
-    [currentUser, user]
+    [currentUser, user, role]
   )
 
   const methods = useForm<AccountPayload>({
