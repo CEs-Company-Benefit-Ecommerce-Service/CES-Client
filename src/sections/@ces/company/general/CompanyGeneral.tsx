@@ -291,6 +291,7 @@ function AccountEditFormGeneral({
   const [showPassword, setShowPassword] = useState(false)
   const { user } = useAuth()
   const { pathname } = useRouter()
+  console.log(currentUser)
 
   const NewUserSchema = isEdit
     ? Yup.object().shape({

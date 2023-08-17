@@ -71,13 +71,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser, onSubmit 
   }, [isEdit, currentUser])
 
   const handleOnSubmit = async (data: CategoryPayload) => {
-    try {
       await onSubmit?.(data)
-      enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!')
-      push(PATH_CES.category.root)
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   const handleDrop = useCallback(

@@ -28,6 +28,7 @@ type Props = {
   onEditRow: VoidFunction
   onSelectRow: VoidFunction
   onDeleteRow: VoidFunction
+  onClickRow?: VoidFunction
 }
 
 export default function ProductTableRow({
@@ -37,6 +38,7 @@ export default function ProductTableRow({
   onSelectRow,
   isValidating,
   onDeleteRow,
+  onClickRow,
 }: Props) {
   // const theme = useTheme()
 
@@ -55,7 +57,7 @@ export default function ProductTableRow({
     return null
   }
   return (
-    <TableRow hover selected={selected}>
+    <TableRow hover selected={selected}  onClick={onClickRow}>
       <TableCell padding="checkbox">
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>

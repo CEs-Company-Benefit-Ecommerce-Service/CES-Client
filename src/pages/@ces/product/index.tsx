@@ -144,6 +144,9 @@ export default function ProductPage() {
 
     setTimeoutName(newTimeoutname)
   }
+  const handleClickRow = (id: string) => {
+    push(PATH_CES.product.edit(paramCase(id)))
+  }
 
   //1 func: nhận 1 biến nếu timeout true thì clear nó
 
@@ -269,6 +272,7 @@ export default function ProductPage() {
                             selected={selected.includes(`${row.id}`)}
                             onSelectRow={() => onSelectRow(`${row.id}`)}
                             onDeleteRow={() => handleDeleteRow(`${row.id}`)}
+                            onClickRow={() => handleClickRow(`${row.id}`)}
                             onEditRow={() => handleEditRow(row.id)}
                           />
                         ))}

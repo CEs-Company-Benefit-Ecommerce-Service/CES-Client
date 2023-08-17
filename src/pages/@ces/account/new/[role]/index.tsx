@@ -34,12 +34,13 @@ export default function AccountCreatePage() {
   const handleCreateAccountSubmit = async (payload: AccountPayload) => {
     try {
       await accountApi.create(payload)
-
       enqueueSnackbar('Create success!')
       if (payload.company) {
         push(PATH_CES.company.root)
-      } else {
-        push(PATH_CES.account.root)
+      } else if (payload.role == 2) {
+        push(PATH_CES.suaccount.root)
+      }else{
+        push(PATH_CES.shaccount.root)
       }
     } catch (error) {
       enqueueSnackbar('Create failed!', {})

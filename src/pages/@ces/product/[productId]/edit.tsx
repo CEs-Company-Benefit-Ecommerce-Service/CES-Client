@@ -14,6 +14,7 @@ import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useProductDetail } from 'src/hooks/@ces/useProduct'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
+import { PATH_CES } from 'src/routes/paths'
 import ProductNewEditForm from 'src/sections/@ces/product/ProductNewEditForm'
 
 ProductEditPage.getLayout = function getLayout(page: React.ReactElement) {
@@ -27,7 +28,7 @@ export default function ProductEditPage() {
   const { enqueueSnackbar } = useSnackbar()
   const { productId } = query
   const { currentTab, onChangeTab } = useTabs('general')
-
+  const { push } = useRouter()
   const { data, mutate } = useProductDetail({ id: `${productId}` })
   // if (isLoading) {
   //   return <LoadingScreen />
@@ -36,7 +37,7 @@ export default function ProductEditPage() {
     try {
       await productApi.update(`${productId}`, payload)
       enqueueSnackbar('Update success!')
-
+      push(PATH_CES.product.root)
       mutate()
     } catch (error) {
       enqueueSnackbar('Update failed!', { variant: 'error' })
