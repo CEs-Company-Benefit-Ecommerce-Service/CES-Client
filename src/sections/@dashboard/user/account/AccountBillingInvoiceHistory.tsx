@@ -24,7 +24,6 @@ export default function AccountBillingInvoiceHistory({ Transactions, isLoading }
       <Typography variant="subtitle1" sx={{ width: 1 }}>
         Payment History
       </Typography>
-
       <Stack spacing={2} sx={{ width: 1 }}>
         <LoadingTable isValidating={isLoading} />
         {Transactions?.length == 0 ? (

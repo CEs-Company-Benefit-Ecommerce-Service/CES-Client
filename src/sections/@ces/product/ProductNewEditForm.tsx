@@ -2,12 +2,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
 import { LoadingButton } from '@mui/lab'
 import { Box, Card, Grid, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 // next
 import { useCallback, useEffect, useMemo } from 'react'
 // form
 import { useForm } from 'react-hook-form'
 import { Category, ProductPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
 import { useCategoryList } from 'src/hooks/@ces/useCategory'
+import { PATH_CES } from 'src/routes/paths'
 import uploadImage from 'src/utils/uploadImage'
 import * as Yup from 'yup'
 import {
@@ -33,7 +35,6 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
   const { data } = useCategoryList({})
   const categories: Category[] = data?.data ?? []
   // const { enqueueSnackbar } = useSnackbar()
-
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     price: Yup.number().required('Price is required'),
@@ -64,7 +65,6 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
 
   const {
     reset,
-
     setValue,
     handleSubmit,
     formState: { isSubmitting },
@@ -84,6 +84,7 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
 
   const handleFormSubmit = async (data: ProductPayload) => {
     await onSubmit?.(data)
+
   }
   //------------------------IMAGE UPLOAD------------------------
   const handleDrop = useCallback(

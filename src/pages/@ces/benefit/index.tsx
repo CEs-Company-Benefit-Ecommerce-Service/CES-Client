@@ -264,7 +264,7 @@ export default function BenefitPage() {
                     }
                   />
                 )}
-                <Divider />
+
                 <Table size={dense ? 'small' : 'medium'}>
                   <TableHeadCustom
                     order={order}

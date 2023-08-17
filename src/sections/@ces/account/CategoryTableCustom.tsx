@@ -78,7 +78,6 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
   const [params, setParams] = useState<Partial<Params>>()
 
   const { data, mutate, isLoading } = useCategoryListBySupplier({
-    supplierId,
     params,
   })
 
@@ -153,7 +152,10 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
   const handleEditRow = (id: string) => {
     push(PATH_CES.category.edit(paramCase(id.toString())))
   }
-
+  const handleClickRow = (id: string) => {
+    push(PATH_CES.category.edit(paramCase(id)))
+  }
+  
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
@@ -245,6 +247,7 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
                       isValidating={isLoading}
                       selected={selected.includes(`${row.id}`)}
                       onSelectRow={() => onSelectRow(`${row.id}`)}
+                      onClickRow={() => handleClickRow(`${row.id}`)}
                       onDeleteRow={() => handleDeleteRow(`${row.id}`)}
                       onEditRow={() => handleEditRow(row.id)}
                     />

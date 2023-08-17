@@ -29,10 +29,10 @@ export function useCategoryList({ options, params }: UseCategoryProps) {
   }
 }
 
-export function useCategoryListBySupplier({ supplierId, options, params }: UseCategoryProps) {
+export function useCategoryListBySupplier({  options, params }: UseCategoryProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(
     ['category-supplierId', params],
-    () => categoryApi.getAllBySupplierId(supplierId!, params!),
+    () => categoryApi.getAllBySupplierId(params!),
     {
       revalidateOnFocus: false,
       keepPreviousData: true,

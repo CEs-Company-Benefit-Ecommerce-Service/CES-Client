@@ -101,6 +101,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit, currentUser])
+  console.log(watch('type'))
 
   const handleFormSubmit = async (payload: BenefitPayload) => {
     if (payload.timeFilter && payload.endDate) {

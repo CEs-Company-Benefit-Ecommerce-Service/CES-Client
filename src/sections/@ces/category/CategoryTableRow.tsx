@@ -18,6 +18,7 @@ type Props = {
   onEditRow: VoidFunction
   onSelectRow: VoidFunction
   onDeleteRow: VoidFunction
+  onClickRow: VoidFunction
 }
 
 export default function CategoryTableRow({
@@ -27,6 +28,7 @@ export default function CategoryTableRow({
   isValidating,
   onSelectRow,
   onDeleteRow,
+  onClickRow,
 }: Props) {
   // const theme = useTheme()
 
@@ -47,7 +49,7 @@ export default function CategoryTableRow({
   }
 
   return (
-    <TableRow hover selected={selected}>
+    <TableRow hover selected={selected} onClick={onClickRow}>
       <TableCell padding="checkbox">
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>

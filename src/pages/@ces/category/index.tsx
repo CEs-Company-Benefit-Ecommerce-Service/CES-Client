@@ -89,12 +89,11 @@ export default function CategoryPage() {
   const supId = accounts?.data?.suppliers?.[0]?.id
 
   const { data, mutate, isLoading } = useCategoryListBySupplier({
-    supplierId: supId,
     params,
   })
   useEffect(() => {
     if (supId) {
-      setParams({ ...params, SupplierId: supId })
+      setParams({ ...params })
     }
   }, [supId, params])
 
@@ -124,6 +123,9 @@ export default function CategoryPage() {
     setFilterAttribute('')
     setFilterName('')
     setFilterOptions('')
+  }
+  const handleClickRow = (id: string) => {
+    push(PATH_CES.category.edit(paramCase(id)))
   }
   const handleDeleteRow = (id: string) => {
     const cateId = parseInt(id)
@@ -266,6 +268,7 @@ export default function CategoryPage() {
                             isValidating={isLoading}
                             selected={selected.includes(`${row.id}`)}
                             onSelectRow={() => onSelectRow(`${row.id}`)}
+                            onClickRow={() => handleClickRow(`${row.id}`)}
                             onDeleteRow={() => handleDeleteRow(`${row.id}`)}
                             onEditRow={() => handleEditRow(row.id)}
                           />
