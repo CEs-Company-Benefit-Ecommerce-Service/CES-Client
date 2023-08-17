@@ -21,6 +21,7 @@ type Props = {
   onSelectRow: VoidFunction
   onDeleteRow: VoidFunction
   isValidating?: boolean
+  onClickRow?: VoidFunction
 }
 
 export default function DebtTableRow({
@@ -28,6 +29,7 @@ export default function DebtTableRow({
   selected,
   onViewRow,
   onSelectRow,
+  onClickRow,
   onDeleteRow,
   isValidating,
 }: Props) {
@@ -49,7 +51,7 @@ export default function DebtTableRow({
     return null
   }
   return (
-    <TableRow hover selected={selected}>
+    <TableRow hover selected={selected} onClick={onClickRow}>
       <TableCell padding="checkbox">
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>

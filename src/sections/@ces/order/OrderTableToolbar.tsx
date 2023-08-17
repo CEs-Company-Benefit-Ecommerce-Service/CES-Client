@@ -7,7 +7,7 @@ type Props = {
     label?: string
     align?: string
   }[]
-  orderType: string[] | null
+
   orderValueType: string
   filterName?: string
   optionsOrderBy: string[]
@@ -36,44 +36,9 @@ export default function OrderTableToolbar({
   onFilterName,
   handleClearFilter,
   optionsSort,
-  orderType,
 }: Props) {
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
-      {orderType == null ? null : (
-        <TextField
-          fullWidth
-          select
-          label="OrderType"
-          value={orderValueType}
-          onChange={handleOrderType}
-          SelectProps={{
-            MenuProps: {
-              sx: { '& .MuiPaper-root': { maxHeight: 260 } },
-            },
-          }}
-          sx={{
-            maxWidth: { sm: 240 },
-            textTransform: 'capitalize',
-          }}
-        >
-          {orderType.map((option) => (
-            <MenuItem
-              key={option}
-              value={option}
-              sx={{
-                mx: 1,
-                my: 0.5,
-                borderRadius: 0.75,
-                typography: 'body2',
-                textTransform: 'capitalize',
-              }}
-            >
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
-      )}
       <TextField
         fullWidth
         value={filterName}

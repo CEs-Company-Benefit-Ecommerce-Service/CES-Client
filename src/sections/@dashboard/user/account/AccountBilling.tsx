@@ -10,7 +10,7 @@ import {
   Grid,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
@@ -18,7 +18,7 @@ import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AccountData, PaymentPayload, TransactionPayload } from 'src/@types/@ces'
 import { paymentApi } from 'src/api-client/payment'
-import { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form'
+import { RHFTextField, RHFUploadSingleFile } from 'src/components/hook-form'
 import { useMe } from 'src/hooks/@ces'
 import { usePayment } from 'src/hooks/@ces/usePayment'
 import uploadImageDebt from 'src/utils/uploadImageDebt'
@@ -140,7 +140,7 @@ function BankingDetails({ handleClose, used }: BankingDetailsProps) {
               <Card sx={{ py: 4, px: 3, mt: 2 }}>
                 <RHFTextField name="total" label="Total" disabled />
                 <Box sx={{ mb: 3, mt: 2 }}>
-                  <RHFUploadAvatar
+                  <RHFUploadSingleFile
                     name="imageUrl"
                     accept="image/*"
                     maxSize={3145728}

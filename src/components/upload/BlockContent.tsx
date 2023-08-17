@@ -1,7 +1,7 @@
 // @mui
-import { Box, Typography, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material'
 // assets
-import { UploadIllustration } from '../../assets';
+import { UploadIllustration } from '../../assets'
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ export default function BlockContent() {
       direction={{ xs: 'column', md: 'row' }}
       sx={{ width: 1, textAlign: { xs: 'center', md: 'left' } }}
     >
-      <UploadIllustration sx={{ width: 220 }} />
+      <UploadIllustration sx={{ width: 90, height: 270 }} />
 
       <Box sx={{ p: 3 }}>
         <Typography gutterBottom variant="h5">
@@ -34,5 +34,5 @@ export default function BlockContent() {
         </Typography>
       </Box>
     </Stack>
-  );
+  )
 }

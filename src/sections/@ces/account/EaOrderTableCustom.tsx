@@ -275,7 +275,7 @@ export default function EaOrderTableCustom() {
         <Divider />
         <OrderTableToolbar
           orderValueType={orderValueType}
-          orderType={role == 3 ? ORDER_TYPE : null}
+          // orderType={role == 3 ? ORDER_TYPE : null}
           filterName={filterName}
           filterOptions={filterOptions}
           filterStatus={filterStt}

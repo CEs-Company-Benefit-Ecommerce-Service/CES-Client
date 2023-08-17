@@ -12,7 +12,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -30,7 +30,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { useCompanyList } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
@@ -95,6 +95,7 @@ export default function CompanyPage() {
   const { enqueueSnackbar } = useSnackbar()
 
   const { data, isLoading } = useCompanyList({ params })
+
   useMemo(
     () =>
       setParams({
@@ -109,8 +110,6 @@ export default function CompanyPage() {
 
   const [filterName, setFilterName] = useState('')
 
-
-
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
@@ -121,7 +120,6 @@ export default function CompanyPage() {
     if (timeoutName) {
       clearTimeout(timeoutName)
     }
-
     const newTimeoutname = setTimeout(() => {
       filterNameFuction(filterName)
     }, 300)
@@ -190,8 +188,7 @@ export default function CompanyPage() {
   const denseHeight = dense ? 52 : 72
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus)
+    (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
 
   return (
     <Page title="Company: List">

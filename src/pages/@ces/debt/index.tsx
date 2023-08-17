@@ -11,8 +11,9 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
+import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
@@ -25,7 +26,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -127,7 +128,9 @@ export default function DebtPage() {
 
     setTimeoutName(newTimeoutname)
   }
-
+  const handleClickRow = (id: string) => {
+    push(PATH_CES.debt.detail(paramCase(id)))
+  }
   const handleDeleteRows = (selected: string[]) => {
     setSelected([])
   }
@@ -233,6 +236,7 @@ export default function DebtPage() {
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
                             onViewRow={() => handleViewRow(row.id)}
+                            onClickRow ={() => handleClickRow(row.id)}
                             onDeleteRow={() => handleViewRow(row.id)}
                           />
                         ))}
