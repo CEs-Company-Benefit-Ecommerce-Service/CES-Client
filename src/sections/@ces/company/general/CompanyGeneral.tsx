@@ -44,7 +44,7 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
   }
   const handleEditAccountSubmit = async (payload: AccountPayload) => {
     try {
-      await accountApi.update(`${companyId}`, payload)
+      await accountApi.update(`${data?.data?.contactPersonId}`, payload)
       mutateAccount()
       enqueueSnackbar('Update success!')
     } catch (error) {
