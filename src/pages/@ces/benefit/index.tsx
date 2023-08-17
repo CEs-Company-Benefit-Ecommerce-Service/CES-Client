@@ -47,6 +47,8 @@ const FILTER_OPTIONS = ['descending', 'ascending']
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
   { id: 'unitPrice', label: 'Unit Price', align: 'left' },
+  { id: 'endDate', label: 'End Date', align: 'left' },
+  { id: 'type', label: 'Type', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
   { id: 'createdAt', label: 'created At', align: 'left' },
   { id: 'updateAt', label: 'update At', align: 'left' },

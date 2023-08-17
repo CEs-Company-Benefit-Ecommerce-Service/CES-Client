@@ -10,6 +10,11 @@ import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 
 // ----------------------------------------------------------------------
+const PLAN_TYPE = [
+  { label: 'Daily', value: 1 },
+  { label: 'Weekly', value: 2 },
+  { label: 'Monthly', value: 3 },
+]
 
 type Props = {
   row: BenefitData
@@ -30,7 +35,8 @@ export default function BenefitTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { name, unitPrice, status, createdAt, updatedAt } = row
+  const { name, unitPrice, status, createdAt, updatedAt, groups } = row
+  const { endDate, type } = groups[0]
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -70,6 +76,11 @@ export default function BenefitTableRow({
       </TableCell> */}
       <TableCell align="left">{name}</TableCell>
       <TableCell align="left">{fCurrency(unitPrice)}</TableCell>
+      <TableCell align="left">{fDateVN(endDate)}</TableCell>
+
+      <TableCell align="left">
+        {PLAN_TYPE.find((planType) => planType.value === type)?.label || ''}
+      </TableCell>
 
       <TableCell align="left">
         <Label

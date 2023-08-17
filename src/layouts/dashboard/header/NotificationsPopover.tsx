@@ -4,7 +4,6 @@ import {
   Avatar,
   Badge,
   Box,
-  Button,
   Divider,
   IconButton,
   List,
@@ -13,18 +12,20 @@ import {
   ListItemText,
   ListSubheader,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 // utils
 import { fToNow } from '../../../utils/formatTime'
 // _mock_
 // components
+import { useRouter } from 'next/router'
 import { NotificationData } from 'src/@types/@ces'
+import { notificationApi } from 'src/api-client'
+import { PATH_CES } from 'src/routes/paths'
 import Iconify from '../../../components/Iconify'
 import MenuPopover from '../../../components/MenuPopover'
 import Scrollbar from '../../../components/Scrollbar'
 import { IconButtonAnimate } from '../../../components/animate'
-import { notificationApi } from 'src/api-client'
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ export default function NotificationsPopover({
   mutateUnRead?: any
   mutateRead?: any
 }) {
+  const { push } = useRouter()
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -50,10 +52,23 @@ export default function NotificationsPopover({
     setOpen(null)
   }
 
-  const handleMarkAllAsRead = () => {
-    notificationApi.readAll()
+  const handleMarkAllAsRead = async () => {
+    await notificationApi.readAll()
     mutateRead()
     mutateUnRead()
+    setOpen(null)
+  }
+
+  const handleClickNotification = async (notification: NotificationData) => {
+    if (!notification.isRead) {
+      await notificationApi.getById(notification.id)
+      mutateUnRead()
+      mutateRead()
+    }
+    const redirectPath = notification.orderId
+      ? PATH_CES.order.detail(notification.orderId)
+      : PATH_CES.debt.detail(notification.transactionId)
+    push(redirectPath)
     setOpen(null)
   }
 
@@ -107,7 +122,11 @@ export default function NotificationsPopover({
               }
             >
               {dataUnRead?.map((item) => (
-                <NotificationItem key={item.id} notification={item} />
+                <NotificationItem
+                  key={item.id}
+                  notification={item}
+                  handleClick={() => handleClickNotification(item)}
+                />
               ))}
             </List>
           )}
@@ -122,7 +141,11 @@ export default function NotificationsPopover({
               }
             >
               {dataRead?.map((item) => (
-                <NotificationItem key={item.id} notification={item} />
+                <NotificationItem
+                  key={item.id}
+                  notification={item}
+                  handleClick={() => handleClickNotification(item)}
+                />
               ))}
             </List>
           )}
@@ -130,11 +153,7 @@ export default function NotificationsPopover({
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
-            View All
-          </Button>
-        </Box>
+        <Box sx={{ p: 2 }} />
       </MenuPopover>
     </>
   )
@@ -142,11 +161,18 @@ export default function NotificationsPopover({
 
 // ----------------------------------------------------------------------
 
-function NotificationItem({ notification }: { notification: NotificationData }) {
+function NotificationItem({
+  notification,
+  handleClick,
+}: {
+  notification: NotificationData
+  handleClick?: any
+}) {
   const { avatar, title } = renderContent(notification)
 
   return (
     <ListItemButton
+      onClick={() => handleClick?.()}
       sx={{
         py: 1.5,
         px: 2.5,

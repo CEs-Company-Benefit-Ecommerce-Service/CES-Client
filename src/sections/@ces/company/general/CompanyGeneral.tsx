@@ -297,7 +297,9 @@ function AccountEditFormGeneral({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email(),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
       })
@@ -306,7 +308,9 @@ function AccountEditFormGeneral({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email('Email must be a valid email'),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
         password: Yup.string()
@@ -325,7 +329,9 @@ function AccountEditFormGeneral({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email(),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
       })

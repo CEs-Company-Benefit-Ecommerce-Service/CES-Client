@@ -190,7 +190,7 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
 
         enqueueSnackbar('Add successful')
       } catch (error) {
-        console.error(error)
+        enqueueSnackbar(`${error.response.data.message}`, { variant: 'error' })
       }
     })
   }
@@ -202,11 +202,13 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
           groupId,
           accountId: [...selected],
         })
+
         mutate()
         setSelected([])
+
         enqueueSnackbar('Add successful')
       } catch (error) {
-        console.error(error)
+        enqueueSnackbar(`${error.response.data.message}`, { variant: 'error' })
       }
     })
   }

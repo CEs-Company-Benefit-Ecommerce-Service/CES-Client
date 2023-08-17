@@ -60,7 +60,9 @@ export default function AccountNewEditForm({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email(),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
       })
@@ -69,7 +71,9 @@ export default function AccountNewEditForm({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email('Email must be a valid email'),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
         password: Yup.string()
@@ -79,8 +83,6 @@ export default function AccountNewEditForm({
           is: Role['Enterprise Admin'],
           then: Yup.object().shape({
             name: Yup.string().required('Company Name is required'),
-            // expiredDate: Yup.string().required('Expired Date is required'),
-            // limits: Yup.number().required('Limit is required'),
           }),
         }),
       })
@@ -88,7 +90,9 @@ export default function AccountNewEditForm({
         name: Yup.string().required('Name is required'),
         email: Yup.string().required('Email is required').email(),
         address: Yup.string().required('Address is required'),
-        phone: Yup.string().required('Phone is required'),
+        phone: Yup.string()
+          .required('Phone is required')
+          .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, 'Phone number is not valid'),
         status: Yup.number().required('Status is required'),
         role: Yup.number().required('Role is required'),
       })
@@ -116,8 +120,6 @@ export default function AccountNewEditForm({
         ? Role.Employee
         : undefined || role,
       password: '',
-      // companyId: null,
-      // company
     }),
     [currentUser, user, role]
   )
@@ -291,7 +293,7 @@ export default function AccountNewEditForm({
               {!(user?.role == Role['Enterprise Admin']) && (
                 <RHFTextField name="address" label="Address" disabled={isDetail} />
               )}
-              {/* <RHFTextField name="address" label="Address" /> */}
+
               <RHFSelect name="status" label="Status" placeholder="Status" disabled={isDetail}>
                 <option value={undefined} />
                 {statusList.map((option) => (
@@ -300,7 +302,21 @@ export default function AccountNewEditForm({
                   </option>
                 ))}
               </RHFSelect>
-              {pathname !== '/dashboard/user/account' && !(user?.role == Role['Enterprise Admin']) && (
+
+              {pathname !== '/dashboard/user/account' && (
+                <RHFSelect name="role" label="Role" placeholder="Role" disabled={true}>
+                  <option value={undefined} />
+                  {user?.role == Role['System Admin'] && isEdit && (
+                    <option value={4}>Employee</option>
+                  )}
+                  {roleList?.map((option) => (
+                    <option key={option.code} value={option.code}>
+                      {option.label}
+                    </option>
+                  ))}
+                </RHFSelect>
+              )}
+              {/* {pathname !== '/dashboard/user/account' && !(user?.role == Role['Enterprise Admin']) && (
                 <RHFSelect name="role" label="Role" placeholder="Role" disabled={true}>
                   <option value={undefined} />
                   {roleList?.map((option) => (
@@ -309,8 +325,8 @@ export default function AccountNewEditForm({
                     </option>
                   ))}
                 </RHFSelect>
-              )}
-              <Box />
+              )} */}
+
               {watchShowCompany == Role['Enterprise Admin'] && !isEdit && (
                 <>
                   <RHFTextField name="company.name" label="Company Name" disabled={isDetail} />
