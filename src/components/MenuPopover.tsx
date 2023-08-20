@@ -1,6 +1,6 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import { Popover, PopoverProps } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Popover, PopoverProps } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -16,43 +16,43 @@ type Arrow =
   | 'left-bottom'
   | 'right-top'
   | 'right-center'
-  | 'right-bottom';
+  | 'right-bottom'
 
 type ArrowStyleProps = {
-  arrow: Arrow;
-};
+  arrow: Arrow
+}
 
 const ArrowStyle = styled('span')<ArrowStyleProps>(({ arrow, theme }) => {
-  const SIZE = 12;
+  const SIZE = 12
 
-  const POSITION = -(SIZE / 2);
+  const POSITION = -(SIZE / 2)
 
-  const borderStyle = `solid 1px ${theme.palette.grey[500_12]}`;
+  const borderStyle = `solid 1px ${theme.palette.grey[500_12]}`
 
   const topStyle = {
     borderRadius: '0 0 3px 0',
     top: POSITION,
     borderBottom: borderStyle,
     borderRight: borderStyle,
-  };
+  }
   const bottomStyle = {
     borderRadius: '3px 0 0 0',
     bottom: POSITION,
     borderTop: borderStyle,
     borderLeft: borderStyle,
-  };
+  }
   const leftStyle = {
     borderRadius: '0 3px 0 0',
     left: POSITION,
     borderTop: borderStyle,
     borderRight: borderStyle,
-  };
+  }
   const rightStyle = {
     borderRadius: '0 0 0 3px',
     right: POSITION,
     borderBottom: borderStyle,
     borderLeft: borderStyle,
-  };
+  }
 
   return {
     display: 'none',
@@ -82,14 +82,14 @@ const ArrowStyle = styled('span')<ArrowStyleProps>(({ arrow, theme }) => {
     ...(arrow === 'right-top' && { ...rightStyle, top: 20 }),
     ...(arrow === 'right-center' && { ...rightStyle, top: 0, bottom: 0, margin: 'auto' }),
     ...(arrow === 'right-bottom' && { ...rightStyle, bottom: 20 }),
-  };
-});
+  }
+})
 
 // ----------------------------------------------------------------------
 
 interface Props extends PopoverProps {
-  arrow?: Arrow;
-  disabledArrow?: boolean;
+  arrow?: Arrow
+  disabledArrow?: boolean
 }
 
 export default function MenuPopover({
@@ -103,19 +103,29 @@ export default function MenuPopover({
     <Popover
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      PaperProps={{
-        sx: {
-          p: 1,
-          width: 200,
-          overflow: 'inherit',
-          ...sx,
+      slotProps={{
+        paper: {
+          sx: {
+            p: 1,
+            width: 200,
+            overflow: 'inherit',
+            ...sx,
+          },
         },
       }}
+      // PaperProps={{
+      //   sx: {
+      //     p: 1,
+      //     width: 200,
+      //     overflow: 'inherit',
+      //     ...sx,
+      //   },
+      // }}
       {...other}
     >
       {!disabledArrow && <ArrowStyle arrow={arrow} />}
 
       {children}
     </Popover>
-  );
+  )
 }
