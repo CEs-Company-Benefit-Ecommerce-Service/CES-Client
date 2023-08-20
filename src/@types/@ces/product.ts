@@ -1,20 +1,21 @@
 import { Category } from './category'
 
-export type Product = {
+export type ProductData = {
   id: string
   name: string
   price: number
-  imageUrl: string
   quantity: number
-  status: number
-  updatedAt: string
-  createdAt: string
-  notes: string
+  unitPrice: number
+  preDiscount: number
   description: string
-  serviceDuration: string
-  type: string
-  categoryId: string
+  imageUrl: string
+  status: number
+  createdAt: string
+  updatedAt: string
+  categoryId: number
+  supplierId: string
   category: Category
+  supplier: any
 }
 
 export type ProductPayload = {
@@ -24,7 +25,5 @@ export type ProductPayload = {
   quantity: number
   description: string
   status: number
-  categoryId: string
+  categoryId: number
 }
-
-

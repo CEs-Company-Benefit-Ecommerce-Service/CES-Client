@@ -1,7 +1,8 @@
 // @mui
 import {
   Box,
-  Card, FormControlLabel,
+  Card,
+  FormControlLabel,
   IconButton,
   Switch,
   Table,
@@ -9,14 +10,14 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { Category, Params } from 'src/@types/@ces'
-import { Product } from 'src/@types/@ces/product'
+import { ProductData } from 'src/@types/@ces/product'
 import { productApi } from 'src/api-client/product'
 import Iconify from 'src/components/Iconify'
 import Scrollbar from 'src/components/Scrollbar'
@@ -25,7 +26,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import { useCategoryListBySupplier } from 'src/hooks/@ces'
 import { useProductBySupplierId } from 'src/hooks/@ces/useProduct'
@@ -92,7 +93,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
   const { data, mutate, isLoading } = useProductBySupplierId({ supplierId, params })
   const { data: cate } = useCategoryListBySupplier({ supplierId })
   const categories: Category[] = cate?.data ?? []
-  const tableData: Product[] = data?.data ?? []
+  const tableData: ProductData[] = data?.data ?? []
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all')
 
@@ -179,9 +180,7 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
   const denseHeight = dense ? 52 : 72
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-
-    (!dataFiltered.length && !!filterStatus)
+    (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
   return (
     <Card>
       <Tabs
@@ -308,13 +307,11 @@ function applySortFilter({
   comparator,
   filterName,
   filterStatus,
-
 }: {
-  tableData: Product[]
+  tableData: ProductData[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string
-
 }) {
   return tableData
 }

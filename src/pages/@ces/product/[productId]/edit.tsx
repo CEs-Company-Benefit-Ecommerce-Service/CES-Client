@@ -15,6 +15,7 @@ import { useProductDetail } from 'src/hooks/@ces/useProduct'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
 import { PATH_CES } from 'src/routes/paths'
+import DiscountTab from 'src/sections/@ces/product/DiscountTab'
 import ProductNewEditForm from 'src/sections/@ces/product/ProductNewEditForm'
 
 ProductEditPage.getLayout = function getLayout(page: React.ReactElement) {
@@ -30,9 +31,7 @@ export default function ProductEditPage() {
   const { currentTab, onChangeTab } = useTabs('general')
   const { push } = useRouter()
   const { data, mutate } = useProductDetail({ id: `${productId}` })
-  // if (isLoading) {
-  //   return <LoadingScreen />
-  // }
+
   const handleEditProductSubmit = async (payload: ProductPayload) => {
     try {
       await productApi.update(`${productId}`, payload)
@@ -55,7 +54,13 @@ export default function ProductEditPage() {
     {
       value: 'discount',
       icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
-      component: <></>,
+      component: (
+        <DiscountTab
+          mutateProductDetails={mutate}
+          productId={`${productId}`}
+          currentUser={data?.data}
+        />
+      ),
     },
   ]
 

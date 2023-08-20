@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 // @mui
 import { useState } from 'react'
-import { Product } from 'src/@types/@ces/product'
+import { ProductData } from 'src/@types/@ces/product'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
@@ -22,7 +22,7 @@ import { fDateVN, fTime } from 'src/utils/formatTime'
 // ------------------------------------------------------d----------------
 
 type Props = {
-  row: Product
+  row: ProductData
   selected: boolean
   isValidating?: boolean
   onEditRow: VoidFunction

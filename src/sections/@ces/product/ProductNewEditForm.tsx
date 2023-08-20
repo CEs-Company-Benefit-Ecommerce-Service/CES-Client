@@ -1,15 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
 import { LoadingButton } from '@mui/lab'
-import { Box, Card, Grid, Stack, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
+import { Box, Card, Grid, Stack, Typography, useTheme } from '@mui/material'
 // next
 import { useCallback, useEffect, useMemo } from 'react'
 // form
 import { useForm } from 'react-hook-form'
-import { Category, ProductPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
+import { Category, ProductData, ProductPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
 import { useCategoryList } from 'src/hooks/@ces/useCategory'
-import { PATH_CES } from 'src/routes/paths'
 import uploadImage from 'src/utils/uploadImage'
 import * as Yup from 'yup'
 import {
@@ -20,18 +18,21 @@ import {
 } from '../../../components/hook-form'
 // routes
 // utils
+import Iconify from 'src/components/Iconify'
 import { fData } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
 type Props = {
   isEdit?: boolean
-  currentUser?: ProductPayload
+  currentUser?: ProductData
   onSubmit?: (payload: ProductPayload) => void
 }
 
 export default function ProductNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
   // const { push } = useRouter()
+  const theme = useTheme()
+
   const { data } = useCategoryList({})
   const categories: Category[] = data?.data ?? []
   // const { enqueueSnackbar } = useSnackbar()
@@ -48,8 +49,9 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
     () => ({
       name: currentUser?.name || '',
       price: currentUser?.price || 0,
+      preDiscount: currentUser?.preDiscount,
       quantity: currentUser?.quantity || 0,
-      categoryId: currentUser?.categoryId || '',
+      categoryId: currentUser?.categoryId || undefined,
       status: currentUser?.status || 1,
       description: currentUser?.description || '',
       imageUrl: currentUser?.imageUrl || '',
@@ -84,7 +86,6 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
 
   const handleFormSubmit = async (data: ProductPayload) => {
     await onSubmit?.(data)
-
   }
   //------------------------IMAGE UPLOAD------------------------
   const handleDrop = useCallback(
@@ -137,7 +138,6 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
               }}
             >
               <RHFTextField name="name" label="Name" />
-              <RHFTextField name="price" label="Price" />
               <RHFTextField name="quantity" label="Quantity" />
               <RHFSelect name="categoryId" label="Category" placeholder="category">
                 <option value={undefined} />
@@ -147,8 +147,6 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
                   </option>
                 ))}
               </RHFSelect>
-              <RHFTextField name="description" label="Description" />
-
               <RHFSelect name="status" label="Status" placeholder="Status">
                 <option value={undefined} />
                 {statusList.map((option) => (
@@ -158,7 +156,38 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
                 ))}
               </RHFSelect>
             </Box>
-
+            <Box my={3}>
+              <RHFTextField name="description" label="Description" />
+            </Box>
+            <Box
+              sx={{
+                display: 'grid',
+                alignItems: 'center',
+                columnGap: 2,
+                rowGap: 3,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }}
+            >
+              {isEdit && currentUser?.preDiscount ? (
+                <>
+                  <RHFTextField name="preDiscount" label="Price" disabled />
+                  <RHFTextField name="price" label="Price With Discount" disabled />
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    spacing={1}
+                    color={theme.palette['warning'].main}
+                  >
+                    <Iconify icon={'carbon:warning'} width={32} height={32} />
+                    <Typography variant="body2" fontWeight={'200'}>
+                      Please remove the current discount if you want to change the price.
+                    </Typography>
+                  </Stack>
+                </>
+              ) : (
+                <RHFTextField name="price" label="Price" />
+              )}
+            </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 {!isEdit ? 'Create Product' : 'Save Changes'}

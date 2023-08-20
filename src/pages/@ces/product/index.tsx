@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { Category, Params, Role } from 'src/@types/@ces'
-import { Product } from 'src/@types/@ces/product'
+import { ProductData } from 'src/@types/@ces/product'
 import { productApi } from 'src/api-client/product'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
@@ -93,7 +93,7 @@ export default function ProductPage() {
   const { data, mutate, isLoading } = useProduct({ params })
   const { data: cate } = useCategoryList({})
   const categories: Category[] = cate?.data ?? []
-  const tableData: Product[] = data?.data ?? []
+  const tableData: ProductData[] = data?.data ?? []
 
   const { currentTab: filterStatus } = useTabs('all')
 
@@ -320,7 +320,7 @@ function applySortFilter({
   filterName,
   filterStatus,
 }: {
-  tableData: Product[]
+  tableData: ProductData[]
   comparator: (a: any, b: any) => number
   filterName: string
   filterStatus: string

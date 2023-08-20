@@ -9,4 +9,5 @@ export * from './project'
 export * from './wallet'
 export * from './report'
 export * from './notification'
+export * from './discount'
 

@@ -8,4 +8,5 @@ export * from './useProject'
 export * from './useMe'
 export * from './useReport'
 export * from './useNotification'
+export * from './useDiscount'
 

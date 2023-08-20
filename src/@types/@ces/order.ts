@@ -1,5 +1,5 @@
 import { AccountData } from './account'
-import { Product } from './product'
+import { ProductData } from './product'
 
 export type Order = {
   id: string
@@ -34,7 +34,7 @@ export type OrderDetail = {
   createAt: string
   notes: string
   productId: string
-  product: Product
+  product: ProductData
 }
 export enum Status {
   '',

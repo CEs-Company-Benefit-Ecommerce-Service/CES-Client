@@ -1,14 +1,14 @@
-import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useMemo } from 'react';
+import * as Yup from 'yup'
+import { useSnackbar } from 'notistack'
+import { useCallback, useEffect, useMemo } from 'react'
 // next
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 // form
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
-import { styled } from '@mui/material/styles';
-import { LoadingButton } from '@mui/lab';
+import { styled } from '@mui/material/styles'
+import { LoadingButton } from '@mui/lab'
 import {
   Card,
   Chip,
@@ -18,11 +18,11 @@ import {
   Typography,
   Autocomplete,
   InputAdornment,
-} from '@mui/material';
+} from '@mui/material'
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths'
 // @types
-import { Product } from '../../../@types/product';
+import { Product } from '../../../@types/product'
 // components
 import {
   FormProvider,
@@ -32,7 +32,7 @@ import {
   RHFTextField,
   RHFRadioGroup,
   RHFUploadMultiFile,
-} from '../../../components/hook-form';
+} from '../../../components/hook-form'
 
 // ----------------------------------------------------------------------
 
@@ -40,13 +40,13 @@ const GENDER_OPTION = [
   { label: 'Men', value: 'Men' },
   { label: 'Women', value: 'Women' },
   { label: 'Kids', value: 'Kids' },
-];
+]
 
 const CATEGORY_OPTION = [
   { group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather'] },
   { group: 'Tailored', classify: ['Suits', 'Blazers', 'Trousers', 'Waistcoats'] },
   { group: 'Accessories', classify: ['Shoes', 'Backpacks and bags', 'Bracelets', 'Face masks'] },
-];
+]
 
 const TAGS_OPTION = [
   'Toy Story 3',
@@ -62,37 +62,37 @@ const TAGS_OPTION = [
   'Inglourious Basterds',
   'Snatch',
   '3 Idiots',
-];
+]
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 interface FormValuesProps extends Partial<Product> {
-  taxes: boolean;
-  inStock: boolean;
+  taxes: boolean
+  inStock: boolean
 }
 
 type Props = {
-  isEdit?: boolean;
-  currentProduct?: Product;
-};
+  isEdit?: boolean
+  currentProduct?: Product
+}
 
 export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
-  const { push } = useRouter();
+  const { push } = useRouter()
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string().required('Description is required'),
     images: Yup.array().min(1, 'Images is required'),
     price: Yup.number().moreThan(0, 'Price should not be $0.00'),
-  });
+  })
 
   const defaultValues = useMemo(
     () => ({
@@ -111,12 +111,12 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentProduct]
-  );
+  )
 
   const methods = useForm<FormValuesProps>({
     resolver: yupResolver(NewProductSchema),
     defaultValues,
-  });
+  })
 
   const {
     reset,
@@ -126,34 +126,34 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
     getValues,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
-  const values = watch();
+  const values = watch()
 
   useEffect(() => {
     if (isEdit && currentProduct) {
-      reset(defaultValues);
+      reset(defaultValues)
     }
     if (!isEdit) {
-      reset(defaultValues);
+      reset(defaultValues)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentProduct]);
+  }, [isEdit, currentProduct])
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
-      push(PATH_DASHBOARD.eCommerce.list);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      reset()
+      enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!')
+      push(PATH_DASHBOARD.eCommerce.list)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      const images = values.images || [];
+      const images = values.images || []
 
       setValue('images', [
         ...images,
@@ -162,19 +162,19 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
             preview: URL.createObjectURL(file),
           })
         ),
-      ]);
+      ])
     },
     [setValue, values.images]
-  );
+  )
 
   const handleRemoveAll = () => {
-    setValue('images', []);
-  };
+    setValue('images', [])
+  }
 
   const handleRemove = (file: File | string) => {
-    const filteredItems = values.images?.filter((_file) => _file !== file);
-    setValue('images', filteredItems);
-  };
+    const filteredItems = values.images?.filter((_file) => _file !== file)
+    setValue('images', filteredItems)
+  }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -273,7 +273,9 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
                   label="Regular Price"
                   placeholder="0.00"
                   value={getValues('price') === 0 ? '' : getValues('price')}
-                  onChange={(event) => setValue('price', Number(event.target.value))}
+                  onChange={(event: { target: { value: any } }) =>
+                    setValue('price', Number(event.target.value))
+                  }
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -286,7 +288,9 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
                   label="Sale Price"
                   placeholder="0.00"
                   value={getValues('priceSale') === 0 ? '' : getValues('priceSale')}
-                  onChange={(event) => setValue('price', Number(event.target.value))}
+                  onChange={(event: { target: { value: any } }) =>
+                    setValue('price', Number(event.target.value))
+                  }
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -305,5 +309,5 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
         </Grid>
       </Grid>
     </FormProvider>
-  );
+  )
 }
