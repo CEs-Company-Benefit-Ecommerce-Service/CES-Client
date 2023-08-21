@@ -51,6 +51,24 @@ export function usePaymentSystem({ params, options }: UsePaymentProps) {
   }
 }
 
+
+export function usePaymentDebt({ params, options }: UsePaymentProps) {
+  const { data, error, mutate, isLoading } = useSWR(
+    ['/ea-payment-debt', params],
+    () => paymentApi.satransaction(params!),
+    {
+      ...options,
+    }
+  )
+  return {
+    data,
+    error,
+    mutate,
+    isLoading,
+  }
+}
+
+
 export function usePaymentSystemDebt({ params, options }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
     ['/transaction-debt', params],

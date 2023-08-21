@@ -10,22 +10,29 @@ import {
   Grid,
   Stack,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { AccountData, PaymentPayload, TransactionPayload } from 'src/@types/@ces'
+import {
+  AccountData,
+  Params,
+  PaymentPayload,
+  TransactionHistory,
+  TransactionPayload,
+} from 'src/@types/@ces'
 import { paymentApi } from 'src/api-client/payment'
 import { RHFTextField, RHFUploadSingleFile } from 'src/components/hook-form'
 import { useMe } from 'src/hooks/@ces'
-import { usePayment } from 'src/hooks/@ces/usePayment'
+import { usePayment, usePaymentDebt, usePaymentSystem } from 'src/hooks/@ces/usePayment'
 import uploadImageDebt from 'src/utils/uploadImageDebt'
 // @types
 import { CreditCard, UserAddressBook, UserInvoice } from '../../../../@types/user'
 import AccountBillingInvoiceHistory from './AccountBillingInvoiceHistory'
 import BalanceAnalytic from './balanceAnalytic'
+import PaymentMethod from './paymentMethod'
 import UsedAnalytic from './usedAnalytic'
 
 // ----------------------------------------------------------------------
@@ -38,16 +45,21 @@ type Props = {
   payload?: PaymentPayload
 }
 
-export default function AccountBilling({ cards, addressBook, invoices, payload }: Props) {
+export default function AccountBilling({ payload }: Props) {
   const { data } = useMe({})
   const usedPayload = data?.wallets.map((u) => u?.used)[0]
   const balance = data?.wallets.map((u) => u?.balance)[0]
   const limit = data?.wallets.map((u) => u?.limits)[0]
   const accountId = data?.id
-  const compId = data?.companyId.toString()
+  const compId = data?.companyId?.toString()
   const [open, setOpen] = useState(false)
+  const [isDebt, setIsDebt] = useState(false)
   // const { data: orders, isLoading } = useOrderByCompanyId({ companyId: compId })
-  const { data: payments, isLoading: isPaymentLoading } = usePayment({
+  const {
+    data: payments,
+    isLoading: isPaymentLoading,
+    mutate,
+  } = usePayment({
     companyId: compId,
     params: { PaymentType: '1', Sort: 'createdAt', Order: 'desc', Page: 1, Size: 10 },
   })
@@ -57,13 +69,20 @@ export default function AccountBilling({ cards, addressBook, invoices, payload }
     accountId: accountId!,
     paymentid: '05C93858-F520-4391-B72B-D48BC5F2990B',
   }
+
   const theme = useTheme()
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
         <Stack spacing={2}>
-          {open && <BankingDetails handleClose={() => setOpen(false)} used={usedPayload!} />}
+          {open && (
+            <BankingDetails
+              handleClose={() => setOpen(false)}
+              used={usedPayload!}
+              mutate={mutate}
+            />
+          )}
           <Card sx={{ mb: 1 }}>
             <BalanceAnalytic
               title="Balance"
@@ -83,6 +102,15 @@ export default function AccountBilling({ cards, addressBook, invoices, payload }
               setOpen={setOpen}
             />
           </Card>
+          <Card sx={{ mb: 2 }}>
+            <PaymentMethod
+              color={theme.palette.info.main}
+              used={usedPayload!}
+              payLoad={payload}
+              isDebt={isDebt}
+              setOpen={setOpen}
+            />
+          </Card>
         </Stack>
         {/* <Card sx={{ mt: 5 }}>
           <AccountOrderHistory order={orders?.data} isLoading={isLoading} />
@@ -98,9 +126,10 @@ export default function AccountBilling({ cards, addressBook, invoices, payload }
 type BankingDetailsProps = {
   handleClose: any
   used: number
+  mutate: any
 }
 
-function BankingDetails({ handleClose, used }: BankingDetailsProps) {
+function BankingDetails({ handleClose, used, mutate }: BankingDetailsProps) {
   const [open, setOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const defaultValues = {

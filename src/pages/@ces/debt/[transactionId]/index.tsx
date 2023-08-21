@@ -40,6 +40,7 @@ export default function DebtDetail() {
   if (isLoading) {
     return <LoadingScreen />
   }
+  
   const handleUpdateDebt = async (id: string, payload: TransactionUpdatePayload) => {
     try {
       await paymentApi.updateDebt(id, payload)
@@ -50,6 +51,7 @@ export default function DebtDetail() {
       console.error(error)
     }
   }
+
   return (
     <RoleBasedGuard hasContent roles={[Role['System Admin'], Role['Enterprise Admin']]}>
       <Page title="Debt: View">
