@@ -36,7 +36,7 @@ export default function BenefitTableRow({
   const theme = useTheme()
 
   const { name, unitPrice, status, createdAt, updatedAt, groups } = row
-  const { endDate, type } = groups[0]
+  const { endDate, type, timeFilter } = groups[0]
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -76,6 +76,14 @@ export default function BenefitTableRow({
       </TableCell> */}
       <TableCell align="left">{name}</TableCell>
       <TableCell align="left">{fCurrency(unitPrice)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(timeFilter)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(timeFilter)}
+        </Typography>
+      </TableCell>
       <TableCell align="left">{fDateVN(endDate)}</TableCell>
 
       <TableCell align="left">

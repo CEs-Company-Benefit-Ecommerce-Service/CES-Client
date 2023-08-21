@@ -101,7 +101,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit, currentUser])
-  console.log(watch('type'))
 
   const handleFormSubmit = async (payload: BenefitPayload) => {
     if (payload.timeFilter && payload.endDate) {
@@ -145,6 +144,11 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               <Box flex={1} />
             )}
           </Stack>
+        </Stack>
+        <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+            {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
+          </LoadingButton>
         </Stack>
       </Card>
 
@@ -323,12 +327,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
           </Stack> */}
         </Stack>
       </Card>
-
-      <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-          {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
-        </LoadingButton>
-      </Stack>
     </FormProvider>
   )
 }

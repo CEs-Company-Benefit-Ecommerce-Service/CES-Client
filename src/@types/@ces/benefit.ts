@@ -27,6 +27,7 @@ export type BenefitData = {
     dateFilter: number
     dayFilter: number
     endDate: string
+    firstTime: string
     benefit: any
     employeeGroupMappings: {
       id: string

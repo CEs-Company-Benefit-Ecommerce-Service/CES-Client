@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   FormControlLabel,
   IconButton,
   Switch,
@@ -47,6 +46,7 @@ const FILTER_OPTIONS = ['descending', 'ascending']
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
   { id: 'unitPrice', label: 'Unit Price', align: 'left' },
+  { id: 'timeFilter', label: 'Date Time transfer', align: 'left' },
   { id: 'endDate', label: 'End Date', align: 'left' },
   { id: 'type', label: 'Type', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
@@ -309,7 +309,7 @@ export default function BenefitPage() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={dataFiltered.length}
+                count={data?.metaData?.total}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 // onPageChange={(e) => {
