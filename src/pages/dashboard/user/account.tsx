@@ -3,7 +3,7 @@ import { Box, Container, Tab, Tabs } from '@mui/material'
 import { capitalCase } from 'change-case'
 // sections
 import { useSnackbar } from 'notistack'
-import { ChangePasswordPayload } from 'src/@types/@ces'
+import { ChangePasswordPayload, Params } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import { useMe } from 'src/hooks/@ces'
 import AccountChangePasswordForm from 'src/sections/@ces/account/AccountChangePasswordForm'
@@ -22,6 +22,8 @@ import Layout from '../../../layouts'
 import { _userAddressBook, _userInvoices, _userPayment } from '../../../_mock'
 import { PATH_DASHBOARD } from '../../../routes/paths'
 import { AccountBilling } from '../../../sections/@dashboard/user/account'
+import { useState } from 'react'
+import { usePaymentDebt } from 'src/hooks/@ces/usePayment'
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +39,7 @@ export default function UserAccount() {
 
   const { currentTab, onChangeTab } = useTabs('general')
   const { data } = useMe({})
+  const compId = data?.companyId?.toString()
   const handleChangePasswordSubmit = async (payload: ChangePasswordPayload) => {
     try {
       await accountApi.updatePassword(payload)
