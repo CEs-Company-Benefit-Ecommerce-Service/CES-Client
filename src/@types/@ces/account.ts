@@ -10,6 +10,7 @@ export type AccountData = {
   status: number
   role: number
   companyId: number
+  expiredDate: string
   updatedAt: string
   createdAt: string
   wallets: WalletData[]
