@@ -39,11 +39,13 @@ export default function AccountCreatePage() {
         push(PATH_CES.company.root)
       } else if (payload.role == 2) {
         push(PATH_CES.suaccount.root)
-      }else{
+      } else if (payload.role == 5) {
         push(PATH_CES.shaccount.root)
+      } else {
+        push(PATH_CES.account.root)
       }
     } catch (error) {
-      enqueueSnackbar('Create failed!', {})
+      enqueueSnackbar('Create failed!', { variant: 'error' })
       console.error(error)
     }
   }
@@ -85,8 +87,8 @@ export default function AccountCreatePage() {
       setFile(undefined)
       push(PATH_CES.account.root)
     } catch (error) {
+      enqueueSnackbar('Import failed!', { variant: 'error' })
       console.error(error)
-      enqueueSnackbar('Import failed!')
     }
   }
 

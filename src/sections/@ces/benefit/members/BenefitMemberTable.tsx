@@ -154,6 +154,7 @@ export default function BenefitMemberTable({ benefitId, groupId }: Props) {
 
         enqueueSnackbar('Remove successful')
       } catch (error) {
+        enqueueSnackbar('Remove failed', { variant: 'error' })
         console.error(error)
       }
     })
@@ -169,6 +170,7 @@ export default function BenefitMemberTable({ benefitId, groupId }: Props) {
         setSelected([])
         enqueueSnackbar('Remove successful')
       } catch (error) {
+        enqueueSnackbar('Remove failed', { variant: 'error' })
         console.error(error)
       }
     })

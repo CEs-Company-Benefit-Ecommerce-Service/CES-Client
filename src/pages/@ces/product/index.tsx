@@ -157,7 +157,7 @@ export default function ProductPage() {
         mutate()
         enqueueSnackbar('Delete successfull')
       } catch (error) {
-        enqueueSnackbar('Delete failed')
+        enqueueSnackbar('Delete failed', { variant: 'error' })
         console.error(error)
       }
     })

@@ -48,7 +48,7 @@ export default function UserAccount() {
       push(PATH_CES.account.detail(`${accountId}`))
       enqueueSnackbar('Update success!')
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }

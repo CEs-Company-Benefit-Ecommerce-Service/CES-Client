@@ -36,13 +36,13 @@ export default function CategoryEditPage() {
       enqueueSnackbar('Update success!')
       push(PATH_CES.category.root)
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }
 
   return (
-    <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
+    <RoleBasedGuard hasContent roles={[Role['Supplier Admin'], Role['System Admin']]}>
       <Page title="Category: Edit category">
         <Container>
           <HeaderBreadcrumbs
@@ -54,7 +54,11 @@ export default function CategoryEditPage() {
             ]}
           />
 
-          <CategoryNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditCategorySubmit} />
+          <CategoryNewEditForm
+            isEdit
+            currentUser={data?.data}
+            onSubmit={handleEditCategorySubmit}
+          />
         </Container>
       </Page>
     </RoleBasedGuard>

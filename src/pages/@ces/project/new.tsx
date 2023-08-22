@@ -33,7 +33,7 @@ export default function ProjectCreatePage() {
       enqueueSnackbar('Create success!')
       push(PATH_CES.project.root)
     } catch (error) {
-      enqueueSnackbar('Create failed!')
+      enqueueSnackbar('Create failed!', { variant: 'error' })
       console.error(error)
     }
   }

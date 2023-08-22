@@ -52,7 +52,7 @@ export default function BenefitEditPage() {
       enqueueSnackbar('Update success!')
       push(PATH_CES.benefit.root)
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }

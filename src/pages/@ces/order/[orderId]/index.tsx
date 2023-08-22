@@ -40,7 +40,7 @@ export default function InvoiceDetails() {
       mutate()
       enqueueSnackbar('Update success!')
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }

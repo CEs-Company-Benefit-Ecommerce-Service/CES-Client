@@ -154,6 +154,7 @@ export default function AccountTableCustom({}: Props) {
 
         enqueueSnackbar('Remove successful')
       } catch (error) {
+        enqueueSnackbar('Remove failed', { variant: 'error' })
         console.error(error)
       }
     })
@@ -170,6 +171,7 @@ export default function AccountTableCustom({}: Props) {
         setSelected([])
         enqueueSnackbar('Add successful')
       } catch (error) {
+        enqueueSnackbar('Add failed', { variant: 'error' })
         console.error(error)
       }
     })
@@ -185,6 +187,7 @@ export default function AccountTableCustom({}: Props) {
         setSelected([])
         enqueueSnackbar('Remove successful')
       } catch (error) {
+        enqueueSnackbar('Remove failed', { variant: 'error' })
         console.error(error)
       }
     })
@@ -209,6 +212,7 @@ export default function AccountTableCustom({}: Props) {
 
       enqueueSnackbar('Add successful')
     } catch (error) {
+      enqueueSnackbar('Add failed', { variant: 'error' })
       console.error(error)
     }
   }

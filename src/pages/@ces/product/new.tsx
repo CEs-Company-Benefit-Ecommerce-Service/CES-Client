@@ -35,7 +35,7 @@ export default function ProductCreatePage() {
       mutateList()
       push(PATH_CES.product.root)
     } catch (error) {
-      enqueueSnackbar('Create failed!')
+      enqueueSnackbar('Create failed!', { variant: 'error' })
       console.error(error)
     }
   }
@@ -66,8 +66,8 @@ export default function ProductCreatePage() {
       setFile(undefined)
       push(PATH_CES.product.root)
     } catch (error) {
+      enqueueSnackbar('Import failed!', { variant: 'error' })
       console.error(error)
-      enqueueSnackbar('Import failed!')
     }
   }
 

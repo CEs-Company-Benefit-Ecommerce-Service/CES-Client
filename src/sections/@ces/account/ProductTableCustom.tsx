@@ -152,9 +152,9 @@ export default function ProductTableCustom({ supplierId }: ProductTableCustomPro
       try {
         await productApi.delete(id)
         mutate()
-        enqueueSnackbar('Delete successfull')
+        enqueueSnackbar('Delete successful')
       } catch (error) {
-        enqueueSnackbar('Delete failed')
+        enqueueSnackbar('Delete failed', { variant: 'error' })
         console.error(error)
       }
     })

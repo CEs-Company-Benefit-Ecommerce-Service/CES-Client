@@ -49,6 +49,7 @@ const FILTER_OPTIONS = ['descending', 'ascending']
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
+  { id: 'description', label: 'Description', align: 'left' },
   { id: 'createdat', label: 'Created At', align: 'left' },
   { id: 'updatedat', label: 'Updated At', align: 'left' },
   { id: '' },
@@ -133,9 +134,10 @@ export default function CategoryPage() {
       try {
         await categoryApi.delete(cateId)
         mutate()
-        enqueueSnackbar('Delete successfull')
+        enqueueSnackbar('Delete successfully')
       } catch (error) {
-        enqueueSnackbar('Delete failed')
+        enqueueSnackbar('Delete failed', { variant: 'error' })
+
         console.error(error)
       }
     })
@@ -185,7 +187,7 @@ export default function CategoryPage() {
     (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
 
   return (
-    <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
+    <RoleBasedGuard hasContent roles={[Role['Supplier Admin'], Role['System Admin']]}>
       <Page title="Category: List">
         <Container>
           <HeaderBreadcrumbs

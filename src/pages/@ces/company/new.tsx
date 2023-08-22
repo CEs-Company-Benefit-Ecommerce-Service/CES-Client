@@ -26,7 +26,7 @@ export default function CompanyCreatePage() {
       enqueueSnackbar('Create success!')
       push(PATH_CES.company.root)
     } catch (error) {
-      enqueueSnackbar('Create failed!')
+      enqueueSnackbar('Create failed!', { variant: 'error' })
       console.error(error)
     }
   }

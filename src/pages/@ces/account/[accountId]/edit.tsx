@@ -37,7 +37,7 @@ export default function AccountEditPage() {
       enqueueSnackbar('Update success!')
       push(PATH_CES.account.root)
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }

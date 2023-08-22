@@ -72,7 +72,7 @@ export default function ProjectDetails() {
         await projectApi.transferMoney(`${projectId}`)
         enqueueSnackbar('Transfer successful')
       } catch (error) {
-        enqueueSnackbar('Transfer failed')
+        enqueueSnackbar('Transfer failed!', { variant: 'error' })
         console.error(error)
       } finally {
         setLoading(false)

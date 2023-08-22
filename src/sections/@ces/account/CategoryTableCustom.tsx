@@ -115,9 +115,9 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
       try {
         await categoryApi.delete(cateId)
         mutate()
-        enqueueSnackbar('Delete successfull')
+        enqueueSnackbar('Delete successful')
       } catch (error) {
-        enqueueSnackbar('Delete failed')
+        enqueueSnackbar('Delete failed', { variant: 'error' })
         console.error(error)
       }
     })
@@ -155,7 +155,7 @@ export default function CategoryTableCustom({ supplierId }: CategoryTableCustomP
   const handleClickRow = (id: string) => {
     push(PATH_CES.category.edit(paramCase(id)))
   }
-  
+
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),

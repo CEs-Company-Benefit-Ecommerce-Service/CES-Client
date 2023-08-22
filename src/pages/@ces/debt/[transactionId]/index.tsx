@@ -40,14 +40,14 @@ export default function DebtDetail() {
   if (isLoading) {
     return <LoadingScreen />
   }
-  
+
   const handleUpdateDebt = async (id: string, payload: TransactionUpdatePayload) => {
     try {
       await paymentApi.updateDebt(id, payload)
       mutate()
       enqueueSnackbar('Update success!')
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }

@@ -27,12 +27,12 @@ export default function AccountCreatePage() {
       enqueueSnackbar('Create success!')
       push(PATH_CES.category.root)
     } catch (error) {
-      enqueueSnackbar('Create failed!')
+      enqueueSnackbar('Create failed!', { variant: 'error' })
       console.error(error)
     }
   }
   return (
-    <RoleBasedGuard hasContent roles={[Role['Supplier Admin']]}>
+    <RoleBasedGuard hasContent roles={[Role['Supplier Admin'], Role['System Admin']]}>
       <Page title="Category: Create a new Category">
         <Container>
           <HeaderBreadcrumbs

@@ -36,7 +36,7 @@ export default function ProjectEditPage() {
       enqueueSnackbar('Update success!')
       push(PATH_CES.project.root)
     } catch (error) {
-      enqueueSnackbar('Update failed!')
+      enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
     }
   }
