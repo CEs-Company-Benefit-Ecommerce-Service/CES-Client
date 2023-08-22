@@ -72,9 +72,11 @@ export default function DashboardHeader({
   const isDesktop = useResponsive('up', 'lg')
 
   const { data: dataUnRead, mutate: mutateUnRead } = useNotificationList({
-    params: { isRead: false },
+    params: { isRead: false, Sort: 'createdAt', Order: 'desc' },
   })
-  const { data: dataRead, mutate: mutateRead } = useNotificationList({ params: { isRead: true } })
+  const { data: dataRead, mutate: mutateRead } = useNotificationList({
+    params: { isRead: true, Sort: 'createdAt', Order: 'desc' },
+  })
   const totalUnRead = dataUnRead?.metaData?.total || 0
 
   return (

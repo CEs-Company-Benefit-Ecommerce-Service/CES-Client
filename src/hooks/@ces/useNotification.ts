@@ -13,7 +13,10 @@ type UseNotificationProps = {
   enable?: boolean
 }
 
-export function useNotificationList({ options, params = { Page: 1 } }: UseNotificationProps) {
+export function useNotificationList({
+  options,
+  params = { Page: 1, Sort: 'createdAt', Order: 'desc' },
+}: UseNotificationProps) {
   const { data, error, mutate, isValidating, isLoading } = useSWR(
     ['notification-list', params],
     () => notificationApi.getAll(params!),
