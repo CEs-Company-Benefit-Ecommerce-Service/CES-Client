@@ -45,7 +45,7 @@ export default function BenefitAccountTableRow({
 }: Props) {
   const theme = useTheme()
   const { account } = row
-  const { name, imageUrl, phone, email, status, createdAt, updatedAt, isReceived } = account
+  const { name, imageUrl, phone, email, status, createdAt, updatedAt } = account
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -92,18 +92,6 @@ export default function BenefitAccountTableRow({
       </TableCell>
 
       <TableCell align="left">{phone === 'string' ? '' : phone}</TableCell>
-      <TableCell align="center">
-        {isReceived && (
-          <Iconify
-            icon={'eva:checkmark-circle-fill'}
-            sx={{
-              width: 20,
-              height: 20,
-              color: 'success.main',
-            }}
-          />
-        )}
-      </TableCell>
 
       <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>

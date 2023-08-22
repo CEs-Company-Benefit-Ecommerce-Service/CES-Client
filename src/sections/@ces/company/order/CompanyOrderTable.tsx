@@ -51,9 +51,8 @@ const FILTER_OPTIONS = ['descending', 'ascending']
 const TABLE_HEAD = [
   { id: 'orderCode', label: 'Order Code', align: 'left' },
   { id: 'employeeName', label: 'Employee', align: 'left' },
-  { id: 'total', label: 'Amount', align: 'left' },
+  { id: 'total', label: 'Total', align: 'left' },
   { id: 'createdAt', label: 'Date', align: 'left' },
-  // { id: 'updatedAt', label: 'Updated At', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ]

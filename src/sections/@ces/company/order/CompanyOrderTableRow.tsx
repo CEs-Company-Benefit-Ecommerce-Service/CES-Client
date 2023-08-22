@@ -6,7 +6,7 @@ import { Order, Status } from 'src/@types/@ces/order'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fNumber } from 'src/utils/formatNumber'
+import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 type Props = {
   row: Order
@@ -77,7 +77,7 @@ export default function CompanyOrderTableRow({
       </TableCell>
 
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {fNumber(total)}
+        {fCurrency(total)}
       </TableCell>
 
       <TableCell align="left">

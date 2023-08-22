@@ -6,7 +6,7 @@ import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fNumber } from 'src/utils/formatNumber'
+import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
@@ -58,7 +58,7 @@ export default function DebtTableRow({
 
       <TableCell align="left">{companyName}</TableCell>
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {fNumber(total)}
+        {fCurrency(total)}
       </TableCell>
       <TableCell align="left">
         {type === 3 ? 'ZALOPAY' : type === 5 ? 'VNPAY' : type == 6 ? 'Banking' : 'Transfer Benefit'}

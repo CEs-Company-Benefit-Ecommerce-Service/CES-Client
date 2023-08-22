@@ -13,7 +13,7 @@ import { ProductData } from 'src/@types/@ces/product'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fNumber, fShortenNumber } from 'src/utils/formatNumber'
+import { fCurrency, fShortenNumber } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 // @types
 
@@ -78,7 +78,7 @@ export default function ProductTableRow({
           {name}
         </Typography>
       </TableCell>
-      <TableCell align="left">{fNumber(price)}</TableCell>
+      <TableCell align="left">{fCurrency(price)}</TableCell>
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
         {fShortenNumber(quantity)}
       </TableCell>

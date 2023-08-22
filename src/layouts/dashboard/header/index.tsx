@@ -17,6 +17,7 @@ import AccountPopover from './AccountPopover'
 import Searchbar from './Searchbar'
 import NotificationsPopover from './NotificationsPopover'
 import { useNotificationList } from 'src/hooks/@ces'
+import LanguagePopover from './LanguagePopover'
 
 // ----------------------------------------------------------------------
 
@@ -98,8 +99,8 @@ export default function DashboardHeader({
         <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          {/* <LanguagePopover /> */}
+        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 2 }}>
+          <LanguagePopover />
           <NotificationsPopover
             dataUnRead={dataUnRead?.data}
             dataRead={dataRead?.data}

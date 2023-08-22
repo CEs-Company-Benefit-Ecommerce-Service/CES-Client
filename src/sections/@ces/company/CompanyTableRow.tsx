@@ -6,7 +6,7 @@ import Avatar from 'src/components/Avatar'
 import Iconify from 'src/components/Iconify'
 import { TableMoreMenu } from 'src/components/table'
 import createAvatar from 'src/utils/createAvatar'
-import { fNumber } from 'src/utils/formatNumber'
+import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 
 // ----------------------------------------------------------------------
@@ -75,8 +75,8 @@ export default function CompanyTableRow({
         </Typography>
       </TableCell>
 
-      <TableCell align="left">{fNumber(limits)}</TableCell>
-      <TableCell align="left">{fNumber(used)}</TableCell>
+      <TableCell align="left">{fCurrency(limits)}</TableCell>
+      <TableCell align="left">{fCurrency(used)}</TableCell>
       <TableCell align="left">{fDateVN(expiredDate)}</TableCell>
       <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
@@ -137,7 +137,7 @@ export default function CompanyTableRow({
                 <Iconify icon={'eva:edit-fill'} />
                 Edit
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => {
                   onDueRow()
                   handleCloseMenu()
@@ -145,7 +145,7 @@ export default function CompanyTableRow({
               >
                 <Iconify icon={'la:file-invoice-dollar'} />
                 Due
-              </MenuItem>
+              </MenuItem> */}
             </>
           }
         />

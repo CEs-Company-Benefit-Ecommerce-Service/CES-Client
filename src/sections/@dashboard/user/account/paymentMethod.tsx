@@ -2,7 +2,7 @@
 import { LoadingButton } from '@mui/lab'
 import { Paper, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
-import { AccountData, Params, PaymentPayload } from 'src/@types/@ces'
+import { PaymentPayload } from 'src/@types/@ces'
 import { paymentApi } from 'src/api-client/payment'
 import Image from '../../../../components/Image'
 // utils
@@ -72,14 +72,14 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                 width: 1,
                 borderRadius: '8px',
                 position: 'relative',
-                border: (theme) =>
+                border: (theme: any) =>
                   `solid 4px  ${
                     paymentMethods.vnPay ? theme.palette.primary.main : theme.palette.grey[50032]
                   }`,
               }}
             >
               <Image alt="icon" src={'/vnpay.svg'} sx={{ mb: 1, maxWidth: 72 }} />
-              {/* <Typography variant="subtitle1">{fCurrency(used)}đ</Typography> */}
+              {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
             </Paper>
             <Paper
               onClick={() => {
@@ -94,14 +94,14 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                 width: 1,
                 borderRadius: '8px',
                 position: 'relative',
-                border: (theme) =>
+                border: (theme: any) =>
                   `solid 4px  ${
                     paymentMethods.zaloPay ? theme.palette.primary.main : theme.palette.grey[50032]
                   }`,
               }}
             >
               <Image alt="icon" src={'/zalopay.svg'} sx={{ mb: 1, maxWidth: 72 }} />
-              {/* <Typography variant="subtitle1">{fCurrency(used)}đ</Typography> */}
+              {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
             </Paper>
             <Paper
               onClick={() => {
@@ -117,14 +117,14 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                 width: 1,
                 borderRadius: '8px',
                 position: 'relative',
-                border: (theme) =>
+                border: (theme: any) =>
                   `solid 4px  ${
                     paymentMethods.banking ? theme.palette.primary.main : theme.palette.grey[50032]
                   }`,
               }}
             >
               <Image alt="icon" src={'/onlineBanking.png'} sx={{ mb: 1, maxWidth: 36 }} />
-              {/* <Typography variant="subtitle1">{fCurrency(used)}đ</Typography> */}
+              {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
             </Paper>
           </>
         </Stack>

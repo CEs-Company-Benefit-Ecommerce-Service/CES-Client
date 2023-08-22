@@ -25,9 +25,11 @@ export default function DiscountTab({ currentUser, productId, mutateProductDetai
 
   return (
     <>
-      <Button variant="contained" sx={{ mb: 2 }} onClick={handleClickCreateNewDiscount}>
-        Create new discount
-      </Button>
+      {!isLoading && (
+        <Button variant="contained" sx={{ mb: 2 }} onClick={handleClickCreateNewDiscount}>
+          Create new discount
+        </Button>
+      )}
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : !!data?.metaData.total ? (
@@ -222,9 +224,9 @@ function DiscountNewEditForm({
         )}
 
         <Typography mt={2} variant="body1">
-          Unit price: {fCurrency(product.preDiscount || product.price)}đ
+          Unit price: {fCurrency(product.preDiscount || product.price)}
         </Typography>
-        <Typography variant="body1">Price after discount: {fCurrency(price)}đ</Typography>
+        <Typography variant="body1">Price after discount: {fCurrency(price)}</Typography>
 
         <Box
           sx={{

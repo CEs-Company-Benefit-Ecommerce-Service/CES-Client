@@ -1,6 +1,6 @@
 // @mui
 import { Box, Stack, Typography } from '@mui/material'
-import { fCurrency } from 'src/utils/formatNumber'
+import { fCurrency, fNumber } from 'src/utils/formatNumber'
 // utils
 
 // ----------------------------------------------------------------------
@@ -25,9 +25,9 @@ export default function BalanceAnalytic({ title, balance, limit, color }: Props)
         <Typography variant="h5">{title}</Typography>
 
         <Typography variant="h5" sx={{ color }}>
-          {fCurrency(balance)}
+          {fNumber(balance)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body1' }}>
-            /{fCurrency(limit)}đ
+            /{fCurrency(limit)}
           </Box>
         </Typography>
       </Stack>

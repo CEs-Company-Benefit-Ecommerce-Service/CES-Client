@@ -12,7 +12,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -30,9 +30,10 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import { useCompanyList } from 'src/hooks/@ces'
+import useLocales from 'src/hooks/useLocales'
 import useSettings from 'src/hooks/useSettings'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
@@ -53,20 +54,22 @@ CompanyPage.getLayout = function getLayout(page: React.ReactElement) {
 
 // ----------------------------------------------------------------------
 const FILTER_OPTIONS = ['descending', 'ascending']
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', align: 'left' },
-  { id: 'limits', label: 'Limit', align: 'left' },
-  { id: 'used', label: 'Used', align: 'left' },
-  { id: 'expiredDate', label: 'Expired Date', align: 'left' },
-  { id: 'createdAt', label: 'Created At', align: 'left' },
-  { id: 'updatedAt', label: 'Updated At', align: 'left' },
-  { id: '' },
-]
 
 // ----------------------------------------------------------------------
 
 export default function CompanyPage() {
+  const { translate } = useLocales()
   const { themeStretch } = useSettings()
+
+  const TABLE_HEAD = [
+    { id: 'name', label: translate('companyName'), align: 'left' },
+    { id: 'limits', label: translate('limit'), align: 'left' },
+    { id: 'used', label: translate('used'), align: 'left' },
+    { id: 'expiredDate', label: translate('expiredDate'), align: 'left' },
+    { id: 'createdAt', label: translate('createdAt'), align: 'left' },
+    { id: 'updatedAt', label: translate('updatedAt'), align: 'left' },
+    { id: '' },
+  ]
 
   const {
     dense,
@@ -138,11 +141,11 @@ export default function CompanyPage() {
   }
 
   const handleDeleteRow = (id: string) => {
-    confirmDialog('Do you really want to delete this account ?', async () => {
+    confirmDialog(`${translate('confirm')} ${translate('delete')}`, async () => {
       try {
-        enqueueSnackbar('Delete successful')
+        enqueueSnackbar(translate('Delete successful'))
       } catch (error) {
-        enqueueSnackbar('Delete failed', { variant: 'error' })
+        enqueueSnackbar(translate('Delete failed'), { variant: 'error' })
 
         console.error(error)
       }
@@ -191,15 +194,19 @@ export default function CompanyPage() {
     (!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterStatus)
 
   return (
-    <Page title="Company: List">
+    <Page title={translate('companyList')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Company List"
-          links={[{ name: 'Dashboard', href: '' }, { name: 'Company', href: '' }, { name: 'List' }]}
+          heading={translate('companyList')}
+          links={[
+            { name: 'Dashboard', href: '' },
+            { name: translate('company'), href: '' },
+            { name: translate('list') },
+          ]}
           action={
             <NextLink href={{ pathname: PATH_CES.account.new('enterprise') }} passHref>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                New Company
+                {translate('add')} {translate('company')}
               </Button>
             </NextLink>
           }

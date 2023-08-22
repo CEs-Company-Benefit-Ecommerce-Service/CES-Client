@@ -3,8 +3,8 @@ import { Box, Container, Tab, Tabs } from '@mui/material'
 import { capitalCase } from 'change-case'
 import { useRouter } from 'next/router'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
-import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import SvgIconStyle from 'src/components/SvgIconStyle'
 import { useCompanyDetails } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
@@ -35,22 +35,22 @@ export default function CompanyDetails() {
   const ACCOUNT_TABS = [
     {
       value: 'general',
-      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: <CompanyGeneral companyId={`${companyId}`} />,
     },
     {
       value: 'employee account',
-      // icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Connecting-Users.svg" width={20} height={20} />,
       component: <CompanyEmployeeTable companyId={`${companyId}`} />,
     },
     {
       value: 'order',
-      // icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Tasks-1.svg" width={20} height={20} />,
       component: <CompanyOrderTable companyId={`${companyId}`} />,
     },
     {
       value: 'transaction',
-      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Convert-Curency.svg" width={20} height={20} />,
       component: <CompanyTransactionTable companyId={`${companyId}`} />,
     },
     // {

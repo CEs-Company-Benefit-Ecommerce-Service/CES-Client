@@ -32,7 +32,7 @@ export default function AccountOrderHistory({ order,isLoading }: Props) {
               <Typography variant="body2">{x.orderCode}</Typography>
               <Typography variant="body2">{x.employeeName}</Typography>
               <Typography variant="body2">{fDateVN(x.createdAt)}</Typography>
-              <Typography variant="body2">{fCurrency(x.total)}đ</Typography>
+              <Typography variant="body2">{fCurrency(x.total)}</Typography>
             </Stack>
           ))
         )}

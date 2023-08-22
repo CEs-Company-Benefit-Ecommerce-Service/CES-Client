@@ -128,7 +128,7 @@ function AppNewInvoiceRow({ row }: AppNewInvoiceRowProps) {
       <TableCell>{row.employeeName}</TableCell>
 
       <TableCell>{fDateVN(row.createdAt)}</TableCell>
-      <TableCell>{fCurrency(row.total)}đ</TableCell>
+      <TableCell>{fCurrency(row.total)}</TableCell>
 
       {/* <TableCell>
         <Label

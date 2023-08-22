@@ -4,7 +4,7 @@ import { TransactionHistory } from 'src/@types/@ces'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fNumber } from 'src/utils/formatNumber'
+import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 
 type Props = {
@@ -59,7 +59,7 @@ export default function CompanyTransactionTableRow({
       </TableCell>
 
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {fNumber(total)}
+        {fCurrency(total)}
       </TableCell>
 
       {(type === 3 || type == 5 || type == 6) && (

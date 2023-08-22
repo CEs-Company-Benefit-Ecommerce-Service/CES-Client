@@ -49,6 +49,7 @@ export type BenefitPayload = {
   type: number
   timePicker?: any
   timeFilter: string | null | Date
+  firstTime?: string | null | Date
   dateFilter: number | null | string
   dayFilter: number | null | string
   endDate: string | null | Date

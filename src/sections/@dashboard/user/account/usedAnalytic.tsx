@@ -1,21 +1,9 @@
 // @mui
-import { LoadingButton } from '@mui/lab'
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material'
-import { useState } from 'react'
+import { Stack, Typography } from '@mui/material'
 import { AccountData, PaymentPayload } from 'src/@types/@ces'
-import { paymentApi } from 'src/api-client/payment'
-import Iconify from 'src/components/Iconify'
 import useAuth from 'src/hooks/useAuth'
 import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN } from 'src/utils/formatTime'
-import Image from '../../../../components/Image'
 // utils
 
 // ----------------------------------------------------------------------
@@ -42,7 +30,7 @@ export default function UsedAnalytic({ title, used, color }: Props) {
       <Stack spacing={0.5}>
         <Typography variant="h5">{title}</Typography>
         <Typography variant="h5" sx={{ color, fontSize: 24 }}>
-          {fCurrency(used)}đ
+          {fCurrency(used)}
         </Typography>
         <Typography variant="body2">Expired Date: {fDateVN(exDate!)}</Typography>
       </Stack>

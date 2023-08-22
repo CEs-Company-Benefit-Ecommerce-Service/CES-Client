@@ -14,19 +14,13 @@ import {
 } from '@mui/material'
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import {
-  AccountData,
-  Params,
-  PaymentPayload,
-  TransactionHistory,
-  TransactionPayload,
-} from 'src/@types/@ces'
+import { AccountData, PaymentPayload, TransactionPayload } from 'src/@types/@ces'
 import { paymentApi } from 'src/api-client/payment'
 import { RHFTextField, RHFUploadSingleFile } from 'src/components/hook-form'
 import { useMe } from 'src/hooks/@ces'
-import { usePayment, usePaymentDebt, usePaymentSystem } from 'src/hooks/@ces/usePayment'
+import { usePayment } from 'src/hooks/@ces/usePayment'
 import uploadImageDebt from 'src/utils/uploadImageDebt'
 // @types
 import { CreditCard, UserAddressBook, UserInvoice } from '../../../../@types/user'
@@ -53,7 +47,8 @@ export default function AccountBilling({ payload }: Props) {
   const accountId = data?.id
   const compId = data?.companyId?.toString()
   const [open, setOpen] = useState(false)
-  const [isDebt, setIsDebt] = useState(false)
+  const isDebt = false
+  // const [isDebt, setIsDebt] = useState(false)
   // const { data: orders, isLoading } = useOrderByCompanyId({ companyId: compId })
   const {
     data: payments,

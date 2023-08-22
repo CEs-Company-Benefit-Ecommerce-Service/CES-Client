@@ -1,21 +1,21 @@
-import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
 // config
-import { defaultLang } from '../config';
+import { defaultLang } from '../config'
 //
-import enLocales from './en';
-import frLocales from './fr';
-import vnLocales from './vn';
-import cnLocales from './cn';
-import arLocales from './ar';
+import enLocales from './en'
+import frLocales from './fr'
+import vnLocales from './vn'
+import cnLocales from './cn'
+import arLocales from './ar'
 
 // ----------------------------------------------------------------------
 
-let lng = defaultLang.value;
+let lng = defaultLang.value
 
 if (typeof window !== 'undefined') {
-  lng = localStorage.getItem('i18nextLng') || defaultLang.value;
+  lng = localStorage.getItem('i18nextLng') || defaultLang.value
 }
 
 i18n
@@ -37,6 +37,6 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-  });
+  })
 
-export default i18n;
+export default i18n

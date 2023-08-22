@@ -49,7 +49,7 @@ const STATUS_OPTIONS = ['all', 'new', 'ready', 'shipping', 'complete', 'cancel']
 const ROLE_OPTIONS = ['supplier', 'shipper']
 
 const FILTER_OPTIONS = ['descending', 'ascending']
-const ORDER_TYPE = ['monthly orders', 'all orders']
+// const ORDER_TYPE = ['monthly orders', 'all orders']
 const TABLE_HEAD = [
   { id: 'ordercode', label: 'Order Code', align: 'left' },
   { id: 'total', label: 'Total', align: 'left' },

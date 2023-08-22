@@ -137,7 +137,7 @@ export default function AccountWallet({ currentUser, mutate, accountId, companyI
                 {user?.role === Role['Enterprise Admin'] ? (
                   <>
                     <Typography variant="h6" flex={1}>
-                      {fNumber(wallet.balance)}đ
+                      {fCurrency(wallet.balance)}
                     </Typography>
                     <Box
                       sx={{
@@ -159,11 +159,11 @@ export default function AccountWallet({ currentUser, mutate, accountId, companyI
                 ) : (
                   <Stack direction={'row'} alignItems={'center'}>
                     <Typography variant="h6" flex={1}>
-                      {fNumber(wallet.balance)} / {fNumber(wallet.limits)}đ
+                      {fNumber(wallet.balance)} / {fCurrency(wallet.limits)}
                     </Typography>
                     <Stack direction={'row'} spacing={1} flex={1}>
                       <Typography variant="h6">Used:</Typography>
-                      <Typography variant="h6">{fNumber(wallet.used)}đ</Typography>
+                      <Typography variant="h6">{fCurrency(wallet.used)}</Typography>
                     </Stack>
                   </Stack>
                 )}

@@ -50,7 +50,8 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   const theme = useTheme()
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [changeStatus, setChangeStatus] = useState(false)
+  const changeStatus = false
+  // const [changeStatus, setChangeStatus] = useState(false)
   if (!order) {
     return null
   }
@@ -194,10 +195,10 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                             </Box>
                           </TableCell>
                           <TableCell align="left">{row?.quantity}</TableCell>
-                          <TableCell align="right">{fCurrency(row?.product?.price)}đ</TableCell>
+                          <TableCell align="right">{fCurrency(row?.product?.price)}</TableCell>
                           <TableCell align="left">{}</TableCell>
                           <TableCell align="left">{}</TableCell>
-                          <TableCell align="right">{fCurrency(row.price)}đ</TableCell>
+                          <TableCell align="right">{fCurrency(row.price)}</TableCell>
                         </TableRow>
                       ))}
                       <RowResultStyle>
@@ -206,7 +207,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                           <Typography>Shipping Fee</Typography>
                         </TableCell>
                         <TableCell align="right" width={120}>
-                          <Typography>{fCurrency(5000)}đ</Typography>
+                          <Typography>{fCurrency(5000)}</Typography>
                         </TableCell>
                       </RowResultStyle>
                       {/* <RowResultStyle>
@@ -217,7 +218,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                         </TableCell>
                         <TableCell align="right" width={120}>
                           <Box sx={{ mt: 2 }} />
-                          <Typography>{fCurrency(total)}đ</Typography>
+                          <Typography>{fCurrency(total)}</Typography>
                         </TableCell>
                       </RowResultStyle> */}
 
@@ -227,7 +228,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                           <Typography variant="h6">Total</Typography>
                         </TableCell>
                         <TableCell align="right" width={140}>
-                          <Typography variant="h6">{fCurrency(total)}đ</Typography>
+                          <Typography variant="h6">{fCurrency(total)}</Typography>
                         </TableCell>
                       </RowResultStyle>
                     </TableBody>

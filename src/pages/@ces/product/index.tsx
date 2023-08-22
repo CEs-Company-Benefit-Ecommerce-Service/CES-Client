@@ -11,6 +11,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  Tabs,
   Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
@@ -206,6 +207,18 @@ export default function ProductPage() {
             }
           />
           <Card>
+            <Tabs
+              allowScrollButtonsMobile
+              variant="scrollable"
+              scrollButtons="auto"
+              // value={filterStatus}
+              // onChange={onChangeFilterStatus}
+              sx={{ px: 2, bgcolor: 'background.neutral' }}
+            >
+              {/* {STATUS_OPTIONS.map((tab) => (
+                <Tab disableRipple key={tab} label={tab} value={tab} />
+              ))} */}
+            </Tabs>
             <ProductTableToolbar
               filterName={filterName}
               onFilterName={handleFilterName}

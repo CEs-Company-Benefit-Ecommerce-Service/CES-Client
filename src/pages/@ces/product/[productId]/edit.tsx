@@ -8,8 +8,8 @@ import { Role } from 'src/@types/@ces'
 import { ProductPayload } from 'src/@types/@ces/product'
 import { productApi } from 'src/api-client/product'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
-import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import SvgIconStyle from 'src/components/SvgIconStyle'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { useProductDetail } from 'src/hooks/@ces/useProduct'
 import useTabs from 'src/hooks/useTabs'
@@ -46,14 +46,14 @@ export default function ProductEditPage() {
   const ACCOUNT_TABS = [
     {
       value: 'general',
-      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: (
         <ProductNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditProductSubmit} />
       ),
     },
     {
       value: 'discount',
-      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Cuppon.svg" width={20} height={20} />,
       component: (
         <DiscountTab
           mutateProductDetails={mutate}
@@ -105,14 +105,6 @@ export default function ProductEditPage() {
               return isMatched && <Box key={tab.value}>{tab.component}</Box>
             })
           )}
-
-          {/* {data && (
-            <ProductNewEditForm
-              isEdit
-              currentUser={data?.data}
-              onSubmit={handleEditProductSubmit}
-            />
-          )} */}
         </Container>
       </Page>
     </RoleBasedGuard>

@@ -1,4 +1,4 @@
-import { Checkbox, MenuItem, TableCell, TableRow, Typography } from '@mui/material'
+import { Checkbox, MenuItem, Stack, TableCell, TableRow, Typography } from '@mui/material'
 // @mui
 import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
@@ -6,7 +6,7 @@ import { Order, Status } from 'src/@types/@ces/order'
 import Iconify from 'src/components/Iconify'
 import Label from 'src/components/Label'
 import { TableMoreMenu } from 'src/components/table'
-import { fNumber } from 'src/utils/formatNumber'
+import { fCurrency } from 'src/utils/formatNumber'
 import { fDateVN, fTime } from 'src/utils/formatTime'
 type Props = {
   row: Order
@@ -27,7 +27,7 @@ export default function OrderTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { total, orderCode, companyName, createdAt, updatedAt, status } = row
+  const { total, orderCode, createdAt, status, employee } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -60,12 +60,26 @@ export default function OrderTableRow({
           }}
         />
       </TableCell>
-
       <TableCell align="left">{orderCode}</TableCell>
-      <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {fNumber(total)}
+
+      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        {/* <Avatar src={employee.account.imageUrl} alt={employee.account.name} sx={{ mr: 2 }}>
+    {createAvatar(employee.account.name).name}
+  </Avatar> */}
+        <Stack direction={'column'}>
+          <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+            {employee.account.name}
+          </Typography>
+          <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+            {employee.account.email}
+          </Typography>
+        </Stack>
       </TableCell>
-      <TableCell align="left">{companyName}</TableCell>
+
+      <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
+        {fCurrency(total)}
+      </TableCell>
+
       <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
           {fDateVN(createdAt)}
@@ -75,14 +89,6 @@ export default function OrderTableRow({
         </Typography>
       </TableCell>
 
-      <TableCell align="left">
-        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
-          {fDateVN(updatedAt)}
-        </Typography>
-        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
-          {fTime(updatedAt)}
-        </Typography>
-      </TableCell>
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -99,6 +105,7 @@ export default function OrderTableRow({
           {mapStatus(status)}
         </Label>
       </TableCell>
+
       <TableCell
         align="right"
         onClick={(e) => {

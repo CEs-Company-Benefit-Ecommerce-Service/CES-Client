@@ -51,6 +51,29 @@ const en = {
   other_cases: `other cases`,
   item_by_roles: `item by roles`,
   only_admin_can_see_this_item: `Only admin can see this item`,
-};
+  balance: 'Balance',
+  report: 'Report',
+  supplier: 'Supplier',
+  company: 'Company',
+  transaction: 'Transaction',
+  debt: 'Debt',
+  category: 'Category',
+  companyList: 'Company List',
+  add: 'Add',
+  companyName: 'Company Name',
+  limit: 'Limit',
+  used: 'Used',
+  expiredDate: 'Expired Date',
+  createdAt: 'Created At',
+  updatedAt: 'Updated At',
+  confirm: 'Are you sure you want to',
+  delete: 'Delete',
+  deleteSuccess: 'Delete successful',
+  deleteError: 'Error while deleting',
+  createSuccess: 'Create successful',
+  createError: 'Error while creating',
+  updateSuccess: 'Update successful',
+  updateError: 'Error while updating',
+}
 
-export default en;
+export default en

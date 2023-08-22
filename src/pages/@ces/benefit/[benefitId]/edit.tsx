@@ -16,8 +16,8 @@ import { useEffect, useState } from 'react'
 import { BenefitPayload } from 'src/@types/@ces'
 import { benefitApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
-import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import SvgIconStyle from 'src/components/SvgIconStyle'
 import { useBenefitDetails } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
@@ -150,7 +150,7 @@ export default function BenefitEditPage() {
       <Badge
         key={day.toString()}
         overlap="circular"
-        badgeContent={!isSelected ? undefined : isTransfer ? '✅' : '💲'}
+        badgeContent={!isSelected ? undefined : isTransfer ? '✅' : '🟠'}
       >
         <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
       </Badge>
@@ -160,7 +160,7 @@ export default function BenefitEditPage() {
   const ACCOUNT_TABS = [
     {
       value: 'general',
-      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: (
         <>
           <BenefitNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditAccountSubmit} />
@@ -169,7 +169,7 @@ export default function BenefitEditPage() {
               {data?.data?.status === 2 && <Typography>⚠️ This benefit is not active</Typography>}
               <Stack direction={'row'} spacing={2}>
                 <Typography>✅: Date is already transfer</Typography>
-                <Typography>💲: Next Date transfer</Typography>
+                <Typography>🟠: Next Date transfer</Typography>
               </Stack>
             </Stack>
             {data?.data?.status === 2 ? (
@@ -204,14 +204,14 @@ export default function BenefitEditPage() {
     },
     {
       value: 'members',
-      icon: <Iconify icon={'fa6-solid:people-line'} width={20} height={20} />,
+      icon: <SvgIconStyle src="/assets/icons/navbar/Connecting-Users.svg" width={20} height={20} />,
       component: (
         <BenefitMemberTable benefitId={`${benefitId}`} groupId={data?.data?.groups[0].id || ''} />
       ),
     },
     {
-      value: 'accounts',
-      icon: <Iconify icon={'fa6-solid:people-line'} width={20} height={20} />,
+      value: 'employees',
+      icon: <SvgIconStyle src="/assets/icons/navbar/Group-1.svg" width={20} height={20} />,
       component: (
         <BenefitAccountTable benefitId={`${benefitId}`} groupId={data?.data?.groups[0].id || ''} />
       ),

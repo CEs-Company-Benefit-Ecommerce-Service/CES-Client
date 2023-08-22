@@ -109,7 +109,10 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       const parseTimeToNumber = fDateTimeParam(payload.timeFilter)
       payload.timeFilter = parseTimeToNumber
     }
-    if (!isEdit) delete payload.status
+    if (!isEdit) {
+      delete payload.status
+      delete payload.firstTime
+    }
     await onSubmit?.(payload)
   }
 
@@ -156,32 +159,33 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
         <Stack spacing={3}>
           <Typography variant="h6">Config</Typography>
           <Stack direction={'row'} spacing={3}>
-            {/* <Controller
-              name="endDate"
-              control={control}
-              defaultValue={null}
-              render={({ field, fieldState: { error } }) => (
-                <DatePicker
-                  disabled={isEdit}
-                  disablePast
-                  minDate={tomorrow}
-                  format="dd/MM/yyyy"
-                  label="Start Date"
-                  value={field.value}
-                  onChange={(newValue) => {
-                    if (newValue) field.onChange(newValue)
-                  }}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      error: !!error,
-                      helperText: error?.message,
-                    },
-                  }}
-                />
-              )}
-            /> */}
-
+            {isEdit && (
+              <Controller
+                name="firstTime"
+                control={control}
+                defaultValue={null}
+                render={({ field, fieldState: { error } }) => (
+                  <DatePicker
+                    disabled={isEdit}
+                    disablePast
+                    minDate={tomorrow}
+                    format="dd/MM/yyyy"
+                    label="Start Date"
+                    value={field.value}
+                    onChange={(newValue) => {
+                      if (newValue) field.onChange(newValue)
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!error,
+                        helperText: error?.message,
+                      },
+                    }}
+                  />
+                )}
+              />
+            )}
             <Controller
               name="endDate"
               control={control}

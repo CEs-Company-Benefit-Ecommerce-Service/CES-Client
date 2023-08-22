@@ -50,7 +50,7 @@ import BenefitAccountToolbar from './BenefitAccountToolbar'
 const TABLE_HEAD = [
   { id: 'name', label: 'Employee', align: 'left' },
   { id: 'phone', label: 'Phone', align: 'left' },
-  { id: 'isReceived', label: 'Is Received', align: 'center' },
+  // { id: 'isReceived', label: 'Is Received', align: 'center' },
   { id: 'createdAt', label: 'created at', align: 'left' },
   { id: 'updatedAt', label: 'updated at', align: 'left' },
   { id: 'status', label: 'status', align: 'left' },

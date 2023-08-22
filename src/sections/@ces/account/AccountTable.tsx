@@ -65,11 +65,11 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
     order,
     orderBy,
     rowsPerPage,
-    setRowsPerPage,
+    // setRowsPerPage,
     // setPage,
     //
     selected,
-    setSelected,
+    // setSelected,
     onSelectRow,
     onSelectAllRows,
     //
@@ -91,6 +91,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
   const [filterAttribute, setFilterAttribute] = useState('')
   const [filterOptions, setFilterOptions] = useState('')
   // const [total, setTotal] = useState(0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const accountList = data?.data || []
 
   useEffect(() => {

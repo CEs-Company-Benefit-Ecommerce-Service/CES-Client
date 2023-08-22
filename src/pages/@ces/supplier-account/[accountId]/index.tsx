@@ -8,6 +8,7 @@ import { accountApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import SvgIconStyle from 'src/components/SvgIconStyle'
 import { useAccountDetails } from 'src/hooks/@ces'
 import useAuth from 'src/hooks/useAuth'
 import useSettings from 'src/hooks/useSettings'
@@ -15,7 +16,6 @@ import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
 import { PATH_CES } from 'src/routes/paths'
 import AccountNewEditForm from 'src/sections/@ces/account/AccountNewEditForm'
-import CategoryTableCustom from 'src/sections/@ces/account/CategoryTableCustom'
 import OrderTableCustom from 'src/sections/@ces/account/OrdertableCustom'
 import ProductTableCustom from 'src/sections/@ces/account/ProductTableCustom'
 import AccountWallet from 'src/sections/@ces/account/wallet/AccountWallet'
@@ -60,7 +60,13 @@ export default function UserAccount() {
       ? [
           {
             value: 'general',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: (
+              <SvgIconStyle
+                src="/assets/icons/navbar/Application-User.svg"
+                width={20}
+                height={20}
+              />
+            ),
             component: (
               <AccountNewEditForm
                 isEdit
@@ -84,7 +90,13 @@ export default function UserAccount() {
       : [
           {
             value: 'general',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: (
+              <SvgIconStyle
+                src="/assets/icons/navbar/Application-User.svg"
+                width={20}
+                height={20}
+              />
+            ),
             component: (
               <AccountNewEditForm
                 isEdit
@@ -99,17 +111,12 @@ export default function UserAccount() {
     ACCOUNT_TABS.push(
       {
         value: 'product',
-        icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+        icon: <SvgIconStyle src="/assets/icons/navbar/Paying1.svg" width={20} height={20} />,
         component: <ProductTableCustom supplierId={supId} />,
       },
       {
-        value: 'category',
-        icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
-        component: <CategoryTableCustom supplierId={supId} />,
-      },
-      {
         value: 'order',
-        icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+        icon: <SvgIconStyle src="/assets/icons/navbar/Tasks-1.svg" width={20} height={20} />,
         component: <OrderTableCustom supplierId={supId} />,
       }
     )

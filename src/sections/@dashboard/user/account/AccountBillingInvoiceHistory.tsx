@@ -35,7 +35,7 @@ export default function AccountBillingInvoiceHistory({ Transactions, isLoading }
                 {fDateVN(x.createdAt)}
               </Typography>
               <Typography flex={1} variant="body2">
-                {fCurrency(x.total)}đ
+                {fCurrency(x.total)}
               </Typography>
               <Typography flex={1}>{x.type == 3 ? 'ZALOPAY' : 'VNPAY'}</Typography>
             </Stack>
