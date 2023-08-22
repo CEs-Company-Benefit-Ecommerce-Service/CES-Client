@@ -57,9 +57,20 @@ export default function ProductTableRow({
     return null
   }
   return (
-    <TableRow hover selected={selected}  onClick={onClickRow}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
+    <TableRow hover selected={selected} sx={{ cursor: 'pointer' }} onClick={onClickRow}>
+      <TableCell
+        padding="checkbox"
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+      >
+        <Checkbox
+          checked={selected}
+          onClick={(e) => {
+            e.stopPropagation()
+            onSelectRow()
+          }}
+        />
       </TableCell>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar alt={name} src={imageUrl} sx={{ mr: 2 }} />
@@ -98,7 +109,12 @@ export default function ProductTableRow({
           {fTime(updatedAt)}
         </Typography>
       </TableCell>
-      <TableCell align="right">
+      <TableCell
+        align="right"
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+      >
         <TableMoreMenu
           open={openMenu}
           onOpen={handleOpenMenu}

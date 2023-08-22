@@ -3,8 +3,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import { Box, Card, Grid, Stack, Typography } from '@mui/material'
 // next
-import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useMemo } from 'react'
 // form
 import { useForm } from 'react-hook-form'
@@ -14,7 +12,6 @@ import uploadImageCategory from 'src/utils/uploadImageCategory'
 import * as Yup from 'yup'
 import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form'
 // routes
-import { PATH_CES } from '../../../routes/paths'
 // ----------------------------------------------------------------------
 
 // type FormValuesProps = CategoryPayload
@@ -26,10 +23,6 @@ type Props = {
 }
 
 export default function UserNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
-  const { push } = useRouter()
-
-  const { enqueueSnackbar } = useSnackbar()
-
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
   })
@@ -71,7 +64,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser, onSubmit 
   }, [isEdit, currentUser])
 
   const handleOnSubmit = async (data: CategoryPayload) => {
-      await onSubmit?.(data)
+    await onSubmit?.(data)
   }
 
   const handleDrop = useCallback(
@@ -121,7 +114,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser, onSubmit 
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="name" label="Category Name" />
+              <RHFTextField name="name" label="Name" />
               {/* <RHFTextField name="Price" label="Giá sản phẩm" />
                             <RHFTextField name="Quantity" label="Số lượng" /> */}
               {/* <RHFSelect name="status" label="status" placeholder="status">
@@ -133,14 +126,16 @@ export default function UserNewEditForm({ isEdit = false, currentUser, onSubmit 
                                 ))}
                             </RHFSelect> */}
 
-              <RHFTextField name="description" label="Description" />
+              {/* <RHFTextField name="description" label="Description" /> */}
               {/* <RHFTextField name="ServiceDuration" label="City" />
                             <RHFTextField name="Type" label="Address" /> */}
               {/* <RHFTextField name="zipCode" label="Zip/Code" />
                             <RHFTextField name="company" label="Company" />
                             <RHFTextField name="role" label="Role" /> */}
             </Box>
-
+            <Box my={3}>
+              <RHFTextField name="description" label="Description" />
+            </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 {!isEdit ? 'Create Category' : 'Save Changes'}

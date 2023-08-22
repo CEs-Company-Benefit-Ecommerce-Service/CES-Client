@@ -32,7 +32,7 @@ export default function CategoryTableRow({
 }: Props) {
   // const theme = useTheme()
 
-  const { name, imageUrl, createdAt, updatedAt } = row
+  const { name, imageUrl, createdAt, updatedAt, description } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -49,14 +49,30 @@ export default function CategoryTableRow({
   }
 
   return (
-    <TableRow hover selected={selected} onClick={onClickRow}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
+    <TableRow hover selected={selected} sx={{ cursor: 'pointer' }} onClick={onClickRow}>
+      <TableCell
+        padding="checkbox"
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+      >
+        <Checkbox
+          checked={selected}
+          onClick={(e) => {
+            e.stopPropagation()
+            onSelectRow()
+          }}
+        />
       </TableCell>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar alt={name} src={imageUrl} sx={{ mr: 2 }} />
         <Typography variant="subtitle2" noWrap>
           {name}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" noWrap>
+          {description}
         </Typography>
       </TableCell>
       <TableCell align="left">
@@ -77,7 +93,12 @@ export default function CategoryTableRow({
         </Typography>
       </TableCell>
 
-      <TableCell align="right">
+      <TableCell
+        align="right"
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+      >
         <TableMoreMenu
           open={openMenu}
           onOpen={handleOpenMenu}

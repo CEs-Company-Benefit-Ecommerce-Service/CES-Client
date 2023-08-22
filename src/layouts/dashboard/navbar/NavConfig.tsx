@@ -102,7 +102,7 @@ const navConfig = [
         title: 'category',
         path: PATH_CES.category.root,
         icon: ICONS.menuItem,
-        roles: [Role['Supplier Admin']],
+        roles: [Role['System Admin']],
       },
       {
         title: 'product',

@@ -69,7 +69,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   return (
     <>
       {/* <Card sx={{ pt: 5, px: 5 }}> */}
-      <Grid container spacing={2}>
+      <Grid container spacing={0}>
         <Grid container item>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'left' } }}>
@@ -150,8 +150,8 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
             )}
           </Grid>
         </Grid>
-        <Grid container item spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <Grid item xs={12} sm={8} sx={{ mb: 5 }} component={Card}>
+        <Grid container item spacing={2} mx={'auto'}>
+          <Grid item xs={12} sm={8} sx={{ mb: 5, mx: 'auto' }} component={Card}>
             <CardContent>
               <Typography variant="h5">Details</Typography>
             </CardContent>
@@ -236,7 +236,7 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
               </Scrollbar>
             </CardActions>
           </Grid>
-          <Grid item xs={12} sm={3.5} sx={{ mb: 5 }} component={Card}>
+          <Grid item xs={12} sm={3.5} sx={{ mb: 5, mx: 'auto' }} component={Card}>
             <CardContent>
               <Typography variant="h6">Customer Info</Typography>
             </CardContent>
