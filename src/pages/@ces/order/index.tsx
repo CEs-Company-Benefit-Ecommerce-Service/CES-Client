@@ -71,7 +71,7 @@ export default function OrderPage() {
 
           {false ? (
             <>Loading...</>
-          ) : (
+          ) : role == 2 ? null : (
             ORDER_TABS.map((tab) => {
               const isMatched = tab.value === currentTab
               return isMatched && <Box key={tab.value}>{tab.component}</Box>
