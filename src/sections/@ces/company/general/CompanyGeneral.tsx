@@ -125,14 +125,14 @@ function CompanyEditFormGeneral({
 
   const {
     reset,
-    watch,
+    // watch,
     control,
     setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods
 
-  const values = watch()
+  // const values = watch()
 
   useEffect(() => {
     if (isEdit && currentUser) {
@@ -206,11 +206,11 @@ function CompanyEditFormGeneral({
                 label="Limit"
                 type="number"
                 onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
-                onChange={(event: { target: { value: any } }) => {
-                  if (event.target.value) setValue(`limits`, Number(event.target.value))
-                }}
+                // onChange={(event: { target: { value: any } }) => {
+                //   if (event.target.value) setValue(`limits`, Number(event.target.value))
+                // }}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                  endAdornment: <InputAdornment position="start">đ</InputAdornment>,
                 }}
               />
 

@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  InputAdornment,
   Stack,
   Typography,
   useTheme,
@@ -162,7 +163,14 @@ function BankingDetails({ handleClose, used, mutate }: BankingDetailsProps) {
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(handleCreateTransactionSubmit)}>
               <Card sx={{ py: 4, px: 3, mt: 2 }}>
-                <RHFTextField name="total" label="Total" disabled />
+                <RHFTextField
+                  name="total"
+                  label="Total"
+                  disabled
+                  InputProps={{
+                    endAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                  }}
+                />
                 <Box sx={{ mb: 3, mt: 2 }}>
                   <RHFUploadSingleFile
                     name="imageUrl"

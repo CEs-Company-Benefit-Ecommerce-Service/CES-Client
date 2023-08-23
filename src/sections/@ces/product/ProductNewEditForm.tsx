@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
 import { LoadingButton } from '@mui/lab'
-import { Box, Card, Grid, Stack, Typography, useTheme } from '@mui/material'
+import { Box, Card, Grid, InputAdornment, Stack, Typography, useTheme } from '@mui/material'
 // next
 import { useCallback, useEffect, useMemo } from 'react'
 // form
@@ -138,7 +138,14 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
               }}
             >
               <RHFTextField name="name" label="Name" />
-              <RHFTextField name="quantity" label="Quantity" />
+              <RHFTextField
+                name="quantity"
+                label="Quantity"
+                onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                onChange={(event: { target: { value: any } }) => {
+                  if (event.target.value) setValue(`quantity`, Number(event.target.value))
+                }}
+              />
               <RHFSelect name="categoryId" label="Category" placeholder="category">
                 <option value={undefined} />
                 {categories.map((option) => (
@@ -171,7 +178,14 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
               {isEdit && currentUser?.preDiscount ? (
                 <>
                   <RHFTextField name="preDiscount" label="Price" disabled />
-                  <RHFTextField name="price" label="Price With Discount" disabled />
+                  <RHFTextField
+                    name="price"
+                    label="Price With Discount"
+                    disabled
+                    InputProps={{
+                      endAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                    }}
+                  />
                   <Stack
                     direction={'row'}
                     alignItems={'center'}
@@ -185,7 +199,20 @@ export default function ProductNewEditForm({ isEdit = false, currentUser, onSubm
                   </Stack>
                 </>
               ) : (
-                <RHFTextField name="price" label="Price" />
+                <RHFTextField
+                  name="price"
+                  label="Price"
+                  // type="number"
+                  onKeyDown={(evt) =>
+                    ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()
+                  }
+                  onChange={(event: { target: { value: any } }) => {
+                    if (event.target.value) setValue(`price`, Number(event.target.value))
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                  }}
+                />
               )}
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
