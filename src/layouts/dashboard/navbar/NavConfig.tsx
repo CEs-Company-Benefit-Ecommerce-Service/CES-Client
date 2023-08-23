@@ -31,7 +31,8 @@ const ICONS = {
   shipper: getIcon('Bellboy'),
   category: getIcon('Reserved1'),
   product: getIcon('Paying1'),
-  debt: getIcon('Sign-Contract'),
+  debt2: getIcon('Sign-Contract'),
+  debt: getIcon('Card-Pay'),
   order: getIcon('Tasks-1'),
   transaction: getIcon('Convert-Curency'),
   company: getIcon('Office-2'),
@@ -128,7 +129,7 @@ const navConfig = [
         roles: [Role['System Admin'], Role['Enterprise Admin']],
       },
       {
-        title: 'debt',
+        title: 'invoice',
         path: PATH_CES.debt.root,
         icon: ICONS.debt,
         roles: [Role['System Admin'], Role['Enterprise Admin']],

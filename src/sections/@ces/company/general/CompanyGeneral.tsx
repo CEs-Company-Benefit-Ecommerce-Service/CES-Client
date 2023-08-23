@@ -13,7 +13,7 @@ import {
 } from 'src/@types/@ces'
 import { accountApi, companyApi } from 'src/api-client'
 import { useAccountDetails, useCompanyDetails } from 'src/hooks/@ces'
-import { fData, fNumber } from 'src/utils/formatNumber'
+import { fData } from 'src/utils/formatNumber'
 // import CompanyNewEditForm from '../CompanyNewEditForm'
 
 // ----------------------------------------------------------------------
