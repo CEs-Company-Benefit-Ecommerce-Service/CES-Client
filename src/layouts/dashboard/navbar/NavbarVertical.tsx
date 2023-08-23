@@ -19,6 +19,7 @@ import CollapseButton from './CollapseButton'
 import navConfig from './NavConfig'
 import NavbarAccount from './NavbarAccount'
 import NavbarDocs from './NavbarDocs'
+import Logo from 'src/components/Logo'
 
 // ----------------------------------------------------------------------
 
@@ -73,7 +74,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          {/* <Logo /> */}
+          <Logo />
           <Box />
           {isDesktop && !isCollapse && (
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />

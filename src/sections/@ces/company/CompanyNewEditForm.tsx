@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // @mui
 import { LoadingButton } from '@mui/lab'
-import { Box, Card, Grid, Stack, Typography } from '@mui/material'
+import { Box, Card, Grid, InputAdornment, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 // next
 import { useCallback, useEffect, useMemo } from 'react'
@@ -14,7 +14,7 @@ import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../components
 // routes
 // utils
 import { fDateParam } from 'src/utils/formatTime'
-import { fData } from '../../../utils/formatNumber'
+import { fData, fNumber } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
@@ -61,9 +61,6 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
     handleSubmit,
     formState: { isSubmitting },
   } = methods
-
-  const values = watch('expiredDate')
-  console.log(values)
 
   useEffect(() => {
     if (isEdit && currentUser) {
@@ -134,7 +131,14 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
             >
               <RHFTextField name="name" label="Company Name" />
               <RHFTextField name="address" label="Company Address" />
-              <RHFTextField name="limits" label="Limit" type="number" />
+              <RHFTextField
+                name="limits"
+                label="Limit"
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
+              />
 
               <Controller
                 name="expiredDate"

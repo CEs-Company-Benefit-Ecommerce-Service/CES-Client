@@ -18,7 +18,7 @@ export type CompanyPayload = {
   name: string
   address: string
   imageUrl?: string | null
-  limits: number
+  limits: number | string
   expiredDate: string | Date
   timeOut?: string
 }

@@ -1,23 +1,23 @@
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode } from 'react'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Box } from '@mui/material'
 // hooks
-import useSettings from '../../hooks/useSettings';
-import useResponsive from '../../hooks/useResponsive';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import useSettings from '../../hooks/useSettings'
+import useResponsive from '../../hooks/useResponsive'
+import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 // config
-import { HEADER, NAVBAR } from '../../config';
+import { HEADER, NAVBAR } from '../../config'
 //
-import DashboardHeader from './header';
-import NavbarVertical from './navbar/NavbarVertical';
-import NavbarHorizontal from './navbar/NavbarHorizontal';
+import DashboardHeader from './header'
+import NavbarVertical from './navbar/NavbarVertical'
+import NavbarHorizontal from './navbar/NavbarHorizontal'
 
 // ----------------------------------------------------------------------
 
 type MainStyleProps = {
-  collapseClick: boolean;
-};
+  collapseClick: boolean
+}
 
 const MainStyle = styled('main', {
   shouldForwardProp: (prop) => prop !== 'collapseClick',
@@ -38,24 +38,24 @@ const MainStyle = styled('main', {
       marginLeft: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
     }),
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default function DashboardLayout({ children }: Props) {
-  const { collapseClick, isCollapse } = useCollapseDrawer();
+  const { collapseClick, isCollapse } = useCollapseDrawer()
 
-  const { themeLayout } = useSettings();
+  const { themeLayout } = useSettings()
 
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive('up', 'lg')
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const verticalLayout = themeLayout === 'vertical';
+  const verticalLayout = themeLayout === 'vertical'
 
   if (verticalLayout) {
     return (
@@ -85,7 +85,7 @@ export default function DashboardLayout({ children }: Props) {
           {children}
         </Box>
       </>
-    );
+    )
   }
 
   return (
@@ -101,5 +101,5 @@ export default function DashboardLayout({ children }: Props) {
 
       <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
     </Box>
-  );
+  )
 }

@@ -1,72 +1,68 @@
-import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useSnackbar } from 'notistack'
+import { useState } from 'react'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // @mui
-import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
+import { alpha } from '@mui/material/styles'
+import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material'
 // routes
-import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths'
 // hooks
-import useAuth from '../../../hooks/useAuth';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useAuth from '../../../hooks/useAuth'
+import useIsMountedRef from '../../../hooks/useIsMountedRef'
 // components
-import MyAvatar from '../../../components/MyAvatar';
-import MenuPopover from '../../../components/MenuPopover';
-import { IconButtonAnimate } from '../../../components/animate';
+import MyAvatar from '../../../components/MyAvatar'
+import MenuPopover from '../../../components/MenuPopover'
+import { IconButtonAnimate } from '../../../components/animate'
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
     label: 'Home',
-    linkTo: '/',
+    linkTo: '/dashboard/app',
   },
   {
     label: 'Profile',
-    linkTo: PATH_DASHBOARD.user.profile,
-  },
-  {
-    label: 'Settings',
     linkTo: PATH_DASHBOARD.user.account,
   },
-];
+]
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuth()
 
-  const isMountedRef = useIsMountedRef();
+  const isMountedRef = useIsMountedRef()
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
-  };
+    setOpen(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setOpen(null);
-  };
+    setOpen(null)
+  }
 
   const handleLogout = async () => {
     try {
-      await logout();
-      router.replace(PATH_AUTH.login);
+      await logout()
+      router.replace(PATH_AUTH.login)
 
       if (isMountedRef.current) {
-        handleClose();
+        handleClose()
       }
     } catch (error) {
-      console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+      console.error(error)
+      enqueueSnackbar('Unable to logout!', { variant: 'error' })
     }
-  };
+  }
 
   return (
     <>
@@ -132,5 +128,5 @@ export default function AccountPopover() {
         </MenuItem>
       </MenuPopover>
     </>
-  );
+  )
 }
