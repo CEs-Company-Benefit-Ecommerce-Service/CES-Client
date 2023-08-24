@@ -1,4 +1,13 @@
-import { Box, Button, Card, Dialog, Stack, Typography, useTheme } from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Dialog,
+  InputAdornment,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { ProductData } from 'src/@types/@ces'
 import { useDiscount } from 'src/hooks/@ces'
@@ -174,7 +183,7 @@ function DiscountNewEditForm({
   const {
     reset,
     control,
-    // setValue,
+    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods
@@ -239,19 +248,28 @@ function DiscountNewEditForm({
         >
           <RHFTextField
             name="amount"
-            type="number"
             label="Amount"
+            // type="number"
             disabled={isEdit}
-            onChange={(event: { target: { value: string } }) => {
+            onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+            onChange={(event: { target: { value: string | number } }) => {
               if (event.target.value) {
-                if (parseInt(event.target.value) > (product.preDiscount || product.price)) {
+                setValue(`amount`, Number(event.target.value))
+                if (
+                  parseInt(event.target.value.toString()) > (product.preDiscount || product.price)
+                ) {
                   setPrice(0)
                 } else {
-                  setPrice((product.preDiscount || product.price) - parseInt(event.target.value))
+                  setPrice(
+                    (product.preDiscount || product.price) - parseInt(event.target.value.toString())
+                  )
                 }
               } else {
                 setPrice(product.preDiscount || product.price)
               }
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="start">đ</InputAdornment>,
             }}
           />
           <Controller

@@ -69,39 +69,6 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
           onSubmit={handleEditAccountSubmit}
         />
       </Grid>
-      {/* <Grid item xs={8}>
-        <Stack spacing={3}>
-          {accountDetails?.data?.wallets &&
-            accountDetails?.data?.wallets.map((x) => (
-              <Card key={x.id} sx={{ p: 3 }}>
-                <Stack direction={'row'} alignItems={'center'} spacing={2} mb={3}>
-                  <Image alt="icon" src={'/assets/icons/ic_wallet.png'} sx={{ maxWidth: 36 }} />
-                  <Typography
-                    variant="overline"
-                    sx={{ mb: 3, display: 'block', color: 'text.secondary' }}
-                  >
-                    Wallet
-                  </Typography>
-                </Stack>
-                <Stack spacing={1}>
-                  <Typography variant="h6" noWrap sx={{ color: 'text.primary' }}>
-                    Balance:
-                  </Typography>
-                  <Typography variant="h6" noWrap sx={{ color: 'text.secondary' }}>
-                    {fCurrency(x.balance)} / {fCurrency(x.limits)}đ
-                  </Typography>
-                  <Box my={1} />
-                  <Typography variant="h6" noWrap sx={{ color: 'text.primary' }}>
-                    Used:
-                  </Typography>
-                  <Typography variant="h6" noWrap sx={{ color: 'text.secondary' }}>
-                    {fCurrency(x.used)}đ
-                  </Typography>
-                </Stack>
-              </Card>
-            ))}
-        </Stack>
-      </Grid> */}
     </Grid>
   )
 }
@@ -144,7 +111,7 @@ function CompanyEditFormGeneral({
       name: currentUser?.name || '',
       address: currentUser?.address || '',
       expiredDate: new Date(currentUser?.expiredDate || ''),
-      limits: currentUser?.limits || 0,
+      limits: currentUser?.limits || '',
       imageUrl: currentUser?.imageUrl || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,15 +125,14 @@ function CompanyEditFormGeneral({
 
   const {
     reset,
-    watch,
+    // watch,
     control,
     setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods
 
-  const values = watch('expiredDate')
-  console.log(values)
+  // const values = watch()
 
   useEffect(() => {
     if (isEdit && currentUser) {
@@ -235,7 +201,18 @@ function CompanyEditFormGeneral({
             >
               <RHFTextField name="name" label="Company Name" />
               <RHFTextField name="address" label="Company Address" />
-              <RHFTextField name="limits" label="Limit" type="number" />
+              <RHFTextField
+                name="limits"
+                label="Limit"
+                type="number"
+                onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                // onChange={(event: { target: { value: any } }) => {
+                //   if (event.target.value) setValue(`limits`, Number(event.target.value))
+                // }}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                }}
+              />
 
               <Controller
                 name="expiredDate"
@@ -291,7 +268,6 @@ function AccountEditFormGeneral({
   const [showPassword, setShowPassword] = useState(false)
   const { user } = useAuth()
   const { pathname } = useRouter()
-  console.log(currentUser)
 
   const NewUserSchema = isEdit
     ? Yup.object().shape({
@@ -493,7 +469,6 @@ function AccountEditFormGeneral({
               {!(user?.role == Role['Enterprise Admin']) && (
                 <RHFTextField name="address" label="Address" disabled={isDetail} />
               )}
-              {/* <RHFTextField name="address" label="Address" /> */}
               <RHFSelect name="status" label="Status" placeholder="Status" disabled={isDetail}>
                 <option value={undefined} />
                 {statusList.map((option) => (

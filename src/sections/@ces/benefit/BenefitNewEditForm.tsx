@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
-import { Box, Card, Stack, Typography } from '@mui/material'
+import { Box, Card, InputAdornment, Stack, Typography } from '@mui/material'
 import { DatePicker, TimePicker, renderTimeViewClock } from '@mui/x-date-pickers'
 import { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -129,7 +129,18 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
           </Stack>
           <Stack direction={'row'} spacing={3}>
             <Box flex={1}>
-              <RHFTextField name="unitPrice" label="Unit Price" type="number" />
+              <RHFTextField
+                name="unitPrice"
+                label="Unit Price"
+                type="number"
+                onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                // onChange={(event: { target: { value: any } }) => {
+                //   if (event.target.value) setValue(`unitPrice`, Number(event.target.value))
+                // }}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">đ</InputAdornment>,
+                }}
+              />
             </Box>
 
             {isEdit ? (
