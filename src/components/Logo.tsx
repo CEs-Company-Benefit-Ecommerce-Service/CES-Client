@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 // @mui
-import { Box, BoxProps } from '@mui/material'
+import { Box, BoxProps, useTheme } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -9,11 +9,11 @@ interface Props extends BoxProps {
 }
 
 const Logo = forwardRef<any, Props>(({ disabledLink = false, sx }, ref) => {
-  // const theme = useTheme()
+  const theme = useTheme()
 
   // const PRIMARY_LIGHT = theme.palette.primary.light
 
-  // const PRIMARY_MAIN = theme.palette.primary.main
+  const PRIMARY_MAIN = theme.palette.primary.main
 
   // const PRIMARY_DARK = theme.palette.primary.dark
 
@@ -76,8 +76,8 @@ const Logo = forwardRef<any, Props>(({ disabledLink = false, sx }, ref) => {
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 84.11 94.4"
-        fill="#f05150"
-        // fill={PRIMARY_MAIN}
+        // fill="#f05150"
+        fill={PRIMARY_MAIN}
       >
         <title>Ces_web2</title>
         <polygon
