@@ -1,14 +1,14 @@
 // @mui
+import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Box, Grid, Container, Typography } from '@mui/material';
+// components
+import Page from '../components/Page';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // layouts
 import Layout from '../layouts';
-// components
-import Page from '../components/Page';
 // sections
-import { PaymentSummary, PaymentMethods, PaymentBillingAddress } from '../sections/payment';
+import { PaymentBillingAddress, PaymentMethods } from '../sections/payment';
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ export default function Payment() {
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
-              <PaymentSummary />
+              {/* <PaymentSummary /> */}
             </Grid>
           </Grid>
         </Container>

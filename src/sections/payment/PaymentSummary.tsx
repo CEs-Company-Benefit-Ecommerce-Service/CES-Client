@@ -1,10 +1,10 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import { Switch, Divider, Typography, Stack } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Divider, Stack, Switch, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { AccountData, WalletData } from 'src/@types/@ces'
+import { fCurrency } from 'src/utils/formatNumber'
 // components
-import Label from '../../components/Label';
-import Iconify from '../../components/Iconify';
+import Label from '../../components/Label'
 
 // ----------------------------------------------------------------------
 
@@ -12,11 +12,15 @@ const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(5),
   backgroundColor: theme.palette.background.neutral,
   borderRadius: Number(theme.shape.borderRadius) * 2,
-}));
+}))
 
 // ----------------------------------------------------------------------
-
-export default function PaymentSummary() {
+interface PaymentSummaryProps {
+  wallets: WalletData[]
+  account: AccountData
+}
+export default function PaymentSummary({ wallets, account }: PaymentSummaryProps) {
+  const used = wallets[0]?.used
   return (
     <RootStyle>
       <Typography variant="subtitle1" sx={{ mb: 5 }}>
@@ -26,12 +30,19 @@ export default function PaymentSummary() {
       <Stack spacing={2.5}>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-            Subscription
+            Company Name
           </Typography>
 
-          <Label color="error" variant="filled">
-            PREMIUM
+          <Label color="default" variant="filled">
+            {account?.company?.name}
           </Label>
+        </Stack>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
+            Contact
+          </Typography>
+
+          <Label variant="filled">{account?.phone}</Label>
         </Stack>
 
         <Stack direction="row" justifyContent="space-between">
@@ -42,19 +53,19 @@ export default function PaymentSummary() {
         </Stack>
 
         <Stack direction="row" justifyContent="flex-end">
-          <Typography sx={{ color: 'text.secondary' }}>$</Typography>
+          {/* <Typography sx={{ color: 'text.secondary' }}>$</Typography> */}
 
           <Typography variant="h2" sx={{ mx: 1 }}>
-            9.99
+            {fCurrency(used)}
           </Typography>
 
-          <Typography
+          {/* <Typography
             component="span"
             variant="body2"
             sx={{ mb: 1, alignSelf: 'flex-end', color: 'text.secondary' }}
           >
             /mo
-          </Typography>
+          </Typography> */}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -65,18 +76,18 @@ export default function PaymentSummary() {
           </Typography>
 
           <Typography variant="h6" component="p">
-            $9.99*
+            {fCurrency(used)}
           </Typography>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       </Stack>
 
-      <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
+      {/* <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
         * Plus applicable taxes
-      </Typography>
+      </Typography> */}
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mt: 5, mb: 3 }}>
+      {/* <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mt: 5, mb: 3 }}>
         Upgrade My Plan
       </LoadingButton>
 
@@ -89,7 +100,7 @@ export default function PaymentSummary() {
         <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
           This is a secure 128-bit SSL encrypted payment
         </Typography>
-      </Stack>
+      </Stack> */}
     </RootStyle>
-  );
+  )
 }

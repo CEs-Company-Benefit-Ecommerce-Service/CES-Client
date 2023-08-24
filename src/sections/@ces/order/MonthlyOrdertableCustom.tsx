@@ -12,7 +12,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -26,7 +26,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import { useOrderByCompanyId } from 'src/hooks/@ces/usePayment'
 import useAuth from 'src/hooks/useAuth'
@@ -50,7 +50,8 @@ const TABLE_HEAD = [
   { id: 'orderCode', label: 'Order Code', align: 'left' },
   { id: 'employeeName', label: 'Employee', align: 'left' },
   { id: 'total', label: 'Total', align: 'left' },
-  { id: 'createdAt', label: 'Date', align: 'left' },
+  { id: 'createdAt', label: 'CreatedAt', align: 'left' },
+  { id: 'updateAt', label: 'UpdatedAt', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ]
@@ -98,9 +99,10 @@ export default function MonthlyOrderTableCustom() {
   const [filterName, setFilterName] = useState('')
   const [orderValueType, setOrderValueType] = useState('monthly orders')
 
-  const tableData: Order[] = orders?.data.orders ?? []
+  const tableData: Order[] = orders?.data?.orders ?? []
 
-  const total = orders?.data?.orders?.length
+  const total = orders?.metaData?.total
+  console.log(total)
 
   useEffect(() => {
     const statusIndex = getStatusIndex(filterStatus)
@@ -280,7 +282,7 @@ export default function MonthlyOrderTableCustom() {
               {!isLoading && (
                 <TableEmptyRows
                   height={denseHeight}
-                  emptyRows={emptyRows(page + 1, rowsPerPage, total)}
+                  emptyRows={emptyRows(page + 1, rowsPerPage, total!)}
                 />
               )}
 
@@ -294,7 +296,7 @@ export default function MonthlyOrderTableCustom() {
         <TablePagination
           rowsPerPageOptions={[5, 10]}
           component="div"
-          count={total | 0}
+          count={total! | 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={onChangePage}

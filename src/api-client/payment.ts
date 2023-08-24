@@ -16,8 +16,8 @@ export const paymentApi = {
     axiosClient.get(`/transaction`, { params }),
   satransaction: (params: Partial<Params>): Promise<BaseResponse<TransactionHistory[]>> =>
     axiosClient.get(`/transaction`, { params }),
-  orders: (companyId: string): Promise<AxiosResponse<MonthlyOrder>> =>
-    axiosClient.get(`/payment/total-order/${companyId}`),
+  orders: (companyId: string, params: Partial<Params>): Promise<BaseResponse<MonthlyOrder>> =>
+    axiosClient.get(`/payment/total-order/${companyId}`, { params }),
 
   createPaymentDebt: async (payload: TransactionPayload) =>
     await axiosClient.post('/transaction', payload),

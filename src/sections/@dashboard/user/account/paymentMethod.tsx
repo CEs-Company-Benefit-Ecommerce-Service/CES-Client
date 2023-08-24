@@ -14,7 +14,7 @@ type Props = {
   payLoad: PaymentPayload
   color: string
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  isDebt: boolean
+  isDebt?: boolean
 }
 
 export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props) {
@@ -54,10 +54,10 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
             justifyContent="space-between"
             sx={{ width: 1, minWidth: 200 }}
           >
-            <Typography variant="overline">Payment Method </Typography>
+            <Typography variant="subtitle1">Payment Method</Typography>
           </Stack>
         </Stack>
-        <Stack spacing={2} sx={{ py: 3 }} direction={{ xs: 'column', md: 'row' }}>
+        <Stack spacing={2} sx={{ pt: 4 }} direction={{ xs: 'column', md: 'row' }}>
           <>
             <Paper
               onClick={() => {
@@ -78,9 +78,20 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                   }`,
               }}
             >
-              <Image alt="icon" src={'/vnpay.svg'} sx={{ mb: 1, maxWidth: 72 }} />
+              {' '}
+              <Stack
+                direction={'row'}
+                sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <Typography variant="body2">Pay with VNPay</Typography>
+                <Image alt="icon" src={'/vnpay.svg'} sx={{ maxWidth: 56, maxHeight: 15 }} />
+              </Stack>
               {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
             </Paper>
+          </>
+        </Stack>
+        <Stack spacing={2} sx={{ pt: 2 }} direction={{ xs: 'column', md: 'row' }}>
+          <>
             <Paper
               onClick={() => {
                 setPaymentMethods({
@@ -100,9 +111,20 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                   }`,
               }}
             >
-              <Image alt="icon" src={'/zalopay.svg'} sx={{ mb: 1, maxWidth: 72 }} />
+              <Stack
+                direction={'row'}
+                sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <Typography variant="body2">Pay with Zalo</Typography>
+                <Image alt="icon" src={'/zalopay.svg'} sx={{ maxWidth: 56, maxHeight: 15 }} />
+              </Stack>
+
               {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
             </Paper>
+          </>
+        </Stack>
+        <Stack spacing={2} sx={{ py: 2 }} direction={{ xs: 'column', md: 'row' }}>
+          <>
             <Paper
               onClick={() => {
                 setPaymentMethods({
@@ -123,8 +145,13 @@ export default function PaymentMethod({ payLoad, setOpen, used, isDebt }: Props)
                   }`,
               }}
             >
-              <Image alt="icon" src={'/onlineBanking.png'} sx={{ mb: 1, maxWidth: 36 }} />
-              {/* <Typography variant="subtitle1">{fCurrency(used)}</Typography> */}
+              <Stack
+                direction={'row'}
+                sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <Typography variant="body2">Banking</Typography>
+                <Image alt="icon" src={'/onlineBanking.png'} sx={{ maxWidth: 22 }} />
+              </Stack>
             </Paper>
           </>
         </Stack>

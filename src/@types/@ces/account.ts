@@ -1,3 +1,4 @@
+import { CompanyData } from './company'
 import { WalletData } from './wallet'
 
 export type AccountData = {
@@ -14,6 +15,7 @@ export type AccountData = {
   updatedAt: string
   createdAt: string
   wallets: WalletData[]
+  company: CompanyData
   suppliers?: [
     {
       id: string

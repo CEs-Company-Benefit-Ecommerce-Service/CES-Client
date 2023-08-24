@@ -51,7 +51,6 @@ export function usePaymentSystem({ params, options }: UsePaymentProps) {
   }
 }
 
-
 export function usePaymentDebt({ params, options }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
     ['/ea-payment-debt', params],
@@ -67,7 +66,6 @@ export function usePaymentDebt({ params, options }: UsePaymentProps) {
     isLoading,
   }
 }
-
 
 export function usePaymentSystemDebt({ params, options }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
@@ -89,7 +87,7 @@ export function usePaymentSystemDebt({ params, options }: UsePaymentProps) {
 export function useOrderByCompanyId({ params, options, companyId }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
     companyId == undefined ? null : ['/order-wallet', params],
-    () => paymentApi.orders(companyId!),
+    () => paymentApi.orders(companyId!, params!),
     {
       // revalidateOnFocus: false,
       // dedupingInterval: 10 * 1000, // 10s
