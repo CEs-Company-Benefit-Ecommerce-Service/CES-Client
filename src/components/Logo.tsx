@@ -1,4 +1,3 @@
-import NextLink from 'next/link'
 import { forwardRef } from 'react'
 // @mui
 import { Box, BoxProps } from '@mui/material'
@@ -117,11 +116,11 @@ const Logo = forwardRef<any, Props>(({ disabledLink = false, sx }, ref) => {
     </Box>
   )
 
-  if (disabledLink) {
-    return <>{logo}</>
-  }
+  // if (disabledLink) {
+  // }
+  return <>{logo}</>
 
-  return <NextLink href="/dashboard/app">{logo}</NextLink>
+  // return <NextLink href="/dashboard/app">{logo}</NextLink>
 })
 
 export default Logo

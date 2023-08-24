@@ -6,8 +6,8 @@ import { useSnackbar } from 'notistack'
 import { AccountPayload, Role } from 'src/@types/@ces'
 import { accountApi } from 'src/api-client'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
-import Iconify from 'src/components/Iconify'
 import Page from 'src/components/Page'
+import SvgIconStyle from 'src/components/SvgIconStyle'
 import { useAccountDetails } from 'src/hooks/@ces'
 import useAuth from 'src/hooks/useAuth'
 import useSettings from 'src/hooks/useSettings'
@@ -59,7 +59,13 @@ export default function UserAccount() {
       ? [
           {
             value: 'general',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: (
+              <SvgIconStyle
+                src="/assets/icons/navbar/Application-User.svg"
+                width={20}
+                height={20}
+              />
+            ),
             component: (
               <AccountNewEditForm
                 isEdit
@@ -70,7 +76,7 @@ export default function UserAccount() {
           },
           {
             value: 'wallet',
-            icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+            icon: <SvgIconStyle src="/assets/icons/navbar/Wallet-2.svg" width={20} height={20} />,
             component: (
               <AccountWallet
                 accountId={`${accountId}`}
@@ -81,19 +87,27 @@ export default function UserAccount() {
           },
           {
             value: 'order',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: <SvgIconStyle src="/assets/icons/navbar/Tasks-1.svg" width={20} height={20} />,
             component: <EmployeeOrderCustom employeeId={empId} />,
           },
           {
             value: 'transaction',
-            // icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: (
+              <SvgIconStyle src="/assets/icons/navbar/Convert-Curency.svg" width={20} height={20} />
+            ),
             component: <EmployeeTransactionTable employeeId={`${accountId}`} />,
           },
         ]
       : [
           {
             value: 'general',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: (
+              <SvgIconStyle
+                src="/assets/icons/navbar/Application-User.svg"
+                width={20}
+                height={20}
+              />
+            ),
             component: (
               <AccountNewEditForm
                 isEdit

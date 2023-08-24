@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 // next
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 // @mui
-import { Box, Drawer, Stack } from '@mui/material'
+import { Box, Drawer, Stack, Typography } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 // hooks
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer'
@@ -74,8 +75,17 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Logo />
-          <Box />
+          <NextLink href="/dashboard/app">
+            <Stack direction="row" spacing={1}>
+              <Logo />
+              {!isCollapse && (
+                <Typography variant="h6" sx={{ cursor: 'pointer' }}>
+                  CEs
+                </Typography>
+              )}
+            </Stack>
+          </NextLink>
+
           {isDesktop && !isCollapse && (
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
           )}
