@@ -55,20 +55,28 @@ export default function CompanyGeneral({ accountId, companyId }: Props) {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <CompanyEditFormGeneral
-          isEdit
-          currentUser={data?.data}
-          onSubmit={handleEditCompanySubmit}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <AccountEditFormGeneral
-          isEdit
-          currentUser={accountDetails?.data}
-          onSubmit={handleEditAccountSubmit}
-        />
-      </Grid>
+      {!accountDetails && !data ? (
+        <Grid item xs={12}>
+          <>Loading...</>
+        </Grid>
+      ) : (
+        <>
+          <Grid item xs={12}>
+            <CompanyEditFormGeneral
+              isEdit
+              currentUser={data?.data}
+              onSubmit={handleEditCompanySubmit}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <AccountEditFormGeneral
+              isEdit
+              currentUser={accountDetails?.data}
+              onSubmit={handleEditAccountSubmit}
+            />
+          </Grid>
+        </>
+      )}
     </Grid>
   )
 }
@@ -330,11 +338,7 @@ function AccountEditFormGeneral({
           ? currentUser?.imageUrl
           : null,
       status: currentUser?.status || AccountStatus['Active'],
-      role: currentUser?.role
-        ? currentUser?.role
-        : user?.role == Role['Enterprise Admin']
-        ? Role.Employee
-        : undefined,
+      role: Role['Enterprise Admin'],
       password: '',
       // companyId: null,
       // company
