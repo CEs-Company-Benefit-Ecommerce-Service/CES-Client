@@ -9,6 +9,10 @@ import {
   Grid,
   MenuItem,
   Stack,
+  Step,
+  StepConnector,
+  StepLabel,
+  Stepper,
   Table,
   TableBody,
   TableCell,
@@ -22,6 +26,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 //
 import { Order, Status, UpdateOrderStatus } from 'src/@types/@ces/order'
+import Iconify from 'src/components/Iconify'
 import useAuth from 'src/hooks/useAuth'
 import createAvatar from 'src/utils/createAvatar'
 import { fCurrency } from 'src/utils/formatNumber'
@@ -40,12 +45,76 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 }))
 
 // ----------------------------------------------------------------------
-
+const QontoConnector = styled(StepConnector)(({ theme }) => ({
+  top: 10,
+  left: 'calc(-50% + 20px)',
+  right: 'calc(50% + 20px)',
+  '& .MuiStepConnector-line': {
+    borderTopWidth: 2,
+    borderColor: theme.palette.divider,
+  },
+  '&.Mui-active, &.Mui-completed': {
+    '& .MuiStepConnector-line': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}))
+const STEPS = ['New', 'Ready', 'Shipping', 'Complete']
 type Props = {
   order?: Order
   handleEditOrderSubmit: (id: string, status: number) => void
 }
-
+function QontoStepIcon({ active, completed }: { active: boolean; completed: boolean }) {
+  return (
+    <Box
+      sx={{
+        zIndex: 9,
+        width: 24,
+        height: 24,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: active ? 'primary.main' : 'text.disabled',
+      }}
+    >
+      {completed ? (
+        <Iconify
+          icon={'eva:checkmark-fill'}
+          sx={{ zIndex: 1, width: 20, height: 20, color: 'primary.main' }}
+        />
+      ) : (
+        <Box
+          sx={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            backgroundColor: 'currentColor',
+          }}
+        />
+      )}
+    </Box>
+  )
+}
+function QontoStepIconComplete({ active, completed }: { active: boolean; completed: boolean }) {
+  return (
+    <Box
+      sx={{
+        zIndex: 9,
+        width: 24,
+        height: 24,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: active ? 'primary.main' : 'text.disabled',
+      }}
+    >
+      <Iconify
+        icon={'eva:checkmark-fill'}
+        sx={{ zIndex: 1, width: 20, height: 20, color: 'primary.main' }}
+      />
+    </Box>
+  )
+}
 export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
   const theme = useTheme()
   const { user } = useAuth()
@@ -149,6 +218,25 @@ export default function OrderDetails({ order, handleEditOrderSubmit }: Props) {
                 </LoadingButton>
               </Stack>
             )}
+          </Grid>
+          <Grid item xs={12} sm={8} sx={{ mb: 5 }}>
+            <Stepper alternativeLabel activeStep={status - 1} connector={<QontoConnector />}>
+              {STEPS.map((label) => (
+                <Step key={label}>
+                  <StepLabel
+                    StepIconComponent={status == 4 ? QontoStepIconComplete : QontoStepIcon}
+                    sx={{
+                      '& .MuiStepLabel-label': {
+                        typography: 'subtitle2',
+                        color: 'text.disabled',
+                      },
+                    }}
+                  >
+                    {label}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </Grid>
         </Grid>
         <Grid container item spacing={2} mx={'auto'}>

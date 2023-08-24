@@ -27,7 +27,7 @@ export default function OrderTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { total, orderCode, createdAt, status, employee } = row
+  const { total, orderCode, createdAt, updatedAt, status, employee } = row
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
@@ -86,6 +86,14 @@ export default function OrderTableRow({
         </Typography>
         <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
           {fTime(createdAt)}
+        </Typography>
+      </TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(updatedAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(updatedAt)}
         </Typography>
       </TableCell>
 
