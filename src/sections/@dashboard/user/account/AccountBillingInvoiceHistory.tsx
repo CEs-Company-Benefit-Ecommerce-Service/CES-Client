@@ -4,7 +4,7 @@ import { TransactionHistory } from 'src/@types/@ces'
 import LoadingTable from 'src/utils/loadingTable'
 // utils
 import { fCurrency } from '../../../../utils/formatNumber'
-import { fDateTime, fDateTimeParam, fDateVN } from '../../../../utils/formatTime'
+import { fDate, fDateTime, fDateTimeParam, fDateVN, fTime } from '../../../../utils/formatTime'
 import Iconify from 'src/components/Iconify'
 import { useRouter } from 'next/router'
 import { PATH_CES } from 'src/routes/paths'
@@ -31,9 +31,15 @@ export default function AccountBillingInvoiceHistory({ Transactions, isLoading }
         ) : (
           Transactions?.map((x) => (
             <Stack key={x.id} direction="row" justifyContent="space-between" sx={{ width: 1 }}>
-              <Typography flex={1.8} variant="body2">
+              <Stack direction="column" flex={1}>
+                <Typography variant="body2">{fDateVN(x.createdAt)}</Typography>
+                <Typography flex={1.8} variant="body2">
+                  {fTime(x.createdAt)}
+                </Typography>
+              </Stack>
+              {/* <Typography flex={1.8} variant="body2">
                 {fDateTime(x.createdAt)}
-              </Typography>
+              </Typography> */}
               <Typography flex={1} variant="body2">
                 {fCurrency(x.total)}
               </Typography>
