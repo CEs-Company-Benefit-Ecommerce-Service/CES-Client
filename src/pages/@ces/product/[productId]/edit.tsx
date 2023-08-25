@@ -30,7 +30,7 @@ export default function ProductEditPage() {
   const { productId } = query
   const { currentTab, onChangeTab } = useTabs('general')
   const { push } = useRouter()
-  const { data, mutate } = useProductDetail({ id: `${productId}` })
+  const { data, isLoading, mutate } = useProductDetail({ id: `${productId}` })
 
   const handleEditProductSubmit = async (payload: ProductPayload) => {
     try {
@@ -97,7 +97,7 @@ export default function ProductEditPage() {
 
           <Box sx={{ mb: 5 }} />
 
-          {!data ? (
+          {isLoading ? (
             <>Loading...</>
           ) : (
             ACCOUNT_TABS.map((tab) => {

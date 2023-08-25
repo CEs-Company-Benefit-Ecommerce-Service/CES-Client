@@ -1,10 +1,14 @@
 // @mui
-import { Card, Divider, Stack, Typography } from '@mui/material'
-import React from 'react'
+import { Button, Card, Divider, Stack, Typography } from '@mui/material'
+import React, { useRef, useState } from 'react'
 import { AccountData, WalletData } from 'src/@types/@ces'
 import { fCurrency } from 'src/utils/formatNumber'
 // components
 import Label from '../../components/Label'
+import NextLink from 'next/link'
+import { PATH_CES } from 'src/routes/paths'
+import axiosClient from 'src/api-client/axiosClient'
+import { LoadingButton } from '@mui/lab'
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +19,9 @@ interface PaymentSummaryProps {
 }
 export default function PaymentSummary({ wallets, account }: PaymentSummaryProps) {
   const used = wallets[0]?.used
+  const ref = useRef<HTMLAnchorElement | null>(null)
+  const [url, setFileUrl] = useState<string>()
+  const [loading, setLoading] = useState(false)
   return (
     <Card sx={{ p: 4 }}>
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
@@ -66,6 +73,37 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
             {fCurrency(used)}
           </Typography>
         </Stack>
+        <NextLink href={PATH_CES.order.root}>
+          <Button variant="outlined" color="info">
+            View details
+          </Button>
+        </NextLink>
+        <a style={{ display: 'none' }} href={url} ref={ref} download="Total order" />
+        <LoadingButton
+          variant="contained"
+          color="info"
+          loading={loading}
+          onClick={async () => {
+            try {
+              setLoading(true)
+
+              const response: Blob = await axiosClient.get('/excel/order/monthly', {
+                responseType: 'blob',
+              })
+
+              const url = window.URL.createObjectURL(response as Blob)
+
+              setFileUrl(url)
+              ref.current?.click()
+              URL.revokeObjectURL(url)
+            } catch (error) {
+            } finally {
+              setLoading(false)
+            }
+          }}
+        >
+          Export details
+        </LoadingButton>
       </Stack>
 
       {/* <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>

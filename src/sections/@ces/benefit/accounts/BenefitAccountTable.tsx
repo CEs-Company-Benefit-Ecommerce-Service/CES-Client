@@ -317,7 +317,7 @@ export default function BenefitAccountTable({ benefitId, groupId }: Props) {
               onSelectAllRows={(checked) =>
                 onSelectAllRows(
                   checked,
-                  accountList.map((row: any) => `${row.id}`)
+                  accountList.map((row: any) => `${row.accountId}`)
                 )
               }
             />
