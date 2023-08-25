@@ -8,6 +8,7 @@ import { BenefitData, BenefitPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@t
 import { fDateParam, fDateTimeParam } from 'src/utils/formatTime'
 import * as Yup from 'yup'
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form'
+import useAuth from 'src/hooks/useAuth'
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +38,7 @@ const PLAN_TYPE = [
 ]
 
 export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
+  const { user } = useAuth()
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
 
@@ -74,6 +76,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
       dateFilter: currentUser?.groups?.[0].dateFilter,
       dayFilter: currentUser?.groups?.[0].dayFilter,
       endDate: new Date(currentUser?.groups?.[0].endDate || ''),
+      firstTime: new Date(currentUser?.groups?.[0].firstTime || ''),
     }),
     [currentUser]
   )
@@ -134,9 +137,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                 label="Unit Price"
                 type="number"
                 onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
-                // onChange={(event: { target: { value: any } }) => {
-                //   if (event.target.value) setValue(`unitPrice`, Number(event.target.value))
-                // }}
                 InputProps={{
                   endAdornment: <InputAdornment position="start">đ</InputAdornment>,
                 }}
@@ -206,6 +206,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
                   disabled={isEdit}
                   disablePast
                   minDate={tomorrow}
+                  maxDate={new Date(user?.company.expiredDate || '')}
                   format="dd/MM/yyyy"
                   label="End Date"
                   value={field.value}
