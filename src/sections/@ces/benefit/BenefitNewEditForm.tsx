@@ -133,6 +133,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
           <Stack direction={'row'} spacing={3}>
             <Box flex={1}>
               <RHFTextField
+                disabled={isEdit}
                 name="unitPrice"
                 label="Unit Price"
                 type="number"

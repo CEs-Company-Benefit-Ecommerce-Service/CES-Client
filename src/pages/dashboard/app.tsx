@@ -165,7 +165,9 @@ export default function GeneralApp() {
             <Grid item xs={12} lg={12}>
               <AppOrder
                 // title={`Order in month (${orders.data.orders.length})`}
-                title={`Current complete order (${orders?.data.orders?.length})`}
+                title={`Current complete order (${
+                  orders?.data.orders?.filter((x) => x.status == 4)?.length
+                })`}
                 tableData={
                   orders?.data?.orders
                     ?.filter((x) => x.status == 4)
