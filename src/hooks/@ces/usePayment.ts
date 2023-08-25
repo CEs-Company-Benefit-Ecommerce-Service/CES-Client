@@ -84,6 +84,7 @@ export function usePaymentSystemDebt({ params, options }: UsePaymentProps) {
     isLoading,
   }
 }
+
 export function useOrderByCompanyId({ params, options, companyId }: UsePaymentProps) {
   const { data, error, mutate, isLoading } = useSWR(
     companyId == undefined ? null : ['/order-wallet', params],

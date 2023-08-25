@@ -18,6 +18,8 @@ export const paymentApi = {
     axiosClient.get(`/transaction`, { params }),
   orders: (companyId: string, params: Partial<Params>): Promise<BaseResponse<MonthlyOrder>> =>
     axiosClient.get(`/payment/total-order/${companyId}`, { params }),
+  reset: (payload: { companyId: number }) =>
+    axiosClient.post(`/wallet/reset/employee-wallet/${payload.companyId}`, payload),
 
   createPaymentDebt: async (payload: TransactionPayload) =>
     await axiosClient.post('/transaction', payload),
