@@ -1,5 +1,6 @@
 // @mui
 import { Box, Stack, Typography } from '@mui/material'
+import Button from 'src/theme/overrides/Button'
 import { fCurrency, fNumber } from 'src/utils/formatNumber'
 // utils
 
@@ -23,7 +24,6 @@ export default function BalanceAnalytic({ title, balance, limit, color }: Props)
     >
       <Stack spacing={0.5} sx={{ ml: 2 }}>
         <Typography variant="h5">{title}</Typography>
-
         <Typography variant="h5" sx={{ color }}>
           {fNumber(balance)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body1' }}>

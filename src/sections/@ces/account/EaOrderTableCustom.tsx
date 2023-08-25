@@ -110,7 +110,7 @@ export default function EaOrderTableCustom() {
       ? data?.data ?? []
       : orderValueType == 'all orders'
       ? compOrder?.data ?? []
-      : orders?.data.orders ?? []
+      : orders?.data?.orders ?? []
   const total =
     role != 3
       ? data?.metaData?.total || []

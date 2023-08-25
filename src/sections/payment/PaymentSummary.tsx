@@ -1,11 +1,8 @@
 // @mui
-import { Divider, Stack, Switch, Typography } from '@mui/material'
+import { Divider, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { useSnackbar } from 'notistack'
 import React from 'react'
 import { AccountData, WalletData } from 'src/@types/@ces'
-import { paymentApi } from 'src/api-client/payment'
-import { confirmDialog } from 'src/utils/confirmDialog'
 import { fCurrency } from 'src/utils/formatNumber'
 // components
 import Label from '../../components/Label'
@@ -25,30 +22,8 @@ interface PaymentSummaryProps {
 }
 export default function PaymentSummary({ wallets, account }: PaymentSummaryProps) {
   const used = wallets[0]?.used
-  const companyId = account?.companyId
-  const [checked, setChecked] = React.useState(false)
-  const { enqueueSnackbar } = useSnackbar()
-
-  const handleChange = () => {
-    confirmDialog('Do you really want to reset employee wallet?', async () => {
-      try {
-        await paymentApi.reset({ companyId: companyId! })
-        enqueueSnackbar('Reset successfull')
-        setChecked(true)
-      } catch (error) {
-        enqueueSnackbar('Reset failed', { variant: 'error' })
-        console.error(error)
-      }
-    })
-  }
   return (
     <RootStyle>
-      <Stack direction="row" justifyContent="space-between" alignItems={'center'} pb={2}>
-        <Typography component="p" variant="subtitle1">
-          Reset Wallet
-        </Typography>
-        <Switch checked={checked} onChange={handleChange} />
-      </Stack>
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
         Summary
       </Typography>
@@ -98,8 +73,6 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
             {fCurrency(used)}
           </Typography>
         </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       </Stack>
 
       {/* <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>

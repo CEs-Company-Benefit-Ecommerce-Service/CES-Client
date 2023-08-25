@@ -104,6 +104,7 @@ export default function AccountBilling({ payload }: Props) {
               used={usedPayload!}
               payLoad={payload}
               isDebt={isDebt}
+              compId={compId!}
               setOpen={setOpen}
             />
           </Card>

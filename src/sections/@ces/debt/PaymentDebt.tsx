@@ -1,15 +1,15 @@
 // @mui
 import {
-    Box,
-    Button,
-    Card,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    InputAdornment,
-    Typography
+  Box,
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  InputAdornment,
+  Typography,
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 // layouts
@@ -24,7 +24,9 @@ import { useMe } from 'src/hooks/@ces'
 import { usePayment } from 'src/hooks/@ces/usePayment'
 import Layout from 'src/layouts'
 import { AccountBillingInvoiceHistory } from 'src/sections/@dashboard/user/account'
+import BalanceAnalytic from 'src/sections/@dashboard/user/account/balanceAnalytic'
 import PaymentMethod from 'src/sections/@dashboard/user/account/paymentMethod'
+import UsedAnalytic from 'src/sections/@dashboard/user/account/usedAnalytic'
 // sections
 import { PaymentSummary } from 'src/sections/payment'
 import uploadImageDebt from 'src/utils/uploadImageDebt'
@@ -53,6 +55,8 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
   const compId = data?.companyId?.toString()
   const wallets = data?.wallets || []
   const used = wallets[0]?.used
+  const balance = wallets[0]?.balance
+  const limit = wallets[0]?.limits
   const accountId = data?.id
   const { data: payments, isLoading: isPaymentLoading } = usePayment({
     companyId: compId,
@@ -66,19 +70,38 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
   }
   const theme = useTheme()
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={5}>
       <Grid item xs={12} md={8}>
         {open && <BankingDetails handleClose={() => setOpen(false)} used={used!} />}
         <Box
           sx={{
             display: 'grid',
-            gap: 5,
+            gap: 2,
             p: { md: 5 },
             borderRadius: 2,
             border: (theme) => ({ md: `dashed 1px ${theme.palette.divider}` }),
             gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' },
           }}
         >
+          <Card sx={{ mb: 1 }}>
+            <BalanceAnalytic
+              title="Balance"
+              balance={balance!}
+              limit={limit!}
+              icon="ic:round-receipt"
+              color={theme.palette.success.main}
+            />
+          </Card>
+          <Card sx={{ mb: 1 }}>
+            <UsedAnalytic
+              color={theme.palette.info.main}
+              title="Used"
+              used={used!}
+              data={data}
+              payLoad={payload}
+              setOpen={setOpen}
+            />
+          </Card>
           <PaymentSummary wallets={wallets} account={data!} />
 
           <PaymentMethod
