@@ -102,7 +102,7 @@ export default function GeneralApp() {
             <>
               <Grid item xs={12} md={6}>
                 <AppWidgetSummary
-                  title="Total used in month"
+                  title="Total current used"
                   total={reportEAData?.data?.used || 0}
                   chartColor={theme.palette.primary.main}
                   chartData={[5, 18, 12, 51, 68, 11, 39, 37, 27, 20]}
@@ -165,9 +165,12 @@ export default function GeneralApp() {
             <Grid item xs={12} lg={12}>
               <AppOrder
                 // title={`Order in month (${orders.data.orders.length})`}
-                title={`Monthly orders`}
+                title={`Current complete order (${orders?.data.orders?.length})`}
                 tableData={
-                  orders?.data?.orders?.sort((x, y) => y.total - x.total).slice(0, 5) || []
+                  orders?.data?.orders
+                    ?.filter((x) => x.status == 4)
+                    // .sort((x, y) => y.total - x.total)
+                    .slice(0, 5) || []
                 }
                 tableLabels={[
                   { id: 'orderCode', label: 'Order Code' },
