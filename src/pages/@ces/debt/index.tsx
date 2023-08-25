@@ -11,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -26,7 +26,7 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton
+  TableSkeleton,
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
 import { usePaymentSystem } from 'src/hooks/@ces/usePayment'
@@ -151,12 +151,16 @@ export default function DebtPage() {
   }
 
   return (
-    <RoleBasedGuard hasContent roles={[Role['System Admin'], Role['Enterprise Admin']]}>
-      <Page title="Debt: List">
+    <RoleBasedGuard hasContent roles={[Role['System Admin']]}>
+      <Page title="Invoice: List">
         <Container>
           <HeaderBreadcrumbs
-            heading="Debt List"
-            links={[{ name: 'Dashboard', href: '' }, { name: 'Debt', href: '' }, { name: 'List' }]}
+            heading="Invoice List"
+            links={[
+              { name: 'Dashboard', href: '' },
+              { name: 'Invoice', href: '' },
+              { name: 'List' },
+            ]}
           />
           <Card>
             <Tabs
@@ -236,7 +240,7 @@ export default function DebtPage() {
                             selected={selected.includes(row.id)}
                             onSelectRow={() => onSelectRow(row.id)}
                             onViewRow={() => handleViewRow(row.id)}
-                            onClickRow ={() => handleClickRow(row.id)}
+                            onClickRow={() => handleClickRow(row.id)}
                             onDeleteRow={() => handleViewRow(row.id)}
                           />
                         ))}

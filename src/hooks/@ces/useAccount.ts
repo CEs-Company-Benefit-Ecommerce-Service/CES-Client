@@ -119,7 +119,7 @@ export function useAccountListShipperId({ options, params, roleId }: UseAccountP
 }
 
 export function useAccountDetails({ enable = true, id, options }: UseAccountProps) {
-  const { data, error, mutate } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     enable ? ['account', id] : null,
     () => accountApi.getById(id!),
     {
@@ -131,5 +131,6 @@ export function useAccountDetails({ enable = true, id, options }: UseAccountProp
     data,
     error,
     mutate,
+    isLoading,
   }
 }

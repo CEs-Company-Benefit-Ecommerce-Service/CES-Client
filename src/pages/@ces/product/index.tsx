@@ -12,7 +12,7 @@ import {
   TableContainer,
   TablePagination,
   Tabs,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import NextLink from 'next/link'
@@ -31,11 +31,12 @@ import {
   TableHeadCustom,
   TableNoData,
   TableSelectedActions,
-  TableSkeleton,
+  TableSkeleton
 } from 'src/components/table'
 import RoleBasedGuard from 'src/guards/RoleBasedGuard'
-import { useCategoryList } from 'src/hooks/@ces'
-import { useProduct } from 'src/hooks/@ces/useProduct'
+import { useAccountDetails, useCategoryList } from 'src/hooks/@ces'
+import { useProductBySupplierId } from 'src/hooks/@ces/useProduct'
+import useAuth from 'src/hooks/useAuth'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
@@ -90,8 +91,16 @@ export default function ProductPage() {
   const [filterCate, setFilterCate] = useState<string>('')
 
   const [params, setParams] = useState<Partial<Params>>()
+  const { user } = useAuth()
+  const accountId = user?.id
+  const { data: account } = useAccountDetails({ id: `${accountId}` })
+  const newSupId = account?.data?.suppliers?.map((m) => m.id)[0]
+  const { data, mutate, isLoading } = useProductBySupplierId({
+    enable: !!newSupId,
+    supplierId: newSupId!,
+    params,
+  })
 
-  const { data, mutate, isLoading } = useProduct({ params })
   const { data: cate } = useCategoryList({})
   const categories: Category[] = cate?.data ?? []
   const tableData: ProductData[] = data?.data ?? []

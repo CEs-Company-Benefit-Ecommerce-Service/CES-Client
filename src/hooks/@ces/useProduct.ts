@@ -7,6 +7,7 @@ type UseProductProps = {
   options?: SWRConfiguration
   id?: string
   supplierId?: string
+  enable?: boolean
 }
 export function useProduct({ params, options }: UseProductProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(
@@ -28,9 +29,14 @@ export function useProduct({ params, options }: UseProductProps) {
   }
 }
 
-export function useProductBySupplierId({ params, options, supplierId }: UseProductProps) {
+export function useProductBySupplierId({
+  params,
+  options,
+  supplierId,
+  enable = false,
+}: UseProductProps) {
   const { data, error, mutate, isLoading, isValidating } = useSWR(
-    ['/product-supplierId', params],
+    enable ? ['/product-supplierId', params] : null,
     () => productApi.getBySupplierId(supplierId!, params!),
     {
       keepPreviousData: true,

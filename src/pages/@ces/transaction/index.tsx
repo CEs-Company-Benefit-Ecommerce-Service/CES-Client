@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Params, Role, TransactionHistory } from 'src/@types/@ces'
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs'
 import Iconify from 'src/components/Iconify'
@@ -93,7 +93,8 @@ export default function TransactionPage() {
   const [filterOptions, setFilterOptions] = useState('')
   const { data, isLoading } = usePayment({ companyId: compId, params })
   const { data: paymentSAData } = usePaymentSystem({ params })
-  const STATUS_OPTIONS = user?.role == Role['Enterprise Admin'] ? ['paid', 'transfer'] : ['paid']
+  const STATUS_OPTIONS =
+    user?.role == Role['Enterprise Admin'] ? ['invoice', 'paid', 'transfer'] : ['paid']
   const DATA = user?.role == Role['Enterprise Admin'] ? data : paymentSAData
   const tableData: TransactionHistory[] =
     user?.role == Role['Enterprise Admin'] ? data?.data || [] : paymentSAData?.data || []
@@ -102,13 +103,24 @@ export default function TransactionPage() {
 
   const [filterStt, setFilterStatus] = useState('supplier')
 
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('paid')
+  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs(STATUS_OPTIONS[0])
 
   const { push } = useRouter()
 
-  useMemo(() => {
-    if (filterStatus === 'paid') {
+  useEffect(() => {
+    if (filterStatus === 'invoice') {
       setParams({
+        CompanyId: compId,
+        Type: '6',
+        Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
+        Order: filterOptions == '' ? 'desc' : filterOptions,
+        Page: page + 1,
+        Status: 3,
+        Size: rowsPerPage,
+      })
+    } else if (filterStatus === 'paid') {
+      setParams({
+        CompanyId: compId,
         PaymentType: '1',
         Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
         Order: filterOptions == '' ? 'desc' : filterOptions,
@@ -117,6 +129,7 @@ export default function TransactionPage() {
       })
     } else {
       setParams({
+        CompanyId: compId,
         Page: page + 1,
         Size: rowsPerPage,
         Type: '4',
@@ -124,7 +137,7 @@ export default function TransactionPage() {
         Order: filterOptions == '' ? 'desc' : filterOptions,
       })
     }
-  }, [filterAttribute, filterOptions, filterStatus, page, rowsPerPage])
+  }, [compId, filterAttribute, filterOptions, filterStatus, page, rowsPerPage])
   const filterNameFuction = (value: string) => {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
   }
@@ -174,7 +187,7 @@ export default function TransactionPage() {
     (!dataFiltered.length && !!filterName) ||
     (!dataFiltered.length && !!filterStatus) ||
     (!dataFiltered.length && !!filterStt)
-    
+
   const handleViewRow = (id: string) => {
     push(PATH_CES.debt.detail(id))
   }

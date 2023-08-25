@@ -21,12 +21,7 @@ export default function UsedAnalytic({ title, used, color }: Props) {
   const { user } = useAuth()
   const exDate = user?.expiredDate
   return (
-    <Stack
-      direction="row"
-      alignItems="left"
-      justifyContent="left"
-      sx={{ p: 2, width: 1, minWidth: 200 }}
-    >
+    <Stack direction="row" alignItems="left" justifyContent="left" sx={{ width: 1, minWidth: 200 }}>
       <Stack spacing={0.5}>
         <Typography variant="h5">{title}</Typography>
         <Typography variant="h5" sx={{ color, fontSize: 24 }}>

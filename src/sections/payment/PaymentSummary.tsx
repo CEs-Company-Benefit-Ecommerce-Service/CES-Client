@@ -1,6 +1,5 @@
 // @mui
-import { Divider, Stack, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Card, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import { AccountData, WalletData } from 'src/@types/@ces'
 import { fCurrency } from 'src/utils/formatNumber'
@@ -8,12 +7,6 @@ import { fCurrency } from 'src/utils/formatNumber'
 import Label from '../../components/Label'
 
 // ----------------------------------------------------------------------
-
-const RootStyle = styled('div')(({ theme }) => ({
-  padding: theme.spacing(5),
-  backgroundColor: theme.palette.background.neutral,
-  borderRadius: Number(theme.shape.borderRadius) * 2,
-}))
 
 // ----------------------------------------------------------------------
 interface PaymentSummaryProps {
@@ -23,7 +16,7 @@ interface PaymentSummaryProps {
 export default function PaymentSummary({ wallets, account }: PaymentSummaryProps) {
   const used = wallets[0]?.used
   return (
-    <RootStyle>
+    <Card sx={{ p: 4 }}>
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
         Summary
       </Typography>
@@ -93,6 +86,6 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
           This is a secure 128-bit SSL encrypted payment
         </Typography>
       </Stack> */}
-    </RootStyle>
+    </Card>
   )
 }

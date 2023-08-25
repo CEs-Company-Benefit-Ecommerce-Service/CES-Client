@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import {
   BaseResponse,
   MonthlyOrder,
@@ -6,7 +5,7 @@ import {
   PaymentPayload,
   TransactionHistory,
   TransactionPayload,
-  TransactionUpdatePayload,
+  TransactionUpdatePayload
 } from 'src/@types/@ces'
 import axiosClient from './axiosClient'
 

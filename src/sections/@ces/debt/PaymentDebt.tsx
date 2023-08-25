@@ -9,9 +9,9 @@ import {
   DialogTitle,
   Grid,
   InputAdornment,
-  Typography,
+  Typography
 } from '@mui/material'
-import { styled, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 // layouts
 import Image from 'next/image'
 import { useSnackbar } from 'notistack'
@@ -33,11 +33,6 @@ import uploadImageDebt from 'src/utils/uploadImageDebt'
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  minHeight: '100%',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(10),
-}))
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +55,14 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
   const accountId = data?.id
   const { data: payments, isLoading: isPaymentLoading } = usePayment({
     companyId: compId,
-    params: { PaymentType: '1', Sort: 'createdAt', Order: 'desc', Page: 1, Size: 10 },
+    params: {
+      CompanyId: compId!,
+      PaymentType: '1',
+      Sort: 'createdAt',
+      Order: 'desc',
+      Page: 1,
+      Size: 10,
+    },
   })
 
   payload = {
@@ -68,6 +70,7 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
     accountId: accountId!,
     paymentid: '05C93858-F520-4391-B72B-D48BC5F2990B',
   }
+
   const theme = useTheme()
   return (
     <Grid container spacing={5}>
@@ -83,7 +86,7 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
             gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' },
           }}
         >
-          <Card sx={{ mb: 1 }}>
+          <Card sx={{ p: 4 }}>
             <BalanceAnalytic
               title="Balance"
               balance={balance!}
@@ -92,7 +95,7 @@ export default function PaymentDebt({ payload }: PaymentDebtProps) {
               color={theme.palette.success.main}
             />
           </Card>
-          <Card sx={{ mb: 1 }}>
+          <Card sx={{ p: 4 }}>
             <UsedAnalytic
               color={theme.palette.info.main}
               title="Used"

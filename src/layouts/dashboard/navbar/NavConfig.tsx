@@ -132,7 +132,7 @@ const navConfig = [
         title: 'invoice',
         path: PATH_CES.debt.root,
         icon: ICONS.debt,
-        roles: [Role['System Admin'], Role['Enterprise Admin']],
+        roles: [Role['System Admin']],
       },
       {
         title: 'supplier',

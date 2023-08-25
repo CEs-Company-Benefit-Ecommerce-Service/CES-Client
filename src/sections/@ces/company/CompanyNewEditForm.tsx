@@ -8,13 +8,13 @@ import { useCallback, useEffect, useMemo } from 'react'
 // form
 import { Controller, useForm } from 'react-hook-form'
 import { CompanyPayload } from 'src/@types/@ces'
-import uploadCompanyImage from 'src/utils/uploadCompanyImage'
-import * as Yup from 'yup'
-import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form'
 // routes
 // utils
 import { fDateParam } from 'src/utils/formatTime'
-import { fData, fNumber } from '../../../utils/formatNumber'
+import uploadCompanyImage from 'src/utils/uploadCompanyImage'
+import * as Yup from 'yup'
+import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form'
+import { fData } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +55,6 @@ export default function CompanyNewEditForm({ isEdit = false, currentUser, onSubm
 
   const {
     reset,
-    watch,
     control,
     setValue,
     handleSubmit,

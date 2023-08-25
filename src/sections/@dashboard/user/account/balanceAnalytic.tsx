@@ -1,6 +1,5 @@
 // @mui
 import { Box, Stack, Typography } from '@mui/material'
-import Button from 'src/theme/overrides/Button'
 import { fCurrency, fNumber } from 'src/utils/formatNumber'
 // utils
 
@@ -16,13 +15,8 @@ type Props = {
 
 export default function BalanceAnalytic({ title, balance, limit, color }: Props) {
   return (
-    <Stack
-      direction="row"
-      alignItems="left"
-      justifyContent="left"
-      sx={{ py: 2, width: 1, minWidth: 200 }}
-    >
-      <Stack spacing={0.5} sx={{ ml: 2 }}>
+    <Stack direction="row" alignItems="left" justifyContent="left" sx={{ width: 1, minWidth: 200 }}>
+      <Stack spacing={0.5}>
         <Typography variant="h5">{title}</Typography>
         <Typography variant="h5" sx={{ color }}>
           {fNumber(balance)}

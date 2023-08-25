@@ -40,7 +40,7 @@ export default function UserAccount() {
   const { accountId } = query
 
   const { data, mutate } = useAccountDetails({ id: `${accountId}` })
-
+  
   const companyId = user?.companyId
   const supId = data?.data?.suppliers?.map((m) => m.id)[0]
   const handleEditAccountSubmit = async (payload: AccountPayload) => {
