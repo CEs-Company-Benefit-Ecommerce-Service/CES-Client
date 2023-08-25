@@ -11,14 +11,14 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Typography
+  Typography,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Order } from 'src/@types/@ces'
 import Scrollbar from 'src/components/Scrollbar'
 import { PATH_CES } from 'src/routes/paths'
-import { fDateVN } from 'src/utils/formatTime'
+import { fDateVN, fTime } from 'src/utils/formatTime'
 // components
 // import Label from '../../../../../components/Label'
 import Iconify from '../../../../../components/Iconify'
@@ -90,7 +90,6 @@ type AppNewInvoiceRowProps = {
 }
 
 function AppNewInvoiceRow({ row }: AppNewInvoiceRowProps) {
-
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -127,7 +126,14 @@ function AppNewInvoiceRow({ row }: AppNewInvoiceRowProps) {
 
       <TableCell>{row.employeeName}</TableCell>
 
-      <TableCell>{fDateVN(row.createdAt)}</TableCell>
+      <TableCell align="left">
+        <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
+          {fDateVN(row.createdAt)}
+        </Typography>
+        <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
+          {fTime(row.createdAt)}
+        </Typography>
+      </TableCell>
       <TableCell>{fCurrency(row.total)}</TableCell>
 
       {/* <TableCell>

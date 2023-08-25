@@ -1,5 +1,5 @@
 // @mui
-import { Button, Card, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material'
 import React, { useRef, useState } from 'react'
 import { AccountData, WalletData } from 'src/@types/@ces'
 import { fCurrency } from 'src/utils/formatNumber'
@@ -46,12 +46,10 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
           <Label variant="filled">{account?.phone}</Label>
         </Stack>
 
-        <Stack direction="row" justifyContent="flex-end">
-          {/* <Typography sx={{ color: 'text.secondary' }}>$</Typography> */}
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography sx={{ color: 'text.secondary' }}>Total</Typography>
 
-          <Typography variant="h2" sx={{ mx: 1 }}>
-            {fCurrency(used)}
-          </Typography>
+          <Typography variant="h3">{fCurrency(used)}</Typography>
 
           {/* <Typography
             component="span"
@@ -63,8 +61,8 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Box mt={1} />
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
             Total Billed
           </Typography>
@@ -72,7 +70,7 @@ export default function PaymentSummary({ wallets, account }: PaymentSummaryProps
           <Typography variant="h6" component="p">
             {fCurrency(used)}
           </Typography>
-        </Stack>
+        </Stack> */}
         <NextLink href={PATH_CES.order.root}>
           <Button variant="outlined" color="info">
             View details
