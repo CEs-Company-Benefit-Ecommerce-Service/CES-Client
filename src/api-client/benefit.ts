@@ -8,6 +8,9 @@ export const benefitApi = {
   getById(id: string): Promise<BaseResponse<BenefitData>> {
     return axiosClient.get(`/benefit/${id}`)
   },
+  delete(id: string): Promise<any> {
+    return axiosClient.delete(`/benefit/${id}`)
+  },
   create(payload: BenefitPayload) {
     return axiosClient.post('/benefit', payload)
   },

@@ -48,9 +48,9 @@ export default function BenefitEditPage() {
   const handleEditAccountSubmit = async (payload: BenefitPayload) => {
     try {
       await benefitApi.update(`${benefitId}`, payload)
-      mutate()
+      await mutate()
       enqueueSnackbar('Update success!')
-      push(PATH_CES.benefit.root)
+      // push(PATH_CES.benefit.root)
     } catch (error) {
       enqueueSnackbar('Update failed!', { variant: 'error' })
       console.error(error)
@@ -163,7 +163,12 @@ export default function BenefitEditPage() {
       icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: (
         <>
-          <BenefitNewEditForm isEdit currentUser={data?.data} onSubmit={handleEditAccountSubmit} />
+          <BenefitNewEditForm
+            isEdit
+            currentUser={data?.data}
+            onSubmit={handleEditAccountSubmit}
+            mutate={mutate}
+          />
           <Card sx={{ p: 3, mt: 3 }}>
             <Stack spacing={1}>
               {data?.data?.status === 2 && <Typography>⚠️ This benefit is not active</Typography>}

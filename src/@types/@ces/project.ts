@@ -57,6 +57,7 @@ export type AddProjectMemberPayload = {
 export enum ProjectStatus {
   'Active' = 1,
   'In Active' = 2,
+  'Delete' = 3,
 }
 
 const filterStatusOptions = (filterFn: (value: ProjectStatus) => boolean) =>
@@ -70,5 +71,5 @@ export const PROJECT_STATUS_OPTIONS = [
 ]
 
 export const PROJECT_STATUS_OPTIONS_FORM = filterStatusOptions((value) =>
-  [ProjectStatus['Active'], ProjectStatus['In Active']].includes(value)
+  [ProjectStatus['Active'], ProjectStatus['Delete'], ProjectStatus['In Active']].includes(value)
 )

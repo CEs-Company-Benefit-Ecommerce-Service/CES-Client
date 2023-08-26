@@ -5,10 +5,13 @@ import { DatePicker, TimePicker, renderTimeViewClock } from '@mui/x-date-pickers
 import { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { BenefitData, BenefitPayload, PROJECT_STATUS_OPTIONS_FORM } from 'src/@types/@ces'
+import useAuth from 'src/hooks/useAuth'
+import { confirmDialog } from 'src/utils/confirmDialog'
 import { fDateParam, fDateTimeParam } from 'src/utils/formatTime'
 import * as Yup from 'yup'
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form'
-import useAuth from 'src/hooks/useAuth'
+import { benefitApi } from 'src/api-client'
+import { useSnackbar } from 'notistack'
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +19,7 @@ type Props = {
   isEdit?: boolean
   currentUser?: BenefitData
   onSubmit?: (payload: BenefitPayload) => void
+  mutate?: any
 }
 const DATE_IN_MONTH = Array.from({ length: 31 }, (_, i) => ({
   label: (i + 1).toString(),
@@ -37,10 +41,16 @@ const PLAN_TYPE = [
   { label: 'Monthly', value: 3 },
 ]
 
-export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubmit }: Props) {
+export default function BenefitNewEditForm({
+  isEdit = false,
+  currentUser,
+  onSubmit,
+  mutate,
+}: Props) {
   const { user } = useAuth()
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
+  const { enqueueSnackbar } = useSnackbar()
 
   const NewUserSchema = !isEdit
     ? Yup.object().shape({
@@ -68,7 +78,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
   const defaultValues = useMemo(
     () => ({
       name: currentUser?.name || '',
-      status: currentUser?.status || 1,
+      status: currentUser?.status || 2,
       description: currentUser?.description || '',
       unitPrice: currentUser?.unitPrice,
       type: currentUser?.type || 1,
@@ -120,12 +130,66 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
   }
 
   const statusList = PROJECT_STATUS_OPTIONS_FORM
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
       <Card sx={{ p: 3 }}>
         <Stack spacing={3}>
-          <Typography variant="h6">Information</Typography>
+          <Stack direction="row" justifyContent={'space-between'} alignItems={'center'}>
+            <Typography variant="h6">Information</Typography>
+            <Stack direction="row" justifyContent={'flex-end'} alignItems="center" spacing={2}>
+              {isEdit && currentUser?.status === 2 && (
+                <LoadingButton
+                  type="submit"
+                  variant="outlined"
+                  loading={isSubmitting}
+                  onClick={(e) => {
+                    e.preventDefault()
+
+                    confirmDialog('Do you want to active. Cannot revert', async () => {
+                      const payload = {
+                        name: currentUser.name,
+                        description: currentUser.description,
+                        type: currentUser.type,
+                        status: 1,
+                      }
+                      await onSubmit?.(payload as BenefitPayload)
+                    })
+                  }}
+                >
+                  Active
+                </LoadingButton>
+              )}
+              {isEdit && currentUser && currentUser?.status !== 3 && (
+                <LoadingButton
+                  variant="outlined"
+                  color="error"
+                  loading={isSubmitting}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    confirmDialog('Do you want to delete. Cannot revert', async () => {
+                      // const payload = {
+                      //   name: currentUser.name,
+                      //   description: currentUser.description,
+                      //   type: currentUser.type,
+                      //   status: 3,
+                      // }
+                      // await onSubmit?.(payload as BenefitPayload)
+                      await benefitApi.delete(currentUser.id)
+                      await mutate()
+                      enqueueSnackbar('Update success!')
+                    })
+                  }}
+                >
+                  Delete benefit
+                </LoadingButton>
+              )}
+              {isEdit && currentUser && currentUser?.status !== 3 && (
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                  {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
+                </LoadingButton>
+              )}
+            </Stack>
+          </Stack>
           <Stack direction={'row'} spacing={3}>
             <RHFTextField name="name" label="Name" />
             <RHFTextField name="description" label="Description" />
@@ -146,8 +210,7 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
 
             {isEdit ? (
               <Box flex={1}>
-                <RHFSelect name="status" label="Status" placeholder="Status">
-                  {/* <option value={undefined} /> */}
+                <RHFSelect name="status" label="Status" placeholder="Status" disabled>
                   {statusList.map((option) => (
                     <option key={option.code} value={option.code}>
                       {option.label}
@@ -159,11 +222,6 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               <Box flex={1} />
             )}
           </Stack>
-        </Stack>
-        <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
-          </LoadingButton>
         </Stack>
       </Card>
 
@@ -342,6 +400,13 @@ export default function BenefitNewEditForm({ isEdit = false, currentUser, onSubm
               </>
             )}
           </Stack> */}
+          {!isEdit && (
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                Create Benefit
+              </LoadingButton>
+            </Stack>
+          )}
         </Stack>
       </Card>
     </FormProvider>
