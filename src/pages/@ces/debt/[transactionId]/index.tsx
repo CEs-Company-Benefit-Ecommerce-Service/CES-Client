@@ -54,14 +54,14 @@ export default function DebtDetail() {
 
   return (
     <RoleBasedGuard hasContent roles={[Role['System Admin'], Role['Enterprise Admin']]}>
-      <Page title="Transaction: View">
+      <Page title="Invoice: View">
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <HeaderBreadcrumbs
-            heading="Transaction Details"
+            heading="Invoice Details"
             links={[
               { name: 'Dashboard', href: PATH_CES.transaction.root },
               {
-                name: 'Transaction',
+                name: 'Invoice',
                 href: PATH_CES.transaction.root,
               },
               { name: `${transactionId}` || '' },

@@ -95,7 +95,7 @@ export default function DebtDetails({ debt, compId, handleUpdateDebt }: Props) {
                   disabled={status != 3}
                   onClick={() => handleUpdate(2)}
                 >
-                  Cancel
+                  Reject
                 </LoadingButton>
 
                 <LoadingButton

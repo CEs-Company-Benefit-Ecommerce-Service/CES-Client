@@ -60,7 +60,7 @@ export default function AccountPage() {
                   URL.revokeObjectURL(url)
                 }}
               >
-                Export excel
+                Export excel 
               </Button>
 
               <NextLink href={PATH_CES.account.new('enterprise')} passHref>

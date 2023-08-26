@@ -103,8 +103,6 @@ export default function DebtPage() {
     setParams({ Page: page + 1, Size: rowsPerPage, Name: value })
   }
 
-  console.log({ page, rowsPerPage, total: data?.metaData?.total })
-
   const handleFilterOptions = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterOptions(event.target.value)
   }

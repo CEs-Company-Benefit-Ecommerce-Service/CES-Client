@@ -198,7 +198,7 @@ export default function TransactionPage() {
         <Container>
           <HeaderBreadcrumbs
             heading="Transaction List"
-            links={[{ name: 'Dashboard', href: '' }, { name: 'Debt', href: '' }, { name: 'List' }]}
+            links={[{ name: 'Dashboard', href: '' }, { name: 'Transaction', href: '' }, { name: 'List' }]}
           />
           <Card>
             <Tabs

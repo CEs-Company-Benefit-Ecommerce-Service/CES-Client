@@ -98,6 +98,7 @@ export default function AccountTable({ data, isLoading, setParams, roleId }: Pro
     setParams({
       Page: page + 1,
       Size: rowsPerPage,
+      Name: filterName,
       Sort: filterAttribute == '' ? 'createdAt' : filterAttribute,
       Order: filterOptions == '' ? 'desc' : filterOptions,
     })

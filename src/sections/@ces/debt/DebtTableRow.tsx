@@ -80,7 +80,7 @@ export default function DebtTableRow({
           }
           sx={{ textTransform: 'capitalize' }}
         >
-          {status === 1 ? 'Success' : status === 2 ? 'Cancel' : status === 0 ? 'New' : 'Processing'}
+          {status === 1 ? 'Success' : status === 2 ? 'Reject' : status === 0 ? 'New' : 'Processing'}
         </Label>
       </TableCell>
 

@@ -31,6 +31,6 @@ export type Company = {
 export enum DebtStatus {
   NEW = 'New',
   COMPLETE = 'Complete',
-  CANCEL = 'Cancel',
+  REJECT = 'Reject',
   PROGRESSING = 'Progressing',
 }
