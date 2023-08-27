@@ -1,17 +1,18 @@
 // @mui
 import {
-    Box,
-    Card, Divider,
-    FormControlLabel,
-    IconButton,
-    Switch,
-    Tab,
-    Table,
-    TableBody,
-    TableContainer,
-    TablePagination,
-    Tabs,
-    Tooltip
+  Box,
+  Card,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
+  TableContainer,
+  TablePagination,
+  Tabs,
+  Tooltip,
 } from '@mui/material'
 import { paramCase } from 'change-case'
 import { useRouter } from 'next/router'
@@ -21,11 +22,11 @@ import { Order, Status } from 'src/@types/@ces/order'
 import Iconify from 'src/components/Iconify'
 import Scrollbar from 'src/components/Scrollbar'
 import {
-    TableEmptyRows,
-    TableHeadCustom,
-    TableNoData,
-    TableSelectedActions,
-    TableSkeleton
+  TableEmptyRows,
+  TableHeadCustom,
+  TableNoData,
+  TableSelectedActions,
+  TableSkeleton,
 } from 'src/components/table'
 import { useOrder } from 'src/hooks/@ces/useOrder'
 import useTable, { emptyRows, getComparator } from 'src/hooks/useTable'
@@ -45,8 +46,8 @@ const ROLE_OPTIONS = ['supplier', 'shipper']
 const FILTER_OPTIONS = ['descending', 'ascending']
 const TABLE_HEAD = [
   { id: 'ordercode', label: 'Order Code', align: 'left' },
+  { id: 'companyname', label: 'Customer', align: 'left' },
   { id: 'total', label: 'Total', align: 'left' },
-  { id: 'companyname', label: 'Company Name', align: 'left' },
   { id: 'createdat', label: 'Created At', align: 'left' },
   { id: 'updatedat', label: 'Updated At', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },

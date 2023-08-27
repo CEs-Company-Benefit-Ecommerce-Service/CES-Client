@@ -80,8 +80,21 @@ export default function BenefitEditPage() {
   }
 
   function getDatesWeekly(targetDayIndex: number, startDate: Date, endDate: Date) {
-    const targetDates = eachWeekOfInterval({ start: startDate, end: endDate }).map((weekStart) =>
-      setDay(weekStart, targetDayIndex)
+    // const targetDates = eachWeekOfInterval({ start: startDate, end: endDate }).map((weekStart) =>
+    //   setDay(weekStart, targetDayIndex)
+    // )
+    const startTime = setHours(
+      setMinutes(setSeconds(startDate, 0), startDate.getMinutes()),
+      startDate.getHours()
+    )
+    const targetDates: Date[] = eachWeekOfInterval({ start: startDate, end: endDate }).flatMap(
+      (weekStart) => {
+        const targetDate = setDay(weekStart, targetDayIndex)
+        return setHours(
+          setMinutes(setSeconds(targetDate, 0), startTime.getMinutes()),
+          startTime.getHours()
+        )
+      }
     )
 
     return targetDates
@@ -163,9 +176,15 @@ export default function BenefitEditPage() {
       icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: (
         <>
-          <Box pl={1}>
-            <Typography variant="body1">⚠️ This benefit is not active</Typography>
-          </Box>
+          {data?.data?.status !== 1 ? (
+            <Box pl={1}>
+              <Typography variant="body1">⚠️ This benefit is not active</Typography>
+            </Box>
+          ) : (
+            <Box pl={1}>
+              <Typography variant="body1">✅ This benefit is active</Typography>
+            </Box>
+          )}
           <Box mt={2}>
             <BenefitNewEditForm
               isEdit
@@ -204,7 +223,6 @@ export default function BenefitEditPage() {
             {data?.data?.status === 2 ? (
               <DateCalendar
                 readOnly
-                // disableHighlightToday
                 defaultValue={initialDate}
                 dayOfWeekFormatter={(day) => `${day}.`}
               />
@@ -214,8 +232,6 @@ export default function BenefitEditPage() {
                 onMonthChange={(e) => {
                   setMonth(e.getMonth())
                 }}
-                // disableHighlightToday
-                // defaultValue={initialValue}
                 dayOfWeekFormatter={(day) => `${day}.`}
                 slots={{
                   day: ServerDay,

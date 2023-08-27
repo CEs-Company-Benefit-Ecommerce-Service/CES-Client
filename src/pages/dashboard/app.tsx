@@ -166,12 +166,11 @@ export default function GeneralApp() {
               <AppOrder
                 // title={`Order in month (${orders.data.orders.length})`}
                 title={`Current complete order (${
-                  orders?.data.orders?.filter((x) => x.status == 4)?.length
+                  orders?.data.orders?.filter((x) => x.status == 4)?.length || 0
                 })`}
                 tableData={
                   orders?.data?.orders
                     ?.filter((x) => x.status == 4)
-                    // .sort((x, y) => y.total - x.total)
                     .slice(0, 5) || []
                 }
                 tableLabels={[

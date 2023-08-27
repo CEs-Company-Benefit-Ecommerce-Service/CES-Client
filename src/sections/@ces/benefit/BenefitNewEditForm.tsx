@@ -268,6 +268,7 @@ export default function BenefitNewEditForm({
                   maxDate={new Date(user?.company.expiredDate || '')}
                   format="dd/MM/yyyy"
                   label="End Date"
+                  dayOfWeekFormatter={(day) => `${day}.`}
                   value={field.value}
                   onChange={(newValue) => {
                     if (newValue) field.onChange(newValue)

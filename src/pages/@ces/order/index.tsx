@@ -22,11 +22,11 @@ OrderPage.getLayout = function getLayout(page: React.ReactElement) {
 export default function OrderPage() {
   const { user } = useAuth()
   const compId = user?.companyId?.toString()
-  const { currentTab, onChangeTab } = useTabs('monthly orders')
+  const { currentTab, onChangeTab } = useTabs('current orders')
   const role = user?.role
   const ORDER_TABS = [
     {
-      value: 'monthly orders',
+      value: 'current orders',
       icon: <SvgIconStyle src="/assets/icons/navbar/Calendar.svg" width={20} height={20} />,
 
       component: <MonthlyOrderTableCustom />,
