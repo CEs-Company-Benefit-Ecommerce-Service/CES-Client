@@ -22,10 +22,10 @@ import { useBenefitDetails } from 'src/hooks/@ces'
 import useSettings from 'src/hooks/useSettings'
 import useTabs from 'src/hooks/useTabs'
 import Layout from 'src/layouts'
-import { PATH_CES } from 'src/routes/paths'
 import BenefitNewEditForm from 'src/sections/@ces/benefit/BenefitNewEditForm'
 import BenefitAccountTable from 'src/sections/@ces/benefit/accounts/BenefitAccountTable'
 import BenefitMemberTable from 'src/sections/@ces/benefit/members/BenefitMemberTable'
+import { fCurrency } from 'src/utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ export default function BenefitEditPage() {
 
   const { enqueueSnackbar } = useSnackbar()
   const { currentTab, onChangeTab } = useTabs('general')
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { benefitId } = query
 
   const { data, mutate } = useBenefitDetails({ id: `${benefitId}` })
@@ -163,12 +163,36 @@ export default function BenefitEditPage() {
       icon: <SvgIconStyle src="/assets/icons/navbar/Application-User.svg" width={20} height={20} />,
       component: (
         <>
-          <BenefitNewEditForm
-            isEdit
-            currentUser={data?.data}
-            onSubmit={handleEditAccountSubmit}
-            mutate={mutate}
-          />
+          <Box pl={1}>
+            <Typography variant="body1">⚠️ This benefit is not active</Typography>
+          </Box>
+          <Box mt={2}>
+            <BenefitNewEditForm
+              isEdit
+              currentUser={data?.data}
+              onSubmit={handleEditAccountSubmit}
+              mutate={mutate}
+            />
+          </Box>
+          <Stack spacing={2} direction={'row'} mt={3}>
+            <Card sx={{ p: 3, flex: 1 }}>
+              <Stack spacing={1}>
+                <Typography variant="h4">Total Estimate</Typography>
+                <Typography variant="h5" sx={{ fontSize: 24 }}>
+                  {fCurrency(data?.data?.estimateTotal || 0)}
+                </Typography>
+              </Stack>
+            </Card>
+            <Card sx={{ p: 3, flex: 1 }}>
+              <Stack spacing={1}>
+                <Typography variant="h4">Total Received</Typography>
+                <Typography variant="h5" sx={{ fontSize: 24 }}>
+                  {fCurrency(data?.data?.totalReceive || 0)}
+                </Typography>
+              </Stack>
+            </Card>
+          </Stack>
+
           <Card sx={{ p: 3, mt: 3 }}>
             <Stack spacing={1}>
               {data?.data?.status === 2 && <Typography>⚠️ This benefit is not active</Typography>}

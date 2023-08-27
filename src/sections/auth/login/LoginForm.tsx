@@ -37,7 +37,7 @@ export default function LoginForm() {
   })
 
   const defaultValues = {
-    email: '123@gmail.com',
+    email: 'admin@gmail.com',
     password: '123456',
     remember: true,
   }
@@ -61,7 +61,10 @@ export default function LoginForm() {
       reset()
 
       if (isMountedRef.current) {
-        setError('afterSubmit', { ...error, message: error.response.data.Message })
+        setError('afterSubmit', {
+          ...error,
+          message: 'Email or password incorrect' || error.response.data.Message,
+        })
       }
     }
   }

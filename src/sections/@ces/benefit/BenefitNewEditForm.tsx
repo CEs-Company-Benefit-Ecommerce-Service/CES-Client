@@ -180,12 +180,12 @@ export default function BenefitNewEditForm({
                     })
                   }}
                 >
-                  Delete benefit
+                  Delete
                 </LoadingButton>
               )}
               {isEdit && currentUser && currentUser?.status !== 3 && (
                 <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                  {!isEdit ? 'Create Benefit' : 'Edit Benefit'}
+                  {!isEdit ? 'Create Benefit' : 'Save'}
                 </LoadingButton>
               )}
             </Stack>

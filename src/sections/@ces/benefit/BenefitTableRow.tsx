@@ -35,7 +35,7 @@ export default function BenefitTableRow({
 }: Props) {
   const theme = useTheme()
 
-  const { name, unitPrice, status, createdAt, updatedAt, groups } = row
+  const { name, unitPrice, status, createdAt, updatedAt, groups, totalReceive, estimateTotal } = row
   const { endDate, type, timeFilter } = groups[0]
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null)
@@ -75,7 +75,8 @@ export default function BenefitTableRow({
         </Typography>
       </TableCell> */}
       <TableCell align="left">{name}</TableCell>
-      <TableCell align="left">{fCurrency(unitPrice)}</TableCell>
+      <TableCell align="left">{fCurrency(estimateTotal || 0)}</TableCell>
+      <TableCell align="left">{fCurrency(totalReceive || 0)}</TableCell>
       <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
           {fDateVN(timeFilter)}
@@ -85,6 +86,8 @@ export default function BenefitTableRow({
         </Typography>
       </TableCell>
       <TableCell align="left">{fDateVN(endDate)}</TableCell>
+
+      <TableCell align="left">{fCurrency(unitPrice)}</TableCell>
 
       <TableCell align="left">
         {PLAN_TYPE.find((planType) => planType.value === type)?.label || ''}
@@ -100,7 +103,7 @@ export default function BenefitTableRow({
         </Label>
       </TableCell>
 
-      <TableCell align="left">
+      {/* <TableCell align="left">
         <Typography variant="inherit" noWrap sx={{ color: 'text.primary' }}>
           {fDateVN(createdAt)}
         </Typography>
@@ -116,7 +119,7 @@ export default function BenefitTableRow({
         <Typography variant="inherit" noWrap sx={{ color: 'text.secondary' }}>
           {fTime(updatedAt)}
         </Typography>
-      </TableCell>
+      </TableCell> */}
 
       <TableCell
         align="right"

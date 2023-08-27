@@ -103,7 +103,8 @@ export default function Login() {
               <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Đăng nhập vào hệ thống CES
+                    Login to CEs system
+                    {/* Đăng nhập vào hệ thống CES */}
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>
                     Enter your details below.

@@ -11,6 +11,8 @@ export type BenefitData = {
   company: CompanyData
   createdAt: string
   updatedAt: string
+  estimateTotal: number | null
+  totalReceive: number | null
   groups: {
     id: string
     name: string
